@@ -5,7 +5,13 @@ import Link from "next/link";
 import Drawer from "./Drawer";
 // import { useCartStore } from '@/store/useCartStore';
 
-export default function CartDrawer({ isOpen, onClose }) {
+export default function CartDrawer({
+  isOpen,
+  onClose,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+}) {
   // const items = useCartStore((s) => s.items);
   // const updateQuantity = useCartStore((s) => s.updateQuantity);
   // const removeItem = useCartStore((s) => s.removeItem);
@@ -20,8 +26,8 @@ export default function CartDrawer({ isOpen, onClose }) {
       image: "/images/placeholder.png",
     },
   ];
-  const updateQuantity = (id, qty) => {};
-  const removeItem = (id) => {};
+  const updateQuantity = (id: string, p0: number) => {};
+  const removeItem = (id: string) => {};
 
   const subtotal = items.reduce((sum, i) => sum + i.price * i.quantity, 0);
 
