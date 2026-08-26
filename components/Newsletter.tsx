@@ -1,13 +1,6 @@
 "use client";
 
-import { Playfair_Display } from "next/font/google";
 import { useState } from "react";
-
-const playfair = Playfair_Display({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  variable: "--font-playfair",
-});
 
 export interface NewsletterProps {
   eyebrow?: string;
@@ -20,7 +13,6 @@ export interface NewsletterProps {
 }
 
 export default function Newsletter({
-  eyebrow = "STAY IN THE KNOW",
   title = "Beautiful things, delivered to your inbox.",
   description = "Be the first to discover new arrivals, exclusive offers, special collections, and stories from our world.",
   placeholder = "Enter your email address",
@@ -37,7 +29,6 @@ export default function Newsletter({
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // Basic email validation regex
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email || !emailRegex.test(email)) {
       setStatus("error");
@@ -48,7 +39,6 @@ export default function Newsletter({
     setStatus("loading");
     setErrorMessage("");
 
-    // Simulate smooth submission delay
     setTimeout(() => {
       setStatus("success");
       setEmail("");
@@ -58,11 +48,10 @@ export default function Newsletter({
   return (
     <section
       aria-labelledby="newsletter-heading"
-      className={`w-full py-20 md:py-32  select-none ${playfair.variable}`}
+      className={`w-full py-20 md:py-32  select-none `}
     >
       <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
-          {/* LEFT SIDE: Eyebrow, Heading & Supporting Description */}
           <div className="lg:col-span-6 flex flex-col items-start">
             <h2 className="font-display text-3xl font-bold text-[#3E2C26] md:text-4xl">
               {title}
@@ -73,13 +62,11 @@ export default function Newsletter({
             </p>
           </div>
 
-          {/* RIGHT SIDE: Refined Editorial Email Input & Submission */}
           <div className="lg:col-span-6 flex flex-col w-full max-w-xl lg:ml-auto">
             {status === "success" ? (
-              /* Success State */
               <div className="flex flex-col items-start py-6 transition-all duration-500 ease-out">
-                <div className="flex items-center gap-3 text-[#261815]">
-                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#261815] text-white">
+                <div className="flex items-center gap-3 text-[#5D4039]">
+                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#5D4039] text-white">
                     <svg
                       className="h-3.5 w-3.5"
                       fill="none"
@@ -94,10 +81,7 @@ export default function Newsletter({
                       />
                     </svg>
                   </span>
-                  <p
-                    className="text-xl md:text-2xl font-normal tracking-tight text-[#261815]"
-                    style={{ fontFamily: "var(--font-playfair), serif" }}
-                  >
+                  <p className="text-xl md:text-2xl font-normal tracking-tight text-[#5D4039]">
                     {successMessage}
                   </p>
                 </div>
@@ -106,7 +90,6 @@ export default function Newsletter({
                 </p>
               </div>
             ) : (
-              /* Subscription Form */
               <form
                 onSubmit={handleSubmit}
                 noValidate
@@ -130,7 +113,6 @@ export default function Newsletter({
                     disabled={status === "loading"}
                   />
 
-                  {/* Integrated Subscribe Button */}
                   <button
                     type="submit"
                     disabled={status === "loading"}
@@ -160,14 +142,12 @@ export default function Newsletter({
                   </button>
                 </div>
 
-                {/* Validation Error Message */}
                 {status === "error" && errorMessage && (
                   <p className="text-xs text-rose-700 font-sans mt-2 transition-all">
                     {errorMessage}
                   </p>
                 )}
 
-                {/* Supporting Info */}
                 <p className="text-xs text-[#261815]/50 font-sans mt-3 tracking-normal">
                   {supportingText}
                 </p>

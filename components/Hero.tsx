@@ -96,7 +96,6 @@ export default function HeroSection() {
   const animId = useRef<number | null>(null);
   const [isDown, setIsDown] = useState(false);
 
-  // High-precision physics state (avoids React re-render lag)
   const drag = useRef({
     isDragging: false,
     startX: 0,
@@ -141,7 +140,6 @@ export default function HeroSection() {
       }
 
       if (d.isDragging) {
-        // Direct, ultra-responsive 1:1 cursor follow with micro-interpolation
         d.current += (d.target - d.current) * 0.75;
         el.scrollLeft = d.current;
         d.lastActionTime = now;
@@ -149,13 +147,11 @@ export default function HeroSection() {
         const timeSinceDrag = now - d.lastActionTime;
 
         if (timeSinceDrag < 1800) {
-          // Natural momentum glide with exponential friction decay
           d.velocity *= 0.94;
           d.target += d.velocity;
           d.current += (d.target - d.current) * 0.25;
           el.scrollLeft = d.current;
         } else {
-          // Continuous smooth auto-slide
           const autoSpeed = 0.5;
           d.target += autoSpeed;
           d.current += autoSpeed;
@@ -163,7 +159,6 @@ export default function HeroSection() {
         }
       }
 
-      // Seamless infinite loop wrapping (synchronizes drag coordinates to prevent jumps)
       if (cycleWidth > 0) {
         const minBound = cycleWidth * 1.5;
         const maxBound = cycleWidth * 2.5;
@@ -191,7 +186,6 @@ export default function HeroSection() {
     const el = trackRef.current;
     if (!el) return;
 
-    // Capture pointer events to prevent mouse drop outside viewport
     try {
       e.currentTarget.setPointerCapture(e.pointerId);
     } catch (_) {}
@@ -227,7 +221,6 @@ export default function HeroSection() {
     const d = drag.current;
     if (!d.isDragging) return;
 
-    // 1:1 drag movement matching hand/mouse position
     const walk = e.clientX - d.startX;
     d.target = d.scrollStart - walk;
 
@@ -235,7 +228,6 @@ export default function HeroSection() {
     const dt = Math.max(now - d.lastTime, 1);
     const dx = e.clientX - d.lastX;
 
-    // Filtered velocity calculation normalized to 60fps frame rate
     const currentVelocity = (-dx / dt) * 16.67;
     d.velocity = d.velocity * 0.35 + currentVelocity * 0.65;
 
@@ -279,7 +271,6 @@ export default function HeroSection() {
 
   return (
     <section className="relative overflow-hidden py-5 select-none">
-      {/* Hide native browser scrollbars */}
       <style
         dangerouslySetInnerHTML={{
           __html: `

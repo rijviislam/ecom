@@ -2,10 +2,10 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="mt-24 border-t border-gray-500/50 bg-zinc-50  dark:bg-[#5A4139] ">
+    <footer className=" bg-[#5D4039] ">
       <div className="container-page grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4 px-10">
         <div>
-          <div className="font-display text-2xl text-ink">Covet</div>
+          <div className="font-display text-2xl text-ink">ECOM</div>
           <p className="mt-3 max-w-xs text-sm text-ink/60 font-sans">
             Thoughtfully sourced electronics, fashion, home and beauty — built
             as a frontend take-home exercise, running entirely on local mock

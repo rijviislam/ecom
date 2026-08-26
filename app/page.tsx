@@ -1,3 +1,4 @@
+import BestSellers from "@/components/BestSellers";
 import FeaturedCategories from "@/components/Category";
 import Faq from "@/components/FAQ";
 import FeaturedProducts from "@/components/FeaturedProducts";
@@ -9,6 +10,7 @@ export default function Home() {
   return (
     <div className="   ">
       <Hero />
+      <BestSellers />
       <FeaturedCategories />
       <ProductSection />
       <FeaturedProducts />

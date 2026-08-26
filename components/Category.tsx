@@ -108,11 +108,9 @@ export default function FeaturedCategories() {
   const activeCategory = CATEGORY_DATA[displayKey];
 
   return (
-    <div className={`w-full min-h-screen  text-zinc-900 font-display `}>
+    <div className={`w-full min-h-screen font-display`}>
       <section className="relative w-full max-w-7xl mx-auto px-6   flex flex-col justify-center min-h-screen">
-        {/* Three Column Grid Layout */}
         <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] items-center gap-12 md:gap-10 lg:gap-16">
-          {/* LEFT — PRODUCT CATEGORY VISUAL (Oval Shape) */}
           <div className="flex flex-col items-center md:items-end justify-center w-full order-2 md:order-1">
             <div
               className={`w-full max-w-65 lg:max-w-[320px] transition-all duration-300 ease-out ${
@@ -121,7 +119,6 @@ export default function FeaturedCategories() {
                   : "opacity-0 scale-95"
               }`}
             >
-              {/* Elegant organic oval/rounded shape image */}
               <div className="group relative w-full aspect-4/5 rounded-full overflow-hidden shadow-sm bg-zinc-50 ">
                 <Image
                   src={activeCategory.leftProduct.image}
@@ -133,13 +130,12 @@ export default function FeaturedCategories() {
                 />
               </div>
 
-              {/* Supporting Info */}
               <div className="flex justify-between items-start mt-6 px-1 w-full">
                 <div>
-                  <h3 className="text-sm font-medium text-zinc-900 tracking-wide font-sans">
+                  <h3 className="text-lg font-medium text-[#3E2C26] tracking-wide font-display">
                     {activeCategory.leftProduct.name}
                   </h3>
-                  <p className="text-xs text-zinc-500 font-sans mt-1">
+                  <p className="text-md text-[#3E2C26] font-sans mt-1">
                     {activeCategory.leftProduct.price}
                   </p>
                 </div>
@@ -155,7 +151,6 @@ export default function FeaturedCategories() {
             </div>
           </div>
 
-          {/* CENTER — TYPOGRAPHIC CATEGORY NAVIGATION */}
           <div className="flex flex-col items-center justify-center min-w-65 md:min-w-75 lg:min-w-90 order-1 md:order-2">
             <nav className="flex flex-col items-center gap-6 md:gap-8 lg:gap-10">
               {Object.entries(CATEGORY_DATA).map(([key, category]) => {
@@ -190,7 +185,6 @@ export default function FeaturedCategories() {
             </nav>
           </div>
 
-          {/* RIGHT — LIFESTYLE IMAGE (Rectangle Shape) */}
           <div className="flex flex-col items-center md:items-start justify-center w-full order-3">
             <div
               className={`w-full max-w-70 lg:max-w-85 transition-all duration-300 ease-out ${
@@ -199,7 +193,6 @@ export default function FeaturedCategories() {
                   : "opacity-0 scale-95"
               }`}
             >
-              {/* Clean rectangular lifestyle image */}
               <div className="group relative w-full aspect-3/4 overflow-hidden bg-zinc-50  shadow-sm">
                 <Image
                   src={activeCategory.rightProduct.image}
@@ -211,13 +204,12 @@ export default function FeaturedCategories() {
                 />
               </div>
 
-              {/* Supporting Info */}
               <div className="flex justify-between items-start mt-6 px-1 w-full">
                 <div>
-                  <h3 className="text-sm font-medium text-zinc-900 tracking-wide font-sans">
+                  <h3 className="text-lg font-medium text-[#3E2C26] tracking-wide font-sans">
                     {activeCategory.rightProduct.name}
                   </h3>
-                  <p className="text-xs text-zinc-500 font-sans mt-1">
+                  <p className="text-md text-zinc-500 font-sans mt-1">
                     {activeCategory.rightProduct.price}
                   </p>
                 </div>

@@ -1,14 +1,8 @@
 "use client";
 
-import { Playfair_Display } from "next/font/google";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-
-const playfair = Playfair_Display({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  variable: "--font-playfair",
-});
 
 export interface Product {
   id: string;
@@ -103,15 +97,15 @@ export function ProductActions({
   };
 
   return (
-    <div className="flex shrink-0 items-center gap-2 select-none">
+    <div className="flex shrink-0 items-center gap-2 select-none ">
       <button
         type="button"
         onClick={handleAddToCartClick}
         aria-label="Add to cart"
-        className={`flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border transition-all duration-300 ${
+        className={`flex h-9 w-9 cursor-pointer items-center justify-center rounded-full  transition-all duration-300 ${
           isAdded
-            ? "scale-105 border-[#3E2C26] bg-[#3E2C26] text-white"
-            : "border-zinc-300/80 bg-white text-zinc-700 hover:scale-105 hover:border-zinc-900 hover:text-zinc-950 active:scale-95"
+            ? "scale-105 bg-[#5D4039] text-white"
+            : " bg-[#5D4039] text-white hover:scale-105  hover:bg-[#5D4039] active:scale-95"
         }`}
       >
         <svg
@@ -133,10 +127,10 @@ export function ProductActions({
         type="button"
         onClick={handleWishlistClick}
         aria-label="Save to wishlist"
-        className={`flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border transition-all duration-300 ${
+        className={`flex h-9 w-9 cursor-pointer items-center justify-center rounded-full  transition-all duration-300 ${
           isWishlisted
-            ? "scale-105 border-zinc-900 bg-zinc-900 text-white"
-            : "border-zinc-300/80 bg-white text-zinc-700 hover:scale-105 hover:border-zinc-900 hover:text-zinc-950 active:scale-95"
+            ? "scale-105 bg-[#3E2C26] text-white"
+            : "bg-[#5D4039] text-white hover:scale-105  hover:bg-[#5D4039] active:scale-95"
         }`}
       >
         <svg
@@ -169,7 +163,7 @@ export function MasonryProductCard({
   const aspect = product.aspectClass || "aspect-[3/4]";
 
   return (
-    <article className="group mb-8 w-full break-inside-avoid">
+    <Link href={`#`} className="group mb-8 w-full break-inside-avoid ">
       {/* IMAGE */}
       <div
         className={`relative w-full ${aspect} overflow-hidden rounded-2xl bg-zinc-100/60`}
@@ -186,11 +180,11 @@ export function MasonryProductCard({
       {/* PRODUCT INFO */}
       <div className="flex items-start justify-between gap-3 px-0.5 pt-3.5">
         <div className="min-w-0 pr-2">
-          <h3 className="font-sans text-sm font-medium tracking-tight text-[#3E2C26]">
+          <h3 className="font-sans text-lg font-medium tracking-tight text-[#3E2C26] ">
             {product.name}
           </h3>
 
-          <p className="mt-0.5 font-sans text-xs tracking-normal text-[#3E2C26]">
+          <p className="mt-0.5 font-sans text-md tracking-normal text-[#3E2C26]">
             {product.price}
           </p>
         </div>
@@ -201,7 +195,7 @@ export function MasonryProductCard({
           onToggleWishlist={onToggleWishlist}
         />
       </div>
-    </article>
+    </Link>
   );
 }
 
@@ -302,7 +296,7 @@ function MasonryGrid({
   );
 
   const gapClass =
-    columnCount === 1 ? "gap-7" : columnCount === 2 ? "gap-6" : "gap-8";
+    columnCount === 1 ? "gap-3" : columnCount === 2 ? "gap-4" : "gap-6";
 
   return (
     <div className={`flex w-full items-start ${gapClass}`}>
@@ -340,24 +334,21 @@ export default function ProductSection({
   onToggleWishlist,
 }: ProductSectionProps) {
   return (
-    <section
-      className={`w-full py-16 text-zinc-900 md:py-24 ${playfair.variable}`}
-    >
+    <section className={`w-full text-zinc-900  bg-[#EDE4DC]/50 `}>
       <div className="mx-auto max-w-7xl px-6 md:px-10 lg:px-12">
-        {/* HEADER */}
         <div className="mb-10 flex items-baseline justify-between md:mb-14">
           <h2 className="font-display text-3xl font-bold text-[#3E2C26] md:text-4xl">
             {title}
           </h2>
 
-          <a
+          <Link
             href={seeAllLink}
             className="group relative inline-flex pb-0.5 font-sans text-[11px] font-bold text-[#3E2C26] uppercase tracking-[0.16em]  transition-colors duration-300 hover:text-zinc-950 md:text-xs"
           >
             <span>{seeAllText}</span>
 
             <span className="absolute bottom-0 left-0 h-px w-full bg-zinc-800 transition-all duration-300 group-hover:h-[1.5px] group-hover:bg-zinc-950" />
-          </a>
+          </Link>
         </div>
 
         {/* TRUE PINTEREST-STYLE MASONRY — one responsive grid,

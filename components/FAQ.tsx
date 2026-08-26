@@ -1,13 +1,6 @@
 "use client";
 
-import { Playfair_Display } from "next/font/google";
 import { useState } from "react";
-
-const playfair = Playfair_Display({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  variable: "--font-playfair",
-});
 
 export interface FAQItem {
   id: string;
@@ -74,7 +67,6 @@ export interface FAQProps {
 }
 
 export default function FAQ({
-  tag = "FAQ / SUPPORT",
   title = "Frequently Asked Questions",
   description = "Everything you need to know about our products, orders, shipping, and more.",
   items = DEFAULT_FAQ_ITEMS,
@@ -88,26 +80,11 @@ export default function FAQ({
   return (
     <section
       aria-labelledby="faq-heading"
-      className={`w-full py-20 md:py-32 select-none ${playfair.variable}`}
+      className={`w-full py-20 md:py-32 select-none `}
     >
       <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-12">
-        {/* TWO-COLUMN EDITORIAL DESKTOP LAYOUT */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-          {/* LEFT COLUMN: Section Heading & Supporting Info */}
           <div className="lg:col-span-5 flex flex-col items-start lg:sticky lg:top-32">
-            {/* {tag && (
-              <span className="text-[11px] md:text-xs font-semibold tracking-[0.2em] uppercase text-[#261815]/60 mb-3 font-sans">
-                {tag}
-              </span>
-            )} */}
-
-            {/* <h2
-              id="faq-heading"
-              className="text-3xl sm:text-4xl md:text-5xl font-normal tracking-tight text-[#261815] leading-[1.15] mb-4"
-              style={{ fontFamily: "var(--font-playfair), serif" }}
-            >
-              {title}
-            </h2> */}
             <h2 className="font-display  text-3xl font-bold text-[#3E2C26] md:text-4xl">
               {title}
             </h2>
@@ -117,7 +94,6 @@ export default function FAQ({
             </p>
           </div>
 
-          {/* RIGHT COLUMN: Accordion FAQ List */}
           <div className="lg:col-span-7 flex flex-col divide-y divide-[#261815]/10 border-y border-[#261815]/10">
             {items.map((item) => {
               const isOpen = openId === item.id;
@@ -138,22 +114,20 @@ export default function FAQ({
                     className="w-full flex items-center justify-between gap-6 text-left cursor-pointer outline-none group-focus-visible:ring-1 group-focus-visible:ring-[#261815]"
                   >
                     <span
-                      className={`text-base md:text-lg font-normal transition-colors duration-300 ${
+                      className={`text-base md:text-lg font-display transition-colors duration-300 ${
                         isOpen
                           ? "text-[#261815] font-medium"
                           : "text-[#261815]/85 group-hover:text-[#261815]"
                       }`}
-                      style={{ fontFamily: "var(--font-playfair), serif" }}
                     >
                       {item.question}
                     </span>
 
-                    {/* Smooth rotating plus icon */}
                     <span
                       aria-hidden="true"
-                      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border transition-all duration-300 ${
+                      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border transition-all duration-300 font-sens ${
                         isOpen
-                          ? "rotate-45 bg-[#261815] text-white border-[#261815]"
+                          ? "rotate-45 bg-[#5D4039] text-white border-[#5D4039]"
                           : "border-[#261815]/20 text-[#261815] bg-transparent group-hover:border-[#261815] group-hover:bg-[#261815]/5"
                       }`}
                     >
@@ -173,7 +147,6 @@ export default function FAQ({
                     </span>
                   </button>
 
-                  {/* Smooth height + opacity disclosure panel */}
                   <div
                     id={panelId}
                     role="region"
