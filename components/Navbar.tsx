@@ -41,21 +41,50 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="sticky top-0 z-40 border-b border-gray-500/50 bg-[#5A4139] backdrop-blur px-10">
+      <header className="sticky top-0 z-40 border-b border-[#5A4139]/50  backdrop-blur px-10 ">
         <div className="container-page flex h-16 items-center justify-between gap-4">
           <Link
             href="/"
-            className="font-display text-2xl tracking-tight text-ink"
+            className="font-display text-2xl tracking-tight text-ink text-[#3E2C26] flex items-center gap-1 font-bold"
           >
             Ecom
+            <svg
+              viewBox="0 0 100 100"
+              width="24"
+              height="24"
+              fill="currentColor"
+            >
+              <g>
+                <path d="M50 4 Q59 30 50 50 Q41 30 50 4 Z" />
+                <path
+                  d="M50 4 Q59 30 50 50 Q41 30 50 4 Z"
+                  transform="rotate(60 50 50)"
+                />
+                <path
+                  d="M50 4 Q59 30 50 50 Q41 30 50 4 Z"
+                  transform="rotate(120 50 50)"
+                />
+                <path
+                  d="M50 4 Q59 30 50 50 Q41 30 50 4 Z"
+                  transform="rotate(180 50 50)"
+                />
+                <path
+                  d="M50 4 Q59 30 50 50 Q41 30 50 4 Z"
+                  transform="rotate(240 50 50)"
+                />
+                <path
+                  d="M50 4 Q59 30 50 50 Q41 30 50 4 Z"
+                  transform="rotate(300 50 50)"
+                />
+              </g>
+            </svg>
           </Link>
-
-          <nav className="hidden items-center gap-7 md:flex font-sans">
+          <nav className="hidden items-center gap-7 md:flex font-sans text-[#3E2C26]">
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`text-sm font-medium transition-colors ${
+                className={`text-lg font-medium transition-colors ${
                   pathname === link.href
                     ? "text-forest-700"
                     : "text-ink/60 hover:text-ink"
@@ -83,7 +112,7 @@ export default function Navbar() {
             <button
               aria-label="Wishlist"
               onClick={() => setWishlistOpen(true)}
-              className="relative rounded-full p-2.5 text-ink/70 transition-colors hover:bg-ink/5 hover:text-ink"
+              className="relative rounded-full p-2.5 text-ink/70 transition-colors hover:bg-ink/5 hover:text-ink text-[#3E2C26]"
             >
               <Heart className="h-5 w-5" />
               {/* {mounted && wishlistCount > 0 && (
@@ -95,7 +124,7 @@ export default function Navbar() {
             <button
               aria-label="Cart"
               onClick={() => setCartOpen(true)}
-              className="relative rounded-full p-2.5 text-ink/70 transition-colors hover:bg-ink/5 hover:text-ink"
+              className="relative rounded-full p-2.5 text-ink/70 transition-colors hover:bg-ink/5 hover:text-ink text-[#5A4139]"
             >
               <ShoppingBag className="h-5 w-5" />
               {/* {mounted && cartCount > 0 && (

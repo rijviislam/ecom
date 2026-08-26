@@ -64,30 +64,37 @@ const CARD_STYLES = [
   },
 ];
 
-function SlideCard({ product, index }) {
+function SlideCard({
+  product,
+  index,
+}: {
+  product: (typeof SLIDER_PRODUCTS)[0];
+  index: number;
+}) {
   const styleIndex = index % SLIDER_PRODUCTS.length;
   const config = CARD_STYLES[styleIndex];
 
   return (
     <div
-      className={`group relative shrink-0 snap-start overflow-hidden  shadow-2xl rounded-sm transition-all duration-500 hover:scale-105 hover:z-50 select-none ${config.size} ${config.tilt} ${config.offset} ${config.overlap} ${config.zIndex} ${config.scale}`}
+      className={`group relative shrink-0 snap-start overflow-hidden shadow-2xl rounded-sm transition-all duration-500 hover:scale-105 hover:z-50 select-none  ${config.size} ${config.tilt} ${config.offset} ${config.overlap} ${config.zIndex} ${config.scale}`}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={product.image}
         alt={product.name}
         draggable={false}
-        className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110 select-none"
+        className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110 select-none pointer-events-none"
       />
     </div>
   );
 }
 
 export default function FeaturedProductsSlider() {
-  const trackRef = useRef(null);
-  const animId = useRef(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const animId = useRef<number | null>(null);
   const [isDown, setIsDown] = useState(false);
 
+  // High-precision physics state (avoids React re-render lag)
   const drag = useRef({
     isDragging: false,
     startX: 0,
@@ -118,28 +125,57 @@ export default function FeaturedProductsSlider() {
       }
 
       const d = drag.current;
+      const now = performance.now();
+      const children = el.children;
+      const numProducts = SLIDER_PRODUCTS.length;
+
+      let cycleWidth = 0;
+      if (children.length >= numProducts * 2) {
+        const firstItem = children[0] as HTMLElement;
+        const middleItem = children[numProducts] as HTMLElement;
+        if (firstItem && middleItem) {
+          cycleWidth = middleItem.offsetLeft - firstItem.offsetLeft || 0;
+        }
+      }
+
       if (d.isDragging) {
-        const lerpFactor = 0.15;
-        d.current += (d.target - d.current) * lerpFactor;
+        // Direct, ultra-responsive 1:1 cursor follow with micro-interpolation
+        d.current += (d.target - d.current) * 0.75;
         el.scrollLeft = d.current;
-        d.lastActionTime = performance.now();
+        d.lastActionTime = now;
       } else {
-        const now = performance.now();
         const timeSinceDrag = now - d.lastActionTime;
 
-        if (timeSinceDrag < 1500) {
-          const friction = 0.95;
-          d.velocity *= friction;
+        if (timeSinceDrag < 1800) {
+          // Natural momentum glide with exponential friction decay
+          d.velocity *= 0.94;
           d.target += d.velocity;
-
-          const lerpFactor = 0.15;
-          d.current += (d.target - d.current) * lerpFactor;
+          d.current += (d.target - d.current) * 0.25;
           el.scrollLeft = d.current;
         } else {
-          const autoSpeed = 0.6;
+          // Continuous smooth auto-slide
+          const autoSpeed = 0.5;
           d.target += autoSpeed;
           d.current += autoSpeed;
           el.scrollLeft = d.current;
+        }
+      }
+
+      // Seamless infinite loop wrapping (synchronizes drag coordinates to prevent jumps)
+      if (cycleWidth > 0) {
+        const minBound = cycleWidth * 1.5;
+        const maxBound = cycleWidth * 2.5;
+
+        if (d.current < minBound || d.current > maxBound) {
+          const offsetFromMiddle =
+            ((d.current % cycleWidth) + cycleWidth) % cycleWidth;
+          const newPos = cycleWidth * 2 + offsetFromMiddle;
+          const shift = newPos - d.current;
+
+          d.current = newPos;
+          d.target += shift;
+          d.scrollStart += shift;
+          el.scrollLeft = newPos;
         }
       }
 
@@ -149,9 +185,14 @@ export default function FeaturedProductsSlider() {
     animId.current = requestAnimationFrame(loop);
   };
 
-  function onPointerDown(e) {
+  function onPointerDown(e: React.PointerEvent<HTMLDivElement>) {
     const el = trackRef.current;
     if (!el) return;
+
+    // Capture pointer events to prevent mouse drop outside viewport
+    try {
+      e.currentTarget.setPointerCapture(e.pointerId);
+    } catch (_) {}
 
     setIsDown(true);
     const d = drag.current;
@@ -163,32 +204,42 @@ export default function FeaturedProductsSlider() {
     d.velocity = 0;
     d.lastX = e.clientX;
     d.lastTime = performance.now();
+    d.lastActionTime = performance.now();
 
     startLoop();
     e.preventDefault();
   }
 
-  function onPointerUp() {
+  function onPointerUp(e: React.PointerEvent<HTMLDivElement>) {
     setIsDown(false);
     const d = drag.current;
     d.isDragging = false;
+    d.lastActionTime = performance.now();
+
+    try {
+      e.currentTarget.releasePointerCapture(e.pointerId);
+    } catch (_) {}
   }
 
-  function onPointerMove(e) {
+  function onPointerMove(e: React.PointerEvent<HTMLDivElement>) {
     const d = drag.current;
     if (!d.isDragging) return;
 
-    const walk = (e.clientX - d.startX) * 1.5;
+    // 1:1 drag movement matching hand/mouse position
+    const walk = e.clientX - d.startX;
     d.target = d.scrollStart - walk;
 
     const now = performance.now();
-    const dt = now - d.lastTime;
-    if (dt > 0) {
-      const dx = e.clientX - d.lastX;
-      d.velocity = -dx * 1.5;
-    }
+    const dt = Math.max(now - d.lastTime, 1);
+    const dx = e.clientX - d.lastX;
+
+    // Filtered velocity calculation normalized to 60fps frame rate
+    const currentVelocity = (-dx / dt) * 16.67;
+    d.velocity = d.velocity * 0.35 + currentVelocity * 0.65;
+
     d.lastX = e.clientX;
     d.lastTime = now;
+    d.lastActionTime = now;
   }
 
   useEffect(() => {
@@ -197,9 +248,10 @@ export default function FeaturedProductsSlider() {
 
     const initializeScroll = () => {
       const children = el.children;
-      if (children.length >= 8) {
-        const firstItem = children[0];
-        const middleItem = children[SLIDER_PRODUCTS.length];
+      const numProducts = SLIDER_PRODUCTS.length;
+      if (children.length >= numProducts * 2) {
+        const firstItem = children[0] as HTMLElement;
+        const middleItem = children[numProducts] as HTMLElement;
         if (firstItem && middleItem) {
           const cycleWidth = middleItem.offsetLeft - firstItem.offsetLeft;
           if (cycleWidth > 0) {
@@ -215,66 +267,16 @@ export default function FeaturedProductsSlider() {
 
     const initTimer = setTimeout(initializeScroll, 50);
 
-    const handleScroll = () => {
-      const children = el.children;
-      const numProducts = SLIDER_PRODUCTS.length;
-      if (children.length < numProducts * 2) return;
-
-      const firstItem = children[0];
-      const middleItem = children[numProducts];
-      if (!firstItem || !middleItem) return;
-
-      const cycleWidth = middleItem.offsetLeft - firstItem.offsetLeft || 1;
-      const scrollLeft = el.scrollLeft;
-
-      if (!drag.current.isDragging && !animId.current) {
-        drag.current.current = scrollLeft;
-        drag.current.target = scrollLeft;
-      }
-
-      checkAndPerformJump();
-    };
-
-    const checkAndPerformJump = () => {
-      const children = el.children;
-      const numProducts = SLIDER_PRODUCTS.length;
-      if (children.length < numProducts * 2) return;
-
-      const firstItem = children[0];
-      const middleItem = children[numProducts];
-      if (!firstItem || !middleItem) return;
-
-      const cycleWidth = middleItem.offsetLeft - firstItem.offsetLeft || 1;
-      const scrollLeft = el.scrollLeft;
-
-      const minBound = cycleWidth * 1.5;
-      const maxBound = cycleWidth * 2.5;
-
-      if (scrollLeft < minBound || scrollLeft > maxBound) {
-        const offsetFromMiddle =
-          ((scrollLeft % cycleWidth) + cycleWidth) % cycleWidth;
-        const newPos = cycleWidth * 2 + offsetFromMiddle;
-
-        el.scrollLeft = newPos;
-        drag.current.current = newPos;
-        drag.current.target = newPos;
-        drag.current.velocity = 0;
-      }
-    };
-
-    el.addEventListener("scroll", handleScroll);
-
     return () => {
       clearTimeout(initTimer);
       if (animId.current) {
         cancelAnimationFrame(animId.current);
       }
-      el.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
   return (
-    <section className="relative overflow-hidden  py-20 select-none">
+    <section className="relative overflow-hidden py-20 select-none">
       {/* Hide native browser scrollbars */}
       <style
         dangerouslySetInnerHTML={{
@@ -291,7 +293,7 @@ export default function FeaturedProductsSlider() {
       />
 
       <div className="mb-14 px-6 md:px-10 text-center">
-        <h2 className="font-display text-3xl font-bold text-[#261815] md:text-4xl">
+        <h2 className="font-display text-3xl font-bold text-[#3E2C26] md:text-4xl">
           Featured Products
         </h2>
       </div>
@@ -300,9 +302,9 @@ export default function FeaturedProductsSlider() {
         ref={trackRef}
         onPointerDown={onPointerDown}
         onPointerUp={onPointerUp}
-        onPointerLeave={onPointerUp}
+        onPointerCancel={onPointerUp}
         onPointerMove={onPointerMove}
-        className={`no-scrollbar flex overflow-x-auto overflow-y-visible px-10 pb-20 pt-10 md:px-20 touch-pan-y gap-6 md:gap-14 ${
+        className={`no-scrollbar flex overflow-x-auto overflow-y-visible px-10 pb-20 pt-10 md:px-20 touch-none gap-6 md:gap-14 ${
           isDown ? "cursor-grabbing" : "cursor-grab"
         }`}
       >

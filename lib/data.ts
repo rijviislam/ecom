@@ -25,7 +25,10 @@ export function getFeaturedProducts() {
   return getProducts().filter((p) => p.isFeatured);
 }
 
-export function getRelatedProducts(product, limit = 4) {
+export function getRelatedProducts(
+  product: { uuid: string; categoryUuid: string },
+  limit = 4,
+) {
   return getProducts()
     .filter(
       (p) => p.uuid !== product.uuid && p.categoryUuid === product.categoryUuid,
@@ -61,73 +64,162 @@ export function getDemoCustomer() {
   return customersData[0];
 }
 
-export function effectivePrice(product) {
+export function effectivePrice(
+  product:
+    | {
+        uuid: string;
+        name: string;
+        slug: string;
+        description: string;
+        content: string;
+        sku: string;
+        barcode: string;
+        categoryUuid: string;
+        brandUuid: string;
+        status: string;
+        costPrice: number;
+        retailPrice: number;
+        salePrice: number;
+        compareAtPrice: number;
+        weight: number;
+        hasVariants: boolean;
+        isFeatured: boolean;
+        isDigital: boolean;
+        seoTitle: string;
+        seoDescription: string;
+        tags: { uuid: string; name: string; slug: string }[];
+        images: {
+          uuid: string;
+          url: string;
+          altText: string;
+          sortOrder: number;
+          isPrimary: boolean;
+        }[];
+        variants: {
+          uuid: string;
+          label: string;
+          attribute: string;
+          value: string;
+          priceDelta: number;
+          stock: number;
+        }[];
+        createdAt: string;
+        updatedAt: string;
+      }
+    | {
+        uuid: string;
+        name: string;
+        slug: string;
+        description: string;
+        content: string;
+        sku: string;
+        barcode: string;
+        categoryUuid: string;
+        brandUuid: string;
+        status: string;
+        costPrice: number;
+        retailPrice: number;
+        salePrice: null;
+        compareAtPrice: null;
+        weight: number;
+        hasVariants: boolean;
+        isFeatured: boolean;
+        isDigital: boolean;
+        seoTitle: string;
+        seoDescription: string;
+        tags: { uuid: string; name: string; slug: string }[];
+        images: {
+          uuid: string;
+          url: string;
+          altText: string;
+          sortOrder: number;
+          isPrimary: boolean;
+        }[];
+        variants: {
+          uuid: string;
+          label: string;
+          attribute: string;
+          value: string;
+          priceDelta: number;
+          stock: number;
+        }[];
+        createdAt: string;
+        updatedAt: string;
+      },
+) {
   return product.salePrice != null ? product.salePrice : product.retailPrice;
 }
 
-export function formatCurrency(amount) {
-  return `\u09F3${Number(amount).toLocaleString("en-BD", { maximumFractionDigits: 0 })}`;
-}
+// export function formatCurrency(amount: any) {
+//   return `\u09F3${Number(amount).toLocaleString("en-BD", { maximumFractionDigits: 0 })}`;
+// }
 
 /**
  * Filters + sorts the product catalog according to the same kind of
  * query params the real /products endpoint accepts.
  */
-export function queryProducts({
-  search,
-  categorySlug,
-  brandUuid,
-  minPrice,
-  maxPrice,
-  sortBy,
-} = {}) {
-  let items = getProducts();
+// export function queryProducts({
+//   search,
+//   categorySlug,
+//   brandUuid,
+//   minPrice,
+//   maxPrice,
+//   sortBy,
+// }: {
+//   search?: string;
+//   categorySlug?: string;
+//   brandUuid?: string;
+//   minPrice?: number;
+//   maxPrice?: number;
+//   sortBy?: "price_asc" | "price_desc" | "newest";
+// } = {}) {
+//   let items = getProducts();
 
-  if (categorySlug) {
-    const category = getCategoryBySlug(categorySlug);
-    if (category) items = items.filter((p) => p.categoryUuid === category.uuid);
-  }
+//   if (categorySlug) {
+//     const category = getCategoryBySlug(categorySlug);
+//     if (category) items = items.filter((p) => p.categoryUuid === category.uuid);
+//   }
 
-  if (brandUuid) {
-    items = items.filter((p) => p.brandUuid === brandUuid);
-  }
+//   if (brandUuid) {
+//     items = items.filter((p) => p.brandUuid === brandUuid);
+//   }
 
-  if (search && search.trim()) {
-    const q = search.trim().toLowerCase();
-    items = items.filter(
-      (p) =>
-        p.name.toLowerCase().includes(q) ||
-        p.description?.toLowerCase().includes(q) ||
-        p.sku?.toLowerCase().includes(q),
-    );
-  }
+//   if (search && search.trim()) {
+//     const q = search.trim().toLowerCase();
+//     items = items.filter(
+//       (p) =>
+//         p.name.toLowerCase().includes(q) ||
+//         p.description?.toLowerCase().includes(q) ||
+//         p.sku?.toLowerCase().includes(q),
+//     );
+//   }
 
-  if (minPrice != null) {
-    items = items.filter((p) => effectivePrice(p) >= Number(minPrice));
-  }
-  if (maxPrice != null) {
-    items = items.filter((p) => effectivePrice(p) <= Number(maxPrice));
-  }
+//   if (minPrice != null) {
+//     items = items.filter((p) => effectivePrice(p) >= Number(minPrice));
+//   }
+//   if (maxPrice != null) {
+//     items = items.filter((p) => effectivePrice(p) <= Number(maxPrice));
+//   }
 
-  switch (sortBy) {
-    case "price_asc":
-      items = [...items].sort((a, b) => effectivePrice(a) - effectivePrice(b));
-      break;
-    case "price_desc":
-      items = [...items].sort((a, b) => effectivePrice(b) - effectivePrice(a));
-      break;
-    case "newest":
-      items = [...items].sort(
-        (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
-      );
-      break;
-    default:
-      // featured first, then newest
-      items = [...items].sort((a, b) => {
-        if (a.isFeatured !== b.isFeatured) return a.isFeatured ? -1 : 1;
-        return new Date(b.createdAt) - new Date(a.createdAt);
-      });
-  }
+//   switch (sortBy) {
+//     case "price_asc":
+//       items = [...items].sort((a, b) => effectivePrice(a) - effectivePrice(b));
+//       break;
+//     case "price_desc":
+//       items = [...items].sort((a, b) => effectivePrice(b) - effectivePrice(a));
+//       break;
+//     case "newest":
+//       items = [...items].sort(
+//         (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+//       );
+//       break;
+//     default:
+//       // featured first, then newest
+//       items = [...items].sort((a, b) => {
+//         if (a.isFeatured !== b.isFeatured) return a.isFeatured ? -1 : 1;
+//         return new Date(b.createdAt) - new Date(a.createdAt);
+//       });
+//   }
 
-  return items;
-}
+//   return items;
+// }

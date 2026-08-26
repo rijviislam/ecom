@@ -1,9 +1,24 @@
 "use client";
 
 import { X } from "lucide-react";
+import type { ReactNode } from "react";
 import { useEffect } from "react";
 
-export default function Drawer({ isOpen, onClose, title, children, footer }) {
+type DrawerProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  title: ReactNode;
+  children: ReactNode;
+  footer?: ReactNode;
+};
+
+export default function Drawer({
+  isOpen,
+  onClose,
+  title,
+  children,
+  footer,
+}: DrawerProps) {
   // Lock body scroll while drawer is open
   useEffect(() => {
     if (isOpen) {
@@ -30,7 +45,7 @@ export default function Drawer({ isOpen, onClose, title, children, footer }) {
 
       {/* Panel */}
       <aside
-        className={`fixed  bg-[#5A4139] right-0 top-0 z-50 flex h-full w-full max-w-[420px] flex-col bg-cream shadow-2xl transition-transform duration-300 ease-in-out ${
+        className={`fixed  bg-[#5A4139] right-0 top-0 z-50 flex h-full w-full max-w-105 flex-col bg-cream shadow-2xl transition-transform duration-300 ease-in-out ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
         role="dialog"

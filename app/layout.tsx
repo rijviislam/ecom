@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Faculty_Glyphic, Maven_Pro } from "next/font/google";
 
+import Context from "@/components/Context";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import "./globals.css";
@@ -28,9 +29,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${mavenPro.variable} ${facultyGlyphic.variable} h-full antialiased`}
     >
-      <Navbar />
-      <body className=" h-screen flex flex-col">{children}</body>
-      <Footer />
+      <body>
+        <Context>
+          <Navbar />
+
+          {children}
+          <Footer />
+        </Context>
+      </body>
     </html>
   );
 }

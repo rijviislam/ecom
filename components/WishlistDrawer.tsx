@@ -5,7 +5,13 @@ import Drawer from "./Drawer";
 // import { useWishlistStore } from '@/store/useWishlistStore';
 // import { useCartStore } from '@/store/useCartStore';
 
-export default function WishlistDrawer({ isOpen, onClose }) {
+export default function WishlistDrawer({
+  isOpen,
+  onClose,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+}) {
   // const items = useWishlistStore((s) => s.items);
   // const removeItem = useWishlistStore((s) => s.removeItem);
   // const addToCart = useCartStore((s) => s.addItem);
@@ -19,8 +25,8 @@ export default function WishlistDrawer({ isOpen, onClose }) {
       image: "/images/placeholder.png",
     },
   ];
-  const removeItem = (id) => {};
-  const addToCart = (item) => {};
+  const removeItem = (id: string) => {};
+  const addToCart = (item: string) => {};
 
   return (
     <Drawer
