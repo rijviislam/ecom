@@ -1,0 +1,752 @@
+[
+  {
+    "uuid": "prod-001",
+    "name": "Aria Wireless Headphones",
+    "slug": "aria-wireless-headphones",
+    "description": "Over-ear ANC headphones with 32-hour battery life.",
+    "content": "<p>The Aria headphones pair a 40mm titanium-coated driver with adaptive noise cancellation, so you can tune out the commute and tune into the music. USB-C fast charge gets you 6 hours of playback from just 10 minutes on the cable.</p>",
+    "sku": "ZEN-ARIA-BLK",
+    "barcode": "8901234000011",
+    "categoryUuid": "cat-electronics",
+    "brandUuid": "brand-zenith",
+    "status": "published",
+    "costPrice": 5200,
+    "retailPrice": 8990,
+    "salePrice": 7490,
+    "compareAtPrice": 8990,
+    "weight": 0.28,
+    "hasVariants": true,
+    "isFeatured": true,
+    "isDigital": false,
+    "seoTitle": "Aria Wireless Headphones — Covet",
+    "seoDescription": "Over-ear ANC headphones with 32-hour battery life.",
+    "tags": [
+      { "uuid": "tag-bestseller", "name": "Best Seller", "slug": "best-seller" }
+    ],
+    "images": [
+      {
+        "uuid": "img-001-1",
+        "url": "https://picsum.photos/seed/aria-1/900/900",
+        "altText": "Aria headphones front",
+        "sortOrder": 0,
+        "isPrimary": true
+      },
+      {
+        "uuid": "img-001-2",
+        "url": "https://picsum.photos/seed/aria-2/900/900",
+        "altText": "Aria headphones side",
+        "sortOrder": 1,
+        "isPrimary": false
+      },
+      {
+        "uuid": "img-001-3",
+        "url": "https://picsum.photos/seed/aria-3/900/900",
+        "altText": "Aria headphones case",
+        "sortOrder": 2,
+        "isPrimary": false
+      }
+    ],
+    "variants": [
+      {
+        "uuid": "var-001-black",
+        "label": "Midnight Black",
+        "attribute": "Color",
+        "value": "Black",
+        "priceDelta": 0,
+        "stock": 24
+      },
+      {
+        "uuid": "var-001-white",
+        "label": "Cloud White",
+        "attribute": "Color",
+        "value": "White",
+        "priceDelta": 0,
+        "stock": 11
+      },
+      {
+        "uuid": "var-001-blue",
+        "label": "Ocean Blue",
+        "attribute": "Color",
+        "value": "Blue",
+        "priceDelta": 200,
+        "stock": 6
+      }
+    ],
+    "createdAt": "2026-06-02T08:41:16.101Z",
+    "updatedAt": "2026-08-10T05:38:19.216Z"
+  },
+  {
+    "uuid": "prod-002",
+    "name": "Pulse Fitness Watch",
+    "slug": "pulse-fitness-watch",
+    "description": "AMOLED fitness watch with 9-day battery and GPS.",
+    "content": "<p>Track pace, heart rate and sleep with a display bright enough for direct sunlight. Nine days of typical use, or three with GPS running continuously.</p>",
+    "sku": "ZEN-PULSE-01",
+    "barcode": "8901234000028",
+    "categoryUuid": "cat-electronics",
+    "brandUuid": "brand-zenith",
+    "status": "published",
+    "costPrice": 6800,
+    "retailPrice": 10990,
+    "salePrice": null,
+    "compareAtPrice": null,
+    "weight": 0.045,
+    "hasVariants": true,
+    "isFeatured": true,
+    "isDigital": false,
+    "seoTitle": "Pulse Fitness Watch — Covet",
+    "seoDescription": "AMOLED fitness watch with 9-day battery and GPS.",
+    "tags": [{ "uuid": "tag-new", "name": "New", "slug": "new" }],
+    "images": [
+      {
+        "uuid": "img-002-1",
+        "url": "https://picsum.photos/seed/pulse-1/900/900",
+        "altText": "Pulse watch",
+        "sortOrder": 0,
+        "isPrimary": true
+      },
+      {
+        "uuid": "img-002-2",
+        "url": "https://picsum.photos/seed/pulse-2/900/900",
+        "altText": "Pulse watch on wrist",
+        "sortOrder": 1,
+        "isPrimary": false
+      }
+    ],
+    "variants": [
+      {
+        "uuid": "var-002-40",
+        "label": "40mm",
+        "attribute": "Size",
+        "value": "40mm",
+        "priceDelta": 0,
+        "stock": 18
+      },
+      {
+        "uuid": "var-002-44",
+        "label": "44mm",
+        "attribute": "Size",
+        "value": "44mm",
+        "priceDelta": 700,
+        "stock": 9
+      }
+    ],
+    "createdAt": "2026-05-14T08:41:16.101Z",
+    "updatedAt": "2026-08-01T05:38:19.216Z"
+  },
+  {
+    "uuid": "prod-003",
+    "name": "Halo Smart Speaker",
+    "slug": "halo-smart-speaker",
+    "description": "60W multi-room speaker with Matter smart-home support.",
+    "content": "<p>Fill a room with warm, balanced sound and group multiple Halo speakers for whole-home audio. Works with the smart-home hub you already have.</p>",
+    "sku": "NIM-HALO-01",
+    "barcode": "8901234000035",
+    "categoryUuid": "cat-electronics",
+    "brandUuid": "brand-nimbus",
+    "status": "published",
+    "costPrice": 4200,
+    "retailPrice": 6490,
+    "salePrice": null,
+    "compareAtPrice": null,
+    "weight": 1.1,
+    "hasVariants": false,
+    "isFeatured": false,
+    "isDigital": false,
+    "seoTitle": "Halo Smart Speaker — Covet",
+    "seoDescription": "60W multi-room speaker with Matter smart-home support.",
+    "tags": [],
+    "images": [
+      {
+        "uuid": "img-003-1",
+        "url": "https://picsum.photos/seed/halo-1/900/900",
+        "altText": "Halo speaker",
+        "sortOrder": 0,
+        "isPrimary": true
+      }
+    ],
+    "variants": [],
+    "createdAt": "2026-04-02T08:41:16.101Z",
+    "updatedAt": "2026-07-20T05:38:19.216Z"
+  },
+  {
+    "uuid": "prod-004",
+    "name": "Aero 65W Charger",
+    "slug": "aero-65w-charger",
+    "description": "Foldable GaN charger with 3 ports.",
+    "content": "<p>Charge a laptop and two phones at once from a plug the size of a matchbox.</p>",
+    "sku": "NIM-AERO-65",
+    "barcode": "8901234000042",
+    "categoryUuid": "cat-electronics",
+    "brandUuid": "brand-nimbus",
+    "status": "published",
+    "costPrice": 900,
+    "retailPrice": 2290,
+    "salePrice": 1790,
+    "compareAtPrice": 2290,
+    "weight": 0.09,
+    "hasVariants": false,
+    "isFeatured": false,
+    "isDigital": false,
+    "seoTitle": "Aero 65W Charger — Covet",
+    "seoDescription": "Foldable GaN charger with 3 ports.",
+    "tags": [{ "uuid": "tag-sale", "name": "Sale", "slug": "sale" }],
+    "images": [
+      {
+        "uuid": "img-004-1",
+        "url": "https://picsum.photos/seed/aero-1/900/900",
+        "altText": "Aero charger",
+        "sortOrder": 0,
+        "isPrimary": true
+      }
+    ],
+    "variants": [],
+    "createdAt": "2026-07-01T08:41:16.101Z",
+    "updatedAt": "2026-08-05T05:38:19.216Z"
+  },
+  {
+    "uuid": "prod-005",
+    "name": "Drift Oversized Hoodie",
+    "slug": "drift-oversized-hoodie",
+    "description": "Heavyweight fleece hoodie with dropped shoulders.",
+    "content": "<p>400gsm brushed fleece, garment-washed for a broken-in feel from day one.</p>",
+    "sku": "URC-DRIFT-HD",
+    "barcode": "8901234000059",
+    "categoryUuid": "cat-fashion",
+    "brandUuid": "brand-urbancraft",
+    "status": "published",
+    "costPrice": 900,
+    "retailPrice": 2490,
+    "salePrice": null,
+    "compareAtPrice": null,
+    "weight": 0.6,
+    "hasVariants": true,
+    "isFeatured": true,
+    "isDigital": false,
+    "seoTitle": "Drift Oversized Hoodie — Covet",
+    "seoDescription": "Heavyweight fleece hoodie with dropped shoulders.",
+    "tags": [
+      { "uuid": "tag-bestseller", "name": "Best Seller", "slug": "best-seller" }
+    ],
+    "images": [
+      {
+        "uuid": "img-005-1",
+        "url": "https://picsum.photos/seed/drift-1/900/900",
+        "altText": "Drift hoodie sand",
+        "sortOrder": 0,
+        "isPrimary": true
+      },
+      {
+        "uuid": "img-005-2",
+        "url": "https://picsum.photos/seed/drift-2/900/900",
+        "altText": "Drift hoodie black",
+        "sortOrder": 1,
+        "isPrimary": false
+      }
+    ],
+    "variants": [
+      {
+        "uuid": "var-005-s",
+        "label": "S",
+        "attribute": "Size",
+        "value": "S",
+        "priceDelta": 0,
+        "stock": 14
+      },
+      {
+        "uuid": "var-005-m",
+        "label": "M",
+        "attribute": "Size",
+        "value": "M",
+        "priceDelta": 0,
+        "stock": 20
+      },
+      {
+        "uuid": "var-005-l",
+        "label": "L",
+        "attribute": "Size",
+        "value": "L",
+        "priceDelta": 0,
+        "stock": 17
+      },
+      {
+        "uuid": "var-005-xl",
+        "label": "XL",
+        "attribute": "Size",
+        "value": "XL",
+        "priceDelta": 0,
+        "stock": 5
+      }
+    ],
+    "createdAt": "2026-03-11T08:41:16.101Z",
+    "updatedAt": "2026-07-29T05:38:19.216Z"
+  },
+  {
+    "uuid": "prod-006",
+    "name": "Strider Canvas Sneakers",
+    "slug": "strider-canvas-sneakers",
+    "description": "Low-top canvas sneakers with recycled rubber sole.",
+    "content": "<p>A wardrobe staple built to be worn every day and to still look good doing it.</p>",
+    "sku": "URC-STRIDER-01",
+    "barcode": "8901234000066",
+    "categoryUuid": "cat-fashion",
+    "brandUuid": "brand-urbancraft",
+    "status": "published",
+    "costPrice": 1400,
+    "retailPrice": 3290,
+    "salePrice": 2630,
+    "compareAtPrice": 3290,
+    "weight": 0.8,
+    "hasVariants": true,
+    "isFeatured": true,
+    "isDigital": false,
+    "seoTitle": "Strider Canvas Sneakers — Covet",
+    "seoDescription": "Low-top canvas sneakers with recycled rubber sole.",
+    "tags": [{ "uuid": "tag-sale", "name": "Sale", "slug": "sale" }],
+    "images": [
+      {
+        "uuid": "img-006-1",
+        "url": "https://picsum.photos/seed/strider-1/900/900",
+        "altText": "Strider sneakers",
+        "sortOrder": 0,
+        "isPrimary": true
+      },
+      {
+        "uuid": "img-006-2",
+        "url": "https://picsum.photos/seed/strider-2/900/900",
+        "altText": "Strider sneakers pair",
+        "sortOrder": 1,
+        "isPrimary": false
+      }
+    ],
+    "variants": [
+      {
+        "uuid": "var-006-40",
+        "label": "EU 40",
+        "attribute": "Size",
+        "value": "40",
+        "priceDelta": 0,
+        "stock": 8
+      },
+      {
+        "uuid": "var-006-41",
+        "label": "EU 41",
+        "attribute": "Size",
+        "value": "41",
+        "priceDelta": 0,
+        "stock": 12
+      },
+      {
+        "uuid": "var-006-42",
+        "label": "EU 42",
+        "attribute": "Size",
+        "value": "42",
+        "priceDelta": 0,
+        "stock": 15
+      },
+      {
+        "uuid": "var-006-43",
+        "label": "EU 43",
+        "attribute": "Size",
+        "value": "43",
+        "priceDelta": 0,
+        "stock": 3
+      }
+    ],
+    "createdAt": "2026-02-20T08:41:16.101Z",
+    "updatedAt": "2026-08-15T05:38:19.216Z"
+  },
+  {
+    "uuid": "prod-007",
+    "name": "Field Utility Jacket",
+    "slug": "field-utility-jacket",
+    "description": "Water-resistant cotton jacket with six pockets.",
+    "content": "<p>Built for commuting in unpredictable weather, with a water-resistant coating and a corduroy collar.</p>",
+    "sku": "URC-FIELD-JK",
+    "barcode": "8901234000073",
+    "categoryUuid": "cat-fashion",
+    "brandUuid": "brand-urbancraft",
+    "status": "published",
+    "costPrice": 2100,
+    "retailPrice": 4990,
+    "salePrice": null,
+    "compareAtPrice": null,
+    "weight": 0.9,
+    "hasVariants": true,
+    "isFeatured": false,
+    "isDigital": false,
+    "seoTitle": "Field Utility Jacket — Covet",
+    "seoDescription": "Water-resistant cotton jacket with six pockets.",
+    "tags": [],
+    "images": [
+      {
+        "uuid": "img-007-1",
+        "url": "https://picsum.photos/seed/field-1/900/900",
+        "altText": "Field jacket",
+        "sortOrder": 0,
+        "isPrimary": true
+      }
+    ],
+    "variants": [
+      {
+        "uuid": "var-007-m",
+        "label": "M",
+        "attribute": "Size",
+        "value": "M",
+        "priceDelta": 0,
+        "stock": 10
+      },
+      {
+        "uuid": "var-007-l",
+        "label": "L",
+        "attribute": "Size",
+        "value": "L",
+        "priceDelta": 0,
+        "stock": 6
+      }
+    ],
+    "createdAt": "2026-01-18T08:41:16.101Z",
+    "updatedAt": "2026-06-30T05:38:19.216Z"
+  },
+  {
+    "uuid": "prod-008",
+    "name": "Wovenline Tote Bag",
+    "slug": "wovenline-tote-bag",
+    "description": "Structured canvas tote with leather straps.",
+    "content": "<p>Roomy enough for a laptop and a change of clothes, sturdy enough for daily commuting.</p>",
+    "sku": "COR-TOTE-01",
+    "barcode": "8901234000080",
+    "categoryUuid": "cat-fashion",
+    "brandUuid": "brand-coral",
+    "status": "published",
+    "costPrice": 700,
+    "retailPrice": 1890,
+    "salePrice": null,
+    "compareAtPrice": null,
+    "weight": 0.5,
+    "hasVariants": false,
+    "isFeatured": false,
+    "isDigital": false,
+    "seoTitle": "Wovenline Tote Bag — Covet",
+    "seoDescription": "Structured canvas tote with leather straps.",
+    "tags": [],
+    "images": [
+      {
+        "uuid": "img-008-1",
+        "url": "https://picsum.photos/seed/tote-1/900/900",
+        "altText": "Wovenline tote",
+        "sortOrder": 0,
+        "isPrimary": true
+      }
+    ],
+    "variants": [],
+    "createdAt": "2026-05-25T08:41:16.101Z",
+    "updatedAt": "2026-07-02T05:38:19.216Z"
+  },
+  {
+    "uuid": "prod-009",
+    "name": "Amber Ceramic Vase Set",
+    "slug": "amber-ceramic-vase-set",
+    "description": "Set of 3 hand-glazed stoneware vases.",
+    "content": "<p>Each piece is finished by hand, so no two sets are quite the same.</p>",
+    "sku": "COR-VASE-03",
+    "barcode": "8901234000097",
+    "categoryUuid": "cat-home",
+    "brandUuid": "brand-coral",
+    "status": "published",
+    "costPrice": 1100,
+    "retailPrice": 2690,
+    "salePrice": null,
+    "compareAtPrice": null,
+    "weight": 1.6,
+    "hasVariants": false,
+    "isFeatured": true,
+    "isDigital": false,
+    "seoTitle": "Amber Ceramic Vase Set — Covet",
+    "seoDescription": "Set of 3 hand-glazed stoneware vases.",
+    "tags": [{ "uuid": "tag-new", "name": "New", "slug": "new" }],
+    "images": [
+      {
+        "uuid": "img-009-1",
+        "url": "https://picsum.photos/seed/vase-1/900/900",
+        "altText": "Ceramic vase set",
+        "sortOrder": 0,
+        "isPrimary": true
+      },
+      {
+        "uuid": "img-009-2",
+        "url": "https://picsum.photos/seed/vase-2/900/900",
+        "altText": "Ceramic vase detail",
+        "sortOrder": 1,
+        "isPrimary": false
+      }
+    ],
+    "variants": [],
+    "createdAt": "2026-06-19T08:41:16.101Z",
+    "updatedAt": "2026-08-12T05:38:19.216Z"
+  },
+  {
+    "uuid": "prod-010",
+    "name": "Lumen Table Lamp",
+    "slug": "lumen-table-lamp",
+    "description": "Dimmable oak and linen table lamp.",
+    "content": "<p>Warm, dimmable light through a linen shade, on a solid oak base that will outlast the bulb many times over.</p>",
+    "sku": "COR-LUMEN-01",
+    "barcode": "8901234000103",
+    "categoryUuid": "cat-home",
+    "brandUuid": "brand-coral",
+    "status": "published",
+    "costPrice": 1600,
+    "retailPrice": 3490,
+    "salePrice": 2990,
+    "compareAtPrice": 3490,
+    "weight": 1.3,
+    "hasVariants": false,
+    "isFeatured": true,
+    "isDigital": false,
+    "seoTitle": "Lumen Table Lamp — Covet",
+    "seoDescription": "Dimmable oak and linen table lamp.",
+    "tags": [{ "uuid": "tag-sale", "name": "Sale", "slug": "sale" }],
+    "images": [
+      {
+        "uuid": "img-010-1",
+        "url": "https://picsum.photos/seed/lumen-1/900/900",
+        "altText": "Lumen table lamp",
+        "sortOrder": 0,
+        "isPrimary": true
+      }
+    ],
+    "variants": [],
+    "createdAt": "2026-04-28T08:41:16.101Z",
+    "updatedAt": "2026-08-03T05:38:19.216Z"
+  },
+  {
+    "uuid": "prod-011",
+    "name": "Hearth Cast-Iron Skillet",
+    "slug": "hearth-cast-iron-skillet",
+    "description": "Pre-seasoned 10-inch cast-iron skillet.",
+    "content": "<p>Goes from stovetop to oven to table. Seasons better with every use.</p>",
+    "sku": "GEN-SKILLET-10",
+    "barcode": "8901234000110",
+    "categoryUuid": "cat-home",
+    "brandUuid": "brand-generic",
+    "status": "published",
+    "costPrice": 800,
+    "retailPrice": 1690,
+    "salePrice": null,
+    "compareAtPrice": null,
+    "weight": 2.4,
+    "hasVariants": false,
+    "isFeatured": false,
+    "isDigital": false,
+    "seoTitle": "Hearth Cast-Iron Skillet — Covet",
+    "seoDescription": "Pre-seasoned 10-inch cast-iron skillet.",
+    "tags": [],
+    "images": [
+      {
+        "uuid": "img-011-1",
+        "url": "https://picsum.photos/seed/skillet-1/900/900",
+        "altText": "Cast iron skillet",
+        "sortOrder": 0,
+        "isPrimary": true
+      }
+    ],
+    "variants": [],
+    "createdAt": "2026-03-02T08:41:16.101Z",
+    "updatedAt": "2026-07-11T05:38:19.216Z"
+  },
+  {
+    "uuid": "prod-012",
+    "name": "Driftwood Shelf Unit",
+    "slug": "driftwood-shelf-unit",
+    "description": "3-tier walnut-finish wall shelf.",
+    "content": "<p>Floating shelves in a warm walnut finish, rated to hold up to 15kg per tier.</p>",
+    "sku": "GEN-SHELF-3T",
+    "barcode": "8901234000127",
+    "categoryUuid": "cat-home",
+    "brandUuid": "brand-generic",
+    "status": "published",
+    "costPrice": 2400,
+    "retailPrice": 4590,
+    "salePrice": null,
+    "compareAtPrice": null,
+    "weight": 5.2,
+    "hasVariants": false,
+    "isFeatured": false,
+    "isDigital": false,
+    "seoTitle": "Driftwood Shelf Unit — Covet",
+    "seoDescription": "3-tier walnut-finish wall shelf.",
+    "tags": [],
+    "images": [
+      {
+        "uuid": "img-012-1",
+        "url": "https://picsum.photos/seed/shelf-1/900/900",
+        "altText": "Driftwood shelf",
+        "sortOrder": 0,
+        "isPrimary": true
+      }
+    ],
+    "variants": [],
+    "createdAt": "2026-02-08T08:41:16.101Z",
+    "updatedAt": "2026-06-22T05:38:19.216Z"
+  },
+  {
+    "uuid": "prod-013",
+    "name": "Bloomwater Face Serum",
+    "slug": "bloomwater-face-serum",
+    "description": "Hyaluronic acid + niacinamide serum, 30ml.",
+    "content": "<p>A lightweight daily serum that layers under moisturizer without pilling.</p>",
+    "sku": "COR-SERUM-30",
+    "barcode": "8901234000134",
+    "categoryUuid": "cat-beauty",
+    "brandUuid": "brand-coral",
+    "status": "published",
+    "costPrice": 400,
+    "retailPrice": 990,
+    "salePrice": null,
+    "compareAtPrice": null,
+    "weight": 0.08,
+    "hasVariants": false,
+    "isFeatured": true,
+    "isDigital": false,
+    "seoTitle": "Bloomwater Face Serum — Covet",
+    "seoDescription": "Hyaluronic acid + niacinamide serum, 30ml.",
+    "tags": [
+      { "uuid": "tag-bestseller", "name": "Best Seller", "slug": "best-seller" }
+    ],
+    "images": [
+      {
+        "uuid": "img-013-1",
+        "url": "https://picsum.photos/seed/serum-1/900/900",
+        "altText": "Bloomwater serum",
+        "sortOrder": 0,
+        "isPrimary": true
+      }
+    ],
+    "variants": [],
+    "createdAt": "2026-07-14T08:41:16.101Z",
+    "updatedAt": "2026-08-18T05:38:19.216Z"
+  },
+  {
+    "uuid": "prod-014",
+    "name": "Solstice Eau de Parfum",
+    "slug": "solstice-eau-de-parfum",
+    "description": "Woody-citrus fragrance, 50ml.",
+    "content": "<p>Bergamot and cedar up front, settling into warm amber and musk.</p>",
+    "sku": "COR-EDP-50",
+    "barcode": "8901234000141",
+    "categoryUuid": "cat-beauty",
+    "brandUuid": "brand-coral",
+    "status": "published",
+    "costPrice": 1800,
+    "retailPrice": 3990,
+    "salePrice": 3390,
+    "compareAtPrice": 3990,
+    "weight": 0.25,
+    "hasVariants": false,
+    "isFeatured": true,
+    "isDigital": false,
+    "seoTitle": "Solstice Eau de Parfum — Covet",
+    "seoDescription": "Woody-citrus fragrance, 50ml.",
+    "tags": [{ "uuid": "tag-sale", "name": "Sale", "slug": "sale" }],
+    "images": [
+      {
+        "uuid": "img-014-1",
+        "url": "https://picsum.photos/seed/solstice-1/900/900",
+        "altText": "Solstice perfume",
+        "sortOrder": 0,
+        "isPrimary": true
+      }
+    ],
+    "variants": [],
+    "createdAt": "2026-05-02T08:41:16.101Z",
+    "updatedAt": "2026-07-25T05:38:19.216Z"
+  },
+  {
+    "uuid": "prod-015",
+    "name": "Softline Bath Towel Set",
+    "slug": "softline-bath-towel-set",
+    "description": "Set of 2 combed-cotton bath towels.",
+    "content": "<p>600gsm combed cotton, dries fast and stays soft wash after wash.</p>",
+    "sku": "GEN-TOWEL-02",
+    "barcode": "8901234000158",
+    "categoryUuid": "cat-home",
+    "brandUuid": "brand-generic",
+    "status": "published",
+    "costPrice": 600,
+    "retailPrice": 1490,
+    "salePrice": null,
+    "compareAtPrice": null,
+    "weight": 1.0,
+    "hasVariants": true,
+    "isFeatured": false,
+    "isDigital": false,
+    "seoTitle": "Softline Bath Towel Set — Covet",
+    "seoDescription": "Set of 2 combed-cotton bath towels.",
+    "tags": [],
+    "images": [
+      {
+        "uuid": "img-015-1",
+        "url": "https://picsum.photos/seed/towel-1/900/900",
+        "altText": "Bath towel set",
+        "sortOrder": 0,
+        "isPrimary": true
+      }
+    ],
+    "variants": [
+      {
+        "uuid": "var-015-white",
+        "label": "White",
+        "attribute": "Color",
+        "value": "White",
+        "priceDelta": 0,
+        "stock": 30
+      },
+      {
+        "uuid": "var-015-clay",
+        "label": "Clay",
+        "attribute": "Color",
+        "value": "Clay",
+        "priceDelta": 0,
+        "stock": 22
+      }
+    ],
+    "createdAt": "2026-06-08T08:41:16.101Z",
+    "updatedAt": "2026-07-30T05:38:19.216Z"
+  },
+  {
+    "uuid": "prod-016",
+    "name": "Ridge Crossbody Bag",
+    "slug": "ridge-crossbody-bag",
+    "description": "Water-resistant nylon crossbody with RFID pocket.",
+    "content": "<p>Slim enough for everyday carry, with a hidden RFID-blocking pocket for cards.</p>",
+    "sku": "URC-RIDGE-01",
+    "barcode": "8901234000165",
+    "categoryUuid": "cat-fashion",
+    "brandUuid": "brand-urbancraft",
+    "status": "published",
+    "costPrice": 750,
+    "retailPrice": 1990,
+    "salePrice": null,
+    "compareAtPrice": null,
+    "weight": 0.35,
+    "hasVariants": false,
+    "isFeatured": false,
+    "isDigital": false,
+    "seoTitle": "Ridge Crossbody Bag — Covet",
+    "seoDescription": "Water-resistant nylon crossbody with RFID pocket.",
+    "tags": [{ "uuid": "tag-new", "name": "New", "slug": "new" }],
+    "images": [
+      {
+        "uuid": "img-016-1",
+        "url": "https://picsum.photos/seed/ridge-1/900/900",
+        "altText": "Ridge crossbody bag",
+        "sortOrder": 0,
+        "isPrimary": true
+      }
+    ],
+    "variants": [],
+    "createdAt": "2026-08-01T08:41:16.101Z",
+    "updatedAt": "2026-08-20T05:38:19.216Z"
+  }
+]

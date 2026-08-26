@@ -1,0 +1,32 @@
+[
+  {
+    "uuid": "brand-zenith",
+    "name": "Zenith",
+    "slug": "zenith",
+    "isActive": true
+  },
+  {
+    "uuid": "brand-nimbus",
+    "name": "Nimbus",
+    "slug": "nimbus",
+    "isActive": true
+  },
+  {
+    "uuid": "brand-urbancraft",
+    "name": "UrbanCraft",
+    "slug": "urbancraft",
+    "isActive": true
+  },
+  {
+    "uuid": "brand-coral",
+    "name": "Coral & Co",
+    "slug": "coral-co",
+    "isActive": true
+  },
+  {
+    "uuid": "brand-generic",
+    "name": "Covet Basics",
+    "slug": "covet-basics",
+    "isActive": true
+  }
+]

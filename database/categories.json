@@ -1,0 +1,42 @@
+[
+  {
+    "uuid": "cat-electronics",
+    "name": "Electronics",
+    "slug": "electronics",
+    "description": "Headphones, wearables, smart home and everyday tech.",
+    "imageUrl": "https://picsum.photos/seed/covet-electronics/600/600",
+    "parentUuid": null,
+    "sortOrder": 0,
+    "isActive": true
+  },
+  {
+    "uuid": "cat-fashion",
+    "name": "Fashion",
+    "slug": "fashion",
+    "description": "Clothing, footwear and accessories.",
+    "imageUrl": "https://picsum.photos/seed/covet-fashion/600/600",
+    "parentUuid": null,
+    "sortOrder": 1,
+    "isActive": true
+  },
+  {
+    "uuid": "cat-home",
+    "name": "Home & Living",
+    "slug": "home-living",
+    "description": "Furniture, decor and kitchen essentials.",
+    "imageUrl": "https://picsum.photos/seed/covet-home/600/600",
+    "parentUuid": null,
+    "sortOrder": 2,
+    "isActive": true
+  },
+  {
+    "uuid": "cat-beauty",
+    "name": "Beauty",
+    "slug": "beauty",
+    "description": "Skincare, fragrance and personal care.",
+    "imageUrl": "https://picsum.photos/seed/covet-beauty/600/600",
+    "parentUuid": null,
+    "sortOrder": 3,
+    "isActive": true
+  }
+]
