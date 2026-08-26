@@ -110,7 +110,7 @@ export function ProductActions({
         aria-label="Add to cart"
         className={`flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border transition-all duration-300 ${
           isAdded
-            ? "scale-105 border-zinc-900 bg-zinc-900 text-white"
+            ? "scale-105 border-[#3E2C26] bg-[#3E2C26] text-white"
             : "border-zinc-300/80 bg-white text-zinc-700 hover:scale-105 hover:border-zinc-900 hover:text-zinc-950 active:scale-95"
         }`}
       >
@@ -186,11 +186,11 @@ export function MasonryProductCard({
       {/* PRODUCT INFO */}
       <div className="flex items-start justify-between gap-3 px-0.5 pt-3.5">
         <div className="min-w-0 pr-2">
-          <h3 className="font-sans text-sm font-medium tracking-tight text-zinc-900">
+          <h3 className="font-sans text-sm font-medium tracking-tight text-[#3E2C26]">
             {product.name}
           </h3>
 
-          <p className="mt-0.5 font-sans text-xs tracking-normal text-zinc-500">
+          <p className="mt-0.5 font-sans text-xs tracking-normal text-[#3E2C26]">
             {product.price}
           </p>
         </div>
@@ -346,18 +346,13 @@ export default function ProductSection({
       <div className="mx-auto max-w-7xl px-6 md:px-10 lg:px-12">
         {/* HEADER */}
         <div className="mb-10 flex items-baseline justify-between md:mb-14">
-          <h2
-            className="text-3xl font-normal tracking-tight text-zinc-900 sm:text-4xl md:text-5xl lg:text-6xl"
-            style={{
-              fontFamily: "var(--font-playfair), serif",
-            }}
-          >
+          <h2 className="font-display text-3xl font-bold text-[#3E2C26] md:text-4xl">
             {title}
           </h2>
 
           <a
             href={seeAllLink}
-            className="group relative inline-flex pb-0.5 font-sans text-[11px] font-semibold uppercase tracking-[0.16em] text-zinc-800 transition-colors duration-300 hover:text-zinc-950 md:text-xs"
+            className="group relative inline-flex pb-0.5 font-sans text-[11px] font-bold text-[#3E2C26] uppercase tracking-[0.16em]  transition-colors duration-300 hover:text-zinc-950 md:text-xs"
           >
             <span>{seeAllText}</span>
 

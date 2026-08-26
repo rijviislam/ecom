@@ -1,6 +1,6 @@
 "use client";
 
-import { Heart, ShoppingBag, Trash2 } from "lucide-react";
+import { Heart, Trash2 } from "lucide-react";
 import Drawer from "./Drawer";
 // import { useWishlistStore } from '@/store/useWishlistStore';
 // import { useCartStore } from '@/store/useCartStore';
@@ -68,13 +68,13 @@ export default function WishlistDrawer({
                   <span className="text-sm font-semibold text-ink">
                     ৳{item.price.toLocaleString()}
                   </span>
-                  <button
+                  {/* <button
                     onClick={() => addToCart(item)}
                     className="flex items-center gap-1.5 rounded-full bg-forest-700 px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-forest-800"
                   >
                     <ShoppingBag className="h-3.5 w-3.5" />
                     Add to Cart
-                  </button>
+                  </button> */}
                 </div>
               </div>
             </li>
