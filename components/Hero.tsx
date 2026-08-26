@@ -290,7 +290,7 @@ export default function HeroSection() {
           Thoughtfully Curated Essentials for Mind & Body.
         </h1>
         <Link
-          href={`#`}
+          href={`/products`}
           className="group  relative inline-flex pb-0.5 font-sans text-sm font-bold text-[#3E2C26] uppercase tracking-[0.16em]  transition-colors duration-300 hover:text-zinc-950 "
         >
           <span>See All Product</span>

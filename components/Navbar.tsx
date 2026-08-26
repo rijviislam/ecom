@@ -6,8 +6,8 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 const SHOP_LINKS = [
-  { href: "/products?category=new", label: "New Arrivals" },
   { href: "/products", label: "Shop All" },
+  { href: "/products?category=new", label: "New Arrivals" },
   { href: "/products?category=skincare", label: "Skincare" },
   { href: "/products?category=makeup", label: "Makeup" },
   { href: "/products?category=fragrance", label: "Fragrance" },
