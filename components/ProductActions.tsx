@@ -1,6 +1,6 @@
 "use client";
 
-import { useProductActions } from "@/app/hooks/useProductActions";
+import { useProductActions } from "@/hooks/useProductActions";
 
 export function ProductActions({
   productId,
