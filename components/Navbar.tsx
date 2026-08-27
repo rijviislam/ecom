@@ -156,7 +156,7 @@ export default function Navbar({
 
         {/* ATTACHED TOP MEGA-MENU DROPDOWN DRAWER */}
         {menuOpen && (
-          <div className="absolute left-6 top-16 w-1/2 z-10 animate-fadeIn">
+          <div className="absolute left-4 right-4 sm:left-6 sm:right-auto top-15 md:top-16 z-10 animate-fadeIn">
             <div className="flex flex-col sm:flex-row divide-y sm:divide-y-0 sm:divide-x divide-[#3E2C26]/40 border-x border-b border-[#3E2C26]/40 bg-[#EDE4DC] shadow-xl">
               <div className="w-full sm:w-64 p-6 sm:p-8 flex flex-col">
                 <h3 className="text-xs font-semibold tracking-[0.16em] uppercase text-[#3E2C26] font-sans mb-5">
