@@ -81,8 +81,14 @@ export default function CartDrawer({
   function removeItem(id: string) {
     setCartItems((prev) => prev.filter((item) => item.id !== id));
 
-    const cartEntries = readCart();
-    writeCart(cartEntries.filter((entry) => entry.id !== id));
+    const savedCarts = localStorage.getItem("cart");
+    if (savedCarts) {
+      const ids: string[] = JSON.parse(savedCarts);
+      localStorage.setItem(
+        "cart",
+        JSON.stringify(ids.filter((wid) => wid !== id)),
+      );
+    }
   }
 
   const subtotal = cartItem.reduce((sum, i) => sum + i.price * i.quantity, 0);

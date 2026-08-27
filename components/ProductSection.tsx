@@ -15,6 +15,8 @@ export function ProductActions({
   onToggleWishlist?: (id: string, state: boolean) => void;
 }) {
   const [isWishlisted, setIsWishlisted] = useState(false);
+  const [isCart, setIsCart] = useState(false);
+
   const [isAdded, setIsAdded] = useState(false);
   const handleWishlistClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -47,16 +49,38 @@ export function ProductActions({
 
       setIsWishlisted(wishlist.includes(productId));
     }
+    const savedCarts = localStorage.getItem("cart");
+    if (savedCarts) {
+      const cart: string[] = JSON.parse(savedCarts);
+
+      setIsCart(cart.includes(productId));
+    }
   }, [productId]);
 
   const handleAddToCartClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    setIsAdded(true);
-    console.log("CART ADD:", productId);
-    setTimeout(() => setIsAdded(false), 900);
-    onAddToCart?.(productId);
+
+    const nextState = !isCart;
+    setIsCart(nextState);
+
+    const savedCarts = localStorage.getItem("cart");
+    const cart: string[] = savedCarts ? JSON.parse(savedCarts) : [];
+
+    let updatedWishlist: string[];
+
+    if (nextState) {
+      updatedWishlist = cart.includes(productId) ? cart : [...cart, productId];
+    } else {
+      updatedWishlist = cart.filter((id) => id !== productId);
+    }
+
+    localStorage.setItem("cart", JSON.stringify(updatedWishlist));
+
+    onToggleWishlist?.(productId, nextState);
   };
+
+  console.log("CARTG", isCart);
 
   return (
     <div className="flex shrink-0 items-center gap-2 select-none ">

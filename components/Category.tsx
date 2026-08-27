@@ -67,8 +67,8 @@ export default function FeaturedCategories() {
   }
 
   return (
-    <div className={`w-full min-h-screen font-display`}>
-      <section className="relative w-full max-w-7xl mx-auto px-6   flex flex-col justify-center min-h-screen">
+    <div className="w-full font-display">
+      <section className="relative w-full max-w-7xl mx-auto px-6 flex flex-col justify-center min-h-screen">
         <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] items-center gap-12 md:gap-10 lg:gap-16">
           <div className="flex flex-col items-center md:items-end justify-center w-full order-2 md:order-1">
             <div
