@@ -2,7 +2,7 @@
 
 import { getProducts, type Product } from "@/lib/data";
 import Link from "next/link";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 
 const CARD_STYLES = [
   {
@@ -148,38 +148,6 @@ export default function HeroSection() {
     d.lastX = e.clientX;
     d.lastTime = now;
   }
-
-  useEffect(() => {
-    const el = trackRef.current;
-    if (!el) return;
-
-    let frameId: number;
-
-    const animate = () => {
-      const d = drag.current;
-
-      if (d.isDragging) {
-        // Smoothly follow pointer
-        d.current += (d.target - d.current) * 0.18;
-
-        el.scrollLeft = d.current;
-      } else {
-        // Momentum after release
-        if (Math.abs(d.velocity) > 0.05) {
-          d.current += d.velocity;
-          d.velocity *= 0.94;
-
-          el.scrollLeft = d.current;
-        }
-      }
-
-      frameId = requestAnimationFrame(animate);
-    };
-
-    frameId = requestAnimationFrame(animate);
-
-    return () => cancelAnimationFrame(frameId);
-  }, []);
 
   return (
     <section className="relative overflow-hidden py-5 select-none">
