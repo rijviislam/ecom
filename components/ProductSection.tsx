@@ -188,7 +188,7 @@ export default function ProductSection({
   const resolvedProducts = products ?? allProducts;
 
   return (
-    <section className={`w-full text-zinc-900  bg-[#EDE4DC]/50 `}>
+    <section className={`w-full text-zinc-900  bg-[#EDE4DC]/50 pt-16 md:pt-0`}>
       <div className="mx-auto max-w-7xl px-6 md:px-10 lg:px-12">
         <div className="mb-10 flex items-baseline justify-between md:mb-14">
           <h2 className="font-display text-3xl font-bold text-[#3E2C26] md:text-4xl">

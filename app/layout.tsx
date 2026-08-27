@@ -27,9 +27,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${mavenPro.variable} ${facultyGlyphic.variable} h-full antialiased`}
+      className={`${mavenPro.variable} ${facultyGlyphic.variable} antialiased`}
     >
-      <body className="min-h-screen flex flex-col  overflow-x-hidden">
+      <body className="min-h-screen flex flex-col overflow-x-hidden">
         <Context>
           <Navbar />
 

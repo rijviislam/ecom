@@ -248,9 +248,9 @@ export default function ProductsPage() {
     SORT_OPTIONS.find((s) => s.id === sortBy)?.label || "Featured";
 
   return (
-    <div className="w-full min-h-screen bg-[#EDE4DC] text-[#261815] flex flex-col justify-between">
+    <div className="w-full min-h-screen bg-[#EDE4DC] text-[#261815] flex flex-col justify-between ">
       <div>
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 pb-24">
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 pb-24 ">
           {/* 1. HERO TITLE & SEARCH BAR */}
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pt-10 pb-8 md:pt-16 md:pb-12 border-b border-[#3E2C26]/10 mb-8">
             <div className="flex flex-col items-start max-w-2xl">

@@ -2,7 +2,7 @@
 
 import { getProducts, type Product } from "@/lib/data";
 import Link from "next/link";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 
 const CARD_STYLES = [
   {
@@ -54,7 +54,7 @@ function SlideCard({
   return (
     <Link
       href={`#`}
-      className={`group relative shrink-0 snap-start overflow-hidden shadow-2xl rounded-sm transition-all duration-500 hover:scale-105 hover:z-50 select-none z-0 ${config.size} ${config.tilt} ${config.offset} ${config.overlap} ${config.zIndex} ${config.scale}`}
+      className={`group relative shrink-0 right-32 snap-start overflow-hidden shadow-2xl rounded-sm transition-all duration-500 hover:scale-105 hover:z-50 select-none z-0 ${config.size} ${config.tilt} ${config.offset} ${config.overlap} ${config.zIndex} ${config.scale}`}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
@@ -149,38 +149,6 @@ export default function HeroSection() {
     d.lastTime = now;
   }
 
-  useEffect(() => {
-    const el = trackRef.current;
-    if (!el) return;
-
-    let frameId: number;
-
-    const animate = () => {
-      const d = drag.current;
-
-      if (d.isDragging) {
-        // Smoothly follow pointer
-        d.current += (d.target - d.current) * 0.18;
-
-        el.scrollLeft = d.current;
-      } else {
-        // Momentum after release
-        if (Math.abs(d.velocity) > 0.05) {
-          d.current += d.velocity;
-          d.velocity *= 0.94;
-
-          el.scrollLeft = d.current;
-        }
-      }
-
-      frameId = requestAnimationFrame(animate);
-    };
-
-    frameId = requestAnimationFrame(animate);
-
-    return () => cancelAnimationFrame(frameId);
-  }, []);
-
   return (
     <section className="relative overflow-hidden py-5 select-none">
       <style
@@ -198,7 +166,7 @@ export default function HeroSection() {
       />
 
       <div className=" px-6 md:px-10 text-center flex items-center justify-center flex-col gap-5 mt-10 ">
-        <h1 className="font-display text-3xl font-bold text-[#3E2C26] md:text-5xl w-1/2 leading-16">
+        <h1 className="font-display text-3xl font-bold text-[#3E2C26] md:text-5xl w-1/2 leading-12 md:leading-16">
           Thoughtfully Curated Essentials for Mind & Body.
         </h1>
         <Link
@@ -217,7 +185,7 @@ export default function HeroSection() {
         onPointerUp={onPointerUp}
         onPointerCancel={onPointerUp}
         onPointerMove={onPointerMove}
-        className={`no-scrollbar flex overflow-x-auto overflow-y-visible px-10 pb-20 pt-10 md:px-20 touch-pan-y gap-6 md:gap-14 ${
+        className={`no-scrollbar flex overflow-x-auto overflow-y-visible px-10 pb-20 pt-10 md:px-20  touch-pan-y gap-6 md:gap-14 ${
           isDown ? "cursor-grabbing" : "cursor-grab"
         }`}
       >
