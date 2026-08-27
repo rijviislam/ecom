@@ -382,7 +382,7 @@ export default function MyOrders({
             </div>
 
             {/* Overview Card */}
-            <div className="rounded-3xl bg-white/85 border border-[#3E2C26]/15 p-6 sm:p-8 shadow-xs mb-8">
+            <div className="rounded-3xl bg-[#EDE4DC] border border-[#3E2C26]/15 p-6 sm:p-8 shadow-xs mb-8">
               <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-[#3E2C26]/10">
                 <div>
                   <div className="flex flex-wrap items-center gap-3">
@@ -739,7 +739,7 @@ export default function MyOrders({
 
             {/* Filter Tabs */}
             <div className="mb-8 flex items-center justify-between gap-4">
-              <div className="flex items-center gap-2 overflow-x-auto pb-2 sm:pb-0 no-scrollbar w-full sm:w-auto">
+              <div className="flex items-center gap-2 overflow-x-auto pb-2 sm:pb-0 w-full sm:w-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                 {STATUS_TABS.map((tab) => {
                   const isActive = activeTab === tab.id;
                   const count = tabCounts[tab.id as keyof typeof tabCounts];
@@ -790,7 +790,7 @@ export default function MyOrders({
                   return (
                     <div
                       key={order.uuid}
-                      className="group relative rounded-2xl bg-white/85 hover:bg-white border border-[#3E2C26]/15 hover:border-[#3E2C26]/30 p-5 sm:p-7 shadow-xs hover:shadow-md transition-all duration-300 hover:-translate-y-0.5"
+                      className="group relative rounded-2xl bg-[#F8F2F1]  border border-[#3E2C26]/15 hover:border-[#3E2C26]/30 p-5 sm:p-7 shadow-xs hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 "
                     >
                       <div className="flex flex-wrap items-center justify-between gap-3 pb-5 border-b border-[#3E2C26]/10">
                         <div className="flex flex-wrap items-center gap-3">

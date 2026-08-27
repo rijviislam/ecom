@@ -436,7 +436,7 @@ export default function Checkout({
                             }`}
                           >
                             {isDone ? (
-                              <Check className="w-2.5 h-2.5 stroke-[3]" />
+                              <Check className="w-2.5 h-2.5 stroke-3" />
                             ) : (
                               step.number
                             )}
@@ -591,7 +591,7 @@ export default function Checkout({
                       <input
                         id="lastName"
                         type="text"
-                        placeholder="e.g. Rahman"
+                        placeholder="Rahman"
                         value={customerInfo.lastName}
                         onChange={(e) =>
                           setCustomerInfo({

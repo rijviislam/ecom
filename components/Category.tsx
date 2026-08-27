@@ -2,6 +2,7 @@
 
 import { getCategories, getProducts, type Product } from "@/lib/data";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
 interface FeaturedCategoryEntry {
@@ -41,8 +42,6 @@ function buildFeaturedCategories(): FeaturedCategoryEntry[] {
 }
 
 export default function FeaturedCategories() {
-  // Computed once on mount; getCategories()/getProducts() are called here,
-  // inside the component, rather than at module scope.
   const featuredCategories = useMemo(() => buildFeaturedCategories(), []);
 
   const defaultKey = featuredCategories[0]?.key ?? ALL_KEY;
@@ -50,7 +49,6 @@ export default function FeaturedCategories() {
   const [activeKey, setActiveKey] = useState(defaultKey);
   const [displayKey, setDisplayKey] = useState(defaultKey);
 
-  // Premium transition effect for category image crossfades
   useEffect(() => {
     if (activeKey !== displayKey) {
       const timer = setTimeout(() => {
@@ -122,11 +120,16 @@ export default function FeaturedCategories() {
             <nav className="flex flex-col items-center gap-6 md:gap-8 lg:gap-10">
               {featuredCategories.map((category) => {
                 const isActive = activeKey === category.key;
+                const href =
+                  category.key === ALL_KEY
+                    ? "/products"
+                    : `/products?category=${encodeURIComponent(category.name)}`;
+
                 return (
-                  <button
+                  <Link
                     key={category.key}
+                    href={href}
                     onMouseEnter={() => setActiveKey(category.key)}
-                    onClick={() => setActiveKey(category.key)}
                     className={`group relative flex items-start gap-1 py-1 text-xl md:text-2xl lg:text-4xl font-light tracking-wide transition-all duration-300 cursor-pointer select-none outline-none ${
                       isActive
                         ? "text-[#79564E] scale-102 font-medium"
@@ -142,7 +145,7 @@ export default function FeaturedCategories() {
                         {category.count}
                       </sup>
                     </span>
-                  </button>
+                  </Link>
                 );
               })}
             </nav>
