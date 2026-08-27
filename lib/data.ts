@@ -3,6 +3,12 @@ import categoriesData from "@/database/categories.json";
 import customersData from "@/database/customers.json";
 import ordersData from "@/database/orders.json";
 import productsData from "@/database/products.json";
+import {
+  FulfillmentStatus,
+  Order,
+  OrderStatus,
+  PaymentStatus,
+} from "@/types/order";
 
 // Maps raw ids in the data to display names — replace with a real
 // lookup (DB join, CMS relation, etc.) once you have one.
@@ -106,7 +112,7 @@ function normalizeProduct(raw: (typeof productsData)[number]): Product {
     isFeatured: raw.isFeatured,
     isBestSeller: false,
     description: raw.description,
-    longDescription: raw.content.replace(/<[^>]+>/g, ""), // strip HTML tags
+    longDescription: raw.content.replace(/<[^>]+>/g, ""),
     image: primaryImage,
     gallery: images.length > 0 ? images : [primaryImage],
     aspectClass: pickAspectClass(raw.uuid),
@@ -136,6 +142,25 @@ export function getProducts(): Product[] {
   return productsData
     .filter((p) => p.status === "published")
     .map(normalizeProduct);
+}
+export function getOrders(): Order[] {
+  return ordersData
+    .filter((order) => Boolean(order.status))
+    .map((order) => ({
+      ...order,
+      status: order.status as OrderStatus,
+      paymentStatus: order.paymentStatus as PaymentStatus,
+      fulfillmentStatus: order.fulfillmentStatus as FulfillmentStatus,
+      items: order.items.map((item) => {
+        const rawProduct = productsData.find(
+          (p) => p.uuid === item.productUuid,
+        );
+        return {
+          ...item,
+          product: rawProduct ? normalizeProduct(rawProduct) : undefined,
+        };
+      }),
+    }));
 }
 
 export function getProductBySlug(slug: string): Product | undefined {

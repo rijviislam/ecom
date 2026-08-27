@@ -42,10 +42,6 @@ export default function ProductDetailPage() {
   const [activeImageIdx, setActiveImageIdx] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
 
-  // Variant & Interaction State
-  const [selectedColor, setSelectedColor] = useState<string | undefined>(
-    product?.colors ? product.colors[0]?.name : undefined,
-  );
   const [selectedSize, setSelectedSize] = useState<string | undefined>(
     product?.sizes ? product.sizes[0] : undefined,
   );
@@ -59,7 +55,7 @@ export default function ProductDetailPage() {
   // 1. PRODUCT NOT FOUND STATE
   if (!product) {
     return (
-      <div className="w-full min-h-screen bg-[#EDE4DC] text-[#261815] flex flex-col justify-center items-center px-6 py-28 text-center select-none font-sans">
+      <div className="w-full min-h-screen  text-[#261815] flex flex-col justify-center items-center px-6 py-28 text-center select-none font-sans">
         <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#3E2C26]/50 mb-3">
           404
         </span>
@@ -99,7 +95,7 @@ export default function ProductDetailPage() {
   };
 
   return (
-    <div className="w-full min-h-screen bg-[#EDE4DC] text-[#261815]">
+    <div className="w-full min-h-screen  text-[#261815]">
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 py-8 md:py-12">
         {/* 1. BREADCRUMB */}
         <nav
@@ -135,7 +131,7 @@ export default function ProductDetailPage() {
           {/* LEFT COLUMN: LARGE IMAGE GALLERY (Col span 7) */}
           <div className="lg:col-span-7 flex flex-col gap-4 motion-safe:animate-fadeInUp">
             {/* Main Image Frame */}
-            <div className="group relative w-full aspect-4/3 sm:aspect-square max-h-115 rounded-2xl overflow-hidden bg-white/70 border border-[#3E2C26]/10 shadow-sm">
+            <div className="group relative w-full aspect-4/3 sm:aspect-square max-h-115 rounded-2xl overflow-hidden bg-white/70  shadow-sm">
               <Image
                 src={currentImage}
                 alt={product.name}
@@ -173,7 +169,7 @@ export default function ProductDetailPage() {
                       key={idx}
                       type="button"
                       onClick={() => setActiveImageIdx(idx)}
-                      className={`relative h-20 w-20 sm:h-22 sm:w-22 shrink-0 rounded-xl overflow-hidden bg-white/60 transition-all cursor-pointer ${
+                      className={`relative h-20 w-20 sm:h-22 sm:w-22 shrink-0 rounded-xl overflow-hidden bg-white/60 transition-all cursor-pointer m-2 ${
                         isActive
                           ? "ring-2 ring-[#261815] ring-offset-2 border-transparent shadow-sm"
                           : "border border-[#3E2C26]/15 opacity-70 hover:opacity-100"
@@ -184,7 +180,7 @@ export default function ProductDetailPage() {
                         alt={`${product.name} thumbnail ${idx + 1}`}
                         fill
                         sizes="90px"
-                        className="object-cover select-none"
+                        className="object-cover select-none "
                       />
                     </button>
                   );
@@ -228,38 +224,6 @@ export default function ProductDetailPage() {
             <p className="text-sm leading-relaxed text-[#261815]/75 mb-6">
               {product.description}
             </p>
-
-            {/* Color Variants */}
-            {product.colors && product.colors.length > 0 && (
-              <div className="mb-6 flex flex-col gap-2.5">
-                <span className="text-xs font-semibold uppercase tracking-wider text-[#261815]/70">
-                  Color:{" "}
-                  <span className="font-normal text-[#261815]">
-                    {selectedColor}
-                  </span>
-                </span>
-                <div className="flex items-center gap-2.5">
-                  {product.colors.map((c) => {
-                    const isSelected = selectedColor === c.name;
-                    return (
-                      <button
-                        key={c.name}
-                        type="button"
-                        onClick={() => setSelectedColor(c.name)}
-                        className={`h-7 w-7 rounded-full border transition-all cursor-pointer ${
-                          isSelected
-                            ? "ring-2 ring-offset-2 ring-[#261815] border-white"
-                            : "border-black/15 hover:scale-105"
-                        }`}
-                        style={{ backgroundColor: c.hex }}
-                        title={c.name}
-                        aria-label={c.name}
-                      />
-                    );
-                  })}
-                </div>
-              </div>
-            )}
 
             {/* Size Variants */}
             {product.sizes && product.sizes.length > 0 && (

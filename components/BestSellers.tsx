@@ -158,7 +158,7 @@ export default function BestSellers({
           }`}
         >
           {filteredProducts.length === 0 && (
-            <p className="col-span-full text-sm text-[#261815]/60 py-8">
+            <p className="col-span-full font-semibold text-center text-lg text-[#261815]/60 py-8">
               No products found in this category.
             </p>
           )}

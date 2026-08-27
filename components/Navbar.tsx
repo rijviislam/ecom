@@ -9,7 +9,7 @@ import WishlistDrawer from "./WishlistDrawer";
 
 const SHOP_LINKS = [
   { href: "/products", label: "Shop All" },
-  { href: "/products?category=new", label: "New Arrivals" },
+  { href: "/orders", label: "My Orders" },
   { href: "/products?category=skincare", label: "Skincare" },
   { href: "/products?category=makeup", label: "Makeup" },
   { href: "/products?category=fragrance", label: "Fragrance" },

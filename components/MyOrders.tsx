@@ -1,5 +1,6 @@
 "use client";
 
+import { MyOrdersProps, OrderData, OrderStatus } from "@/types/order";
 import {
   ArrowRight,
   Calendar,
@@ -27,60 +28,6 @@ import Image from "next/image";
 import { useMemo, useState } from "react";
 
 // Types matching your exact schema
-export type OrderStatus = "delivered" | "pending" | "cancelled" | "returned";
-export type PaymentStatus = "paid" | "unpaid" | "refunded";
-export type FulfillmentStatus = "fulfilled" | "unfulfilled" | "returned";
-
-export interface OrderItem {
-  productUuid: string;
-  variantUuid: string | null;
-  name: string;
-  variantLabel: string | null;
-  image: string;
-  unitPrice: number;
-  quantity: number;
-}
-
-export interface ShippingAddress {
-  recipientName: string;
-  phone: string;
-  line1: string;
-  city: string;
-  postalCode: string;
-  country: string;
-}
-
-export interface StatusHistoryItem {
-  status: string;
-  label: string;
-  timestamp: string;
-  note: string;
-}
-
-export interface OrderData {
-  uuid: string;
-  orderNumber: string;
-  customerUuid: string;
-  status: OrderStatus;
-  paymentStatus: PaymentStatus;
-  fulfillmentStatus: FulfillmentStatus;
-  items: OrderItem[];
-  subtotal: number;
-  discountTotal: number;
-  taxTotal: number;
-  shippingTotal: number;
-  grandTotal: number;
-  shippingAddress: ShippingAddress;
-  createdAt: string;
-  statusHistory: StatusHistoryItem[];
-}
-
-export interface MyOrdersProps {
-  brandName?: string;
-  currencySymbol?: string;
-  initialOrders?: OrderData[];
-  onBackToShop?: () => void;
-}
 
 // Your mock dataset
 export const USER_MOCK_ORDERS: OrderData[] = [
@@ -324,6 +271,8 @@ export const USER_MOCK_ORDERS: OrderData[] = [
     ],
   },
 ];
+//  const allProducts = useMemo(() => getProducts(), []);
+// console.log("ORDER", order);
 
 const STATUS_TABS = [
   { id: "all", label: "All Orders" },
@@ -334,10 +283,8 @@ const STATUS_TABS = [
 ];
 
 export default function MyOrders({
-  brandName = "Covet",
   currencySymbol = "৳",
   initialOrders = USER_MOCK_ORDERS,
-  onBackToShop,
 }: MyOrdersProps) {
   const [selectedOrderUuid, setSelectedOrderUuid] = useState<string | null>(
     null,
@@ -519,7 +466,7 @@ export default function MyOrders({
                     >
                       <div className="flex items-center gap-2 mb-1">
                         <span className="w-5 h-5 rounded-full bg-[#3E2C26] text-white flex items-center justify-center text-[10px] font-bold">
-                          <Check className="w-3 h-3 stroke-[3]" />
+                          <Check className="w-3 h-3 stroke-3" />
                         </span>
                         <strong className="font-semibold text-[#261815] truncate">
                           {step.label}
@@ -1051,7 +998,7 @@ export default function MyOrders({
                   className="flex gap-3 items-start bg-white/70 p-3.5 rounded-xl border border-[#3E2C26]/10"
                 >
                   <div className="w-5 h-5 rounded-full bg-[#3E2C26] text-white flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">
-                    <Check className="w-3 h-3 stroke-[3]" />
+                    <Check className="w-3 h-3 stroke-3" />
                   </div>
                   <div>
                     <div className="flex items-center justify-between gap-2">

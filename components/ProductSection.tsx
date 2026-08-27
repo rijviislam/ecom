@@ -16,17 +16,44 @@ export function ProductActions({
 }) {
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
-
   const handleWishlistClick = (e: React.MouseEvent) => {
+    e.preventDefault();
     e.stopPropagation();
+
     const nextState = !isWishlisted;
     setIsWishlisted(nextState);
+
+    const savedWishlist = localStorage.getItem("wishlist");
+    const wishlist: string[] = savedWishlist ? JSON.parse(savedWishlist) : [];
+
+    let updatedWishlist: string[];
+
+    if (nextState) {
+      updatedWishlist = wishlist.includes(productId)
+        ? wishlist
+        : [...wishlist, productId];
+    } else {
+      updatedWishlist = wishlist.filter((id) => id !== productId);
+    }
+
+    localStorage.setItem("wishlist", JSON.stringify(updatedWishlist));
+
     onToggleWishlist?.(productId, nextState);
   };
+  useEffect(() => {
+    const savedWishlist = localStorage.getItem("wishlist");
+    if (savedWishlist) {
+      const wishlist: string[] = JSON.parse(savedWishlist);
+
+      setIsWishlisted(wishlist.includes(productId));
+    }
+  }, [productId]);
 
   const handleAddToCartClick = (e: React.MouseEvent) => {
+    e.preventDefault();
     e.stopPropagation();
     setIsAdded(true);
+    console.log("CART ADD:", productId);
     setTimeout(() => setIsAdded(false), 900);
     onAddToCart?.(productId);
   };
@@ -39,8 +66,8 @@ export function ProductActions({
         aria-label="Add to cart"
         className={`flex h-9 w-9 cursor-pointer items-center justify-center rounded-full  transition-all duration-300 ${
           isAdded
-            ? "scale-105 bg-[#5D4039] text-white"
-            : " bg-[#5D4039] text-white hover:scale-105  hover:bg-[#5D4039] active:scale-95"
+            ? "scale-105 bg-[#3E2C26] text-white"
+            : "bg-[#5D4039] text-white hover:scale-105  hover:bg-[#5D4039] active:scale-95"
         }`}
       >
         <svg
@@ -100,10 +127,6 @@ export function MasonryProductCard({
   return (
     <Link
       href={`/products/${product.id}`}
-      // mb-8 removed — spacing between cards now comes ONLY from the
-      // column's gap-* class, so rows don't get doubled-up spacing
-      // (this was part of what made it look like a "normal" grid with
-      // extra empty space instead of a tight Pinterest waterfall).
       className="group w-full break-inside-avoid block"
     >
       {/* IMAGE */}
@@ -274,8 +297,6 @@ export default function ProductSection({
   onAddToCart,
   onToggleWishlist,
 }: ProductSectionProps) {
-  // getProducts() already returns fully normalized products (with real
-  // per-product aspectClass) — no local re-fetch/re-normalize needed.
   const allProducts = useMemo(() => getProducts(), []);
   const resolvedProducts = products ?? allProducts;
 
