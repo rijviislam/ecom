@@ -83,7 +83,6 @@ export default function HeroSection() {
     velocity: 0,
     lastX: 0,
     lastTime: 0,
-    lastActionTime: 0,
   });
 
   const extendedProducts = Array.from({ length: 5 }, (_, copyIndex) =>
@@ -93,158 +92,94 @@ export default function HeroSection() {
     })),
   ).flat();
 
-  const startLoop = () => {
-    if (animId.current) return;
+  function onPointerUp(e: React.PointerEvent<HTMLDivElement>) {
+    const d = drag.current;
 
-    const loop = () => {
-      const el = trackRef.current;
-      if (!el) {
-        animId.current = null;
-        return;
-      }
+    d.isDragging = false;
 
-      const d = drag.current;
-      const now = performance.now();
-      const children = el.children;
-      const numProducts = sliderProducts.length;
+    try {
+      e.currentTarget.releasePointerCapture(e.pointerId);
+    } catch (_) {}
 
-      let cycleWidth = 0;
-      if (children.length >= numProducts * 2) {
-        const firstItem = children[0] as HTMLElement;
-        const middleItem = children[numProducts] as HTMLElement;
-        if (firstItem && middleItem) {
-          cycleWidth = middleItem.offsetLeft - firstItem.offsetLeft || 0;
-        }
-      }
-
-      if (d.isDragging) {
-        d.current += (d.target - d.current) * 0.75;
-        el.scrollLeft = d.current;
-        d.lastActionTime = now;
-      } else {
-        const timeSinceDrag = now - d.lastActionTime;
-
-        if (timeSinceDrag < 1800) {
-          d.velocity *= 0.94;
-          d.target += d.velocity;
-          d.current += (d.target - d.current) * 0.25;
-          el.scrollLeft = d.current;
-        } else {
-          const autoSpeed = 0.5;
-          d.target += autoSpeed;
-          d.current += autoSpeed;
-          el.scrollLeft = d.current;
-        }
-      }
-
-      if (cycleWidth > 0) {
-        const minBound = cycleWidth * 1.5;
-        const maxBound = cycleWidth * 2.5;
-
-        if (d.current < minBound || d.current > maxBound) {
-          const offsetFromMiddle =
-            ((d.current % cycleWidth) + cycleWidth) % cycleWidth;
-          const newPos = cycleWidth * 2 + offsetFromMiddle;
-          const shift = newPos - d.current;
-
-          d.current = newPos;
-          d.target += shift;
-          d.scrollStart += shift;
-          el.scrollLeft = newPos;
-        }
-      }
-
-      animId.current = requestAnimationFrame(loop);
-    };
-
-    animId.current = requestAnimationFrame(loop);
-  };
+    setIsDown(false);
+  }
 
   function onPointerDown(e: React.PointerEvent<HTMLDivElement>) {
     const el = trackRef.current;
     if (!el) return;
 
-    try {
-      e.currentTarget.setPointerCapture(e.pointerId);
-    } catch (_) {}
+    e.currentTarget.setPointerCapture(e.pointerId);
 
     setIsDown(true);
+
     const d = drag.current;
+
     d.isDragging = true;
     d.startX = e.clientX;
     d.scrollStart = el.scrollLeft;
+
     d.target = el.scrollLeft;
     d.current = el.scrollLeft;
+
     d.velocity = 0;
     d.lastX = e.clientX;
     d.lastTime = performance.now();
-    d.lastActionTime = performance.now();
-
-    startLoop();
   }
-
-  function onPointerUp(e: React.PointerEvent<HTMLDivElement>) {
-    setIsDown(false);
-    const d = drag.current;
-    d.isDragging = false;
-    d.lastActionTime = performance.now();
-
-    try {
-      e.currentTarget.releasePointerCapture(e.pointerId);
-    } catch (_) {}
-  }
-
   function onPointerMove(e: React.PointerEvent<HTMLDivElement>) {
     const d = drag.current;
+
     if (!d.isDragging) return;
 
+    const now = performance.now();
+
+    const dx = e.clientX - d.lastX;
+    const dt = Math.max(now - d.lastTime, 1);
+
     const walk = e.clientX - d.startX;
+
+    // Drag target
     d.target = d.scrollStart - walk;
 
-    const now = performance.now();
-    const dt = Math.max(now - d.lastTime, 1);
-    const dx = e.clientX - d.lastX;
+    // Calculate velocity
+    const velocity = (-dx / dt) * 16.67;
 
-    const currentVelocity = (-dx / dt) * 16.67;
-    d.velocity = d.velocity * 0.35 + currentVelocity * 0.65;
+    d.velocity = d.velocity * 0.8 + velocity * 0.2;
 
     d.lastX = e.clientX;
     d.lastTime = now;
-    d.lastActionTime = now;
   }
 
   useEffect(() => {
     const el = trackRef.current;
     if (!el) return;
 
-    const initializeScroll = () => {
-      const children = el.children;
-      const numProducts = sliderProducts.length;
-      if (children.length >= numProducts * 2) {
-        const firstItem = children[0] as HTMLElement;
-        const middleItem = children[numProducts] as HTMLElement;
-        if (firstItem && middleItem) {
-          const cycleWidth = middleItem.offsetLeft - firstItem.offsetLeft;
-          if (cycleWidth > 0) {
-            const startPos = cycleWidth * 2;
-            el.scrollLeft = startPos;
-            drag.current.current = startPos;
-            drag.current.target = startPos;
-          }
+    let frameId: number;
+
+    const animate = () => {
+      const d = drag.current;
+
+      if (d.isDragging) {
+        // Smoothly follow pointer
+        d.current += (d.target - d.current) * 0.18;
+
+        el.scrollLeft = d.current;
+      } else {
+        // Momentum after release
+        if (Math.abs(d.velocity) > 0.05) {
+          d.current += d.velocity;
+          d.velocity *= 0.94;
+
+          el.scrollLeft = d.current;
         }
       }
-      startLoop();
+
+      frameId = requestAnimationFrame(animate);
     };
 
-    const initTimer = setTimeout(initializeScroll, 50);
+    frameId = requestAnimationFrame(animate);
 
-    return () => {
-      clearTimeout(initTimer);
-      if (animId.current) {
-        cancelAnimationFrame(animId.current);
-      }
-    };
-  }, [sliderProducts]);
+    return () => cancelAnimationFrame(frameId);
+  }, []);
 
   return (
     <section className="relative overflow-hidden py-5 select-none">
