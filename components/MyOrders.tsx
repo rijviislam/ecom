@@ -25,7 +25,7 @@ import {
   XCircle,
 } from "lucide-react";
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export const USER_MOCK_ORDERS: OrderData[] = [
   {
@@ -289,6 +289,30 @@ export default function MyOrders({
   const [copiedNumber, setCopiedNumber] = useState<boolean>(false);
   const [isTrackDrawerOpen, setIsTrackDrawerOpen] = useState<boolean>(false);
 
+  useEffect(() => {
+    if (!isTrackDrawerOpen) return;
+
+    const scrollY = window.scrollY;
+    const body = document.body;
+
+    body.style.position = "fixed";
+    body.style.top = `-${scrollY}px`;
+    body.style.left = "0";
+    body.style.right = "0";
+    body.style.width = "100%";
+    body.style.overflow = "hidden"; // keep this too, harmless extra guard
+
+    return () => {
+      body.style.position = "";
+      body.style.top = "";
+      body.style.left = "";
+      body.style.right = "";
+      body.style.width = "";
+      body.style.overflow = "";
+      window.scrollTo(0, scrollY);
+    };
+  }, [isTrackDrawerOpen]);
+
   const tabCounts = useMemo(
     () => ({
       all: initialOrders.length,
@@ -352,7 +376,7 @@ export default function MyOrders({
   };
 
   return (
-    <div className="w-full min-h-screen bg-[#EDE4DC] text-[#261815] font-sans antialiased selection:bg-[#3E2C26] selection:text-white">
+    <div className="w-full min-h-screen text-[#261815] font-sans antialiased selection:bg-[#3E2C26] selection:text-white">
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         {activeOrder ? (
           <div className="animate-fadeIn">
@@ -386,7 +410,7 @@ export default function MyOrders({
               <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-[#3E2C26]/10">
                 <div>
                   <div className="flex flex-wrap items-center gap-3">
-                    <h1 className="text-2xl sm:text-3xl lg:text-4xl font-serif font-medium tracking-tight text-[#261815]">
+                    <h1 className="text-2xl sm:text-3xl lg:text-4xl font-display font-medium tracking-tight text-[#261815]">
                       Order {activeOrder.orderNumber}
                     </h1>
 
@@ -472,12 +496,12 @@ export default function MyOrders({
               </div>
             </div>
 
-            {/* 4 Details Sections Grid */}
+            {/* Details Sections Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-              {/* Left Column: Products & Shipping */}
+              {/* Left Column */}
               <div className="lg:col-span-7 flex flex-col gap-8">
-                {/* 1. Products Section */}
-                <section className="rounded-3xl bg-white/85 border border-[#3E2C26]/15 p-6 sm:p-8 shadow-xs">
+                {/* Products Section */}
+                <section className="rounded-3xl bg-[#EDE4DC] border border-[#3E2C26]/15 p-6 sm:p-8 shadow-xs">
                   <div className="flex items-center justify-between pb-5 border-b border-[#3E2C26]/10">
                     <div className="flex items-center gap-2.5">
                       <Package className="w-5 h-5 text-[#3E2C26]" />
@@ -542,7 +566,8 @@ export default function MyOrders({
                   </div>
                 </section>
 
-                <section className="rounded-3xl bg-white/85 border border-[#3E2C26]/15 p-6 sm:p-8 shadow-xs">
+                {/* Shipping Address Section */}
+                <section className="rounded-3xl bg-[#EDE4DC] border border-[#3E2C26]/15 p-6 sm:p-8 shadow-xs">
                   <div className="flex items-center justify-between pb-5 border-b border-[#3E2C26]/10">
                     <div className="flex items-center gap-2.5">
                       <MapPin className="w-5 h-5 text-[#3E2C26]" />
@@ -552,7 +577,7 @@ export default function MyOrders({
                     </div>
                   </div>
 
-                  <div className="mt-5 p-5 rounded-2xl bg-[#FAF7F5] border border-[#3E2C26]/10 text-xs sm:text-sm">
+                  <div className="mt-5 p-5 rounded-2xl bg-white/60 border border-[#3E2C26]/10 text-xs sm:text-sm">
                     <div className="flex items-center gap-2 text-[10px] uppercase font-semibold tracking-wider text-[#3E2C26]/60 mb-2">
                       <User className="w-3.5 h-3.5" />
                       <span>Customer & Destination</span>
@@ -577,10 +602,10 @@ export default function MyOrders({
                 </section>
               </div>
 
-              {/* Right Column: Payment & Order Summary */}
+              {/* Right Column */}
               <div className="lg:col-span-5 flex flex-col gap-8 lg:sticky lg:top-28">
-                {/* 3. Payment Section */}
-                <section className="rounded-3xl bg-white/85 border border-[#3E2C26]/15 p-6 sm:p-8 shadow-xs">
+                {/* Payment Section */}
+                <section className="rounded-3xl bg-[#EDE4DC] border border-[#3E2C26]/15 p-6 sm:p-8 shadow-xs">
                   <div className="flex items-center justify-between pb-5 border-b border-[#3E2C26]/10">
                     <div className="flex items-center gap-2.5">
                       <CreditCard className="w-5 h-5 text-[#3E2C26]" />
@@ -620,8 +645,8 @@ export default function MyOrders({
                   </div>
                 </section>
 
-                {/* 4. Order Summary Section */}
-                <section className="rounded-3xl bg-white/85 border border-[#3E2C26]/15 p-6 sm:p-8 shadow-xs">
+                {/* Order Summary Section */}
+                <section className="rounded-3xl bg-[#EDE4DC] border border-[#3E2C26]/15 p-6 sm:p-8 shadow-xs">
                   <div className="flex items-center justify-between pb-5 border-b border-[#3E2C26]/10">
                     <div className="flex items-center gap-2.5">
                       <ShoppingBag className="w-5 h-5 text-[#3E2C26]" />
@@ -714,32 +739,23 @@ export default function MyOrders({
               </div>
 
               {/* Search Bar */}
-              <div className="w-full md:w-80">
-                <div className="relative flex items-center rounded-xl bg-white/70 border border-[#3E2C26]/20 px-3.5 py-2.5 shadow-2xs focus-within:ring-2 focus-within:ring-[#3E2C26]/20 focus-within:border-[#3E2C26] transition-all">
-                  <Search className="w-4 h-4 text-[#3E2C26]/50 mr-2.5 shrink-0" />
+              <div className="w-full md:max-w-xs lg:max-w-sm">
+                <div className="relative flex items-center border-b border-[#3E2C26]/30 pb-2">
+                  <Search className="h-4 w-4 text-[#3E2C26]/60 shrink-0 mr-3" />
                   <input
                     type="text"
-                    placeholder="Search by order # or product..."
+                    placeholder="Search products..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full bg-transparent text-xs sm:text-sm text-[#261815] placeholder:text-[#3E2C26]/40 outline-none"
+                    className="w-full bg-transparent text-sm text-[#261815] placeholder:text-[#261815]/40 outline-none font-sans"
                   />
-                  {searchQuery && (
-                    <button
-                      type="button"
-                      onClick={() => setSearchQuery("")}
-                      className="text-xs text-[#3E2C26]/50 hover:text-[#261815] ml-1.5 p-0.5 cursor-pointer"
-                    >
-                      Clear
-                    </button>
-                  )}
                 </div>
               </div>
             </div>
 
             {/* Filter Tabs */}
             <div className="mb-8 flex items-center justify-between gap-4">
-              <div className="flex items-center gap-2 overflow-x-auto pb-2 sm:pb-0 w-full sm:w-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]  px-1">
+              <div className="flex items-center gap-2 overflow-x-auto pb-2 sm:pb-0 w-full sm:w-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] scrollbar-none px-1">
                 {STATUS_TABS.map((tab) => {
                   const isActive = activeTab === tab.id;
                   const count = tabCounts[tab.id as keyof typeof tabCounts];
@@ -790,7 +806,7 @@ export default function MyOrders({
                   return (
                     <div
                       key={order.uuid}
-                      className="group relative rounded-2xl bg-[#F8F2F1]  border border-[#3E2C26]/15 hover:border-[#3E2C26]/30 p-5 sm:p-7 shadow-xs hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 "
+                      className="group relative rounded-2xl bg-[#EDE4DC] border border-[#3E2C26]/15 hover:border-[#3E2C26]/30 p-5 sm:p-7 shadow-xs hover:shadow-md transition-all duration-300 hover:-translate-y-0.5"
                     >
                       <div className="flex flex-wrap items-center justify-between gap-3 pb-5 border-b border-[#3E2C26]/10">
                         <div className="flex flex-wrap items-center gap-3">
@@ -944,24 +960,30 @@ export default function MyOrders({
         )}
       </main>
 
-      {/* Tracking Modal */}
       {isTrackDrawerOpen && activeOrder && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-hidden">
+          {/* Backdrop */}
           <div
-            className="fixed inset-0 bg-black/50 backdrop-blur-xs transition-opacity animate-fadeIn"
+            className="absolute inset-0 bg-black/60 backdrop-blur-xs animate-fadeIn"
             onClick={() => setIsTrackDrawerOpen(false)}
           />
 
-          <div className="relative z-10 w-full max-w-lg rounded-3xl bg-[#EDE4DC] border border-[#3E2C26]/20 shadow-2xl p-6 sm:p-8 max-h-[90vh] overflow-y-auto no-scrollbar">
-            <div className="flex items-center justify-between pb-5 border-b border-[#3E2C26]/15">
+          {/* Modal */}
+          <div className="relative z-10 w-full max-w-lg  max-h-[85vh] rounded-3xl bg-[#EDE4DC] border border-[#3E2C26]/20 shadow-2xl flex flex-col overflow-hidden animate-scaleIn">
+            {/* Header */}
+            <div className="flex items-center justify-between px-6 sm:px-8 py-5 border-b border-[#3E2C26]/15 shrink-0 bg-[#EDE4DC]">
               <div className="flex items-center gap-2.5">
-                <Truck className="w-5 h-5 text-[#3E2C26]" />
+                <div className="w-9 h-9 rounded-full bg-[#3E2C26] text-white flex items-center justify-center">
+                  <Truck className="w-4.5 h-4.5 text-amber-300" />
+                </div>
+
                 <div>
-                  <h3 className="text-lg font-serif font-semibold text-[#261815]">
+                  <h3 className="text-lg font-display font-semibold text-[#261815]">
                     Shipment Tracking
                   </h3>
-                  <p className="text-xs text-[#3E2C26]/60">
-                    Order {activeOrder.orderNumber}
+
+                  <p className="text-xs text-[#3E2C26]/60 font-mono">
+                    {activeOrder.orderNumber}
                   </p>
                 </div>
               </div>
@@ -970,30 +992,39 @@ export default function MyOrders({
                 type="button"
                 onClick={() => setIsTrackDrawerOpen(false)}
                 className="p-2 text-[#3E2C26]/60 hover:text-[#261815] hover:bg-white/60 rounded-full transition-colors cursor-pointer"
+                aria-label="Close modal"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <div className="mt-6 space-y-4">
+            {/* SCROLLABLE BODY */}
+            <div
+              className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-6 sm:px-8 py-6 space-y-3.5"
+              onWheel={(e) => e.stopPropagation()}
+              onTouchMove={(e) => e.stopPropagation()}
+            >
               {activeOrder.statusHistory.map((item, idx) => (
                 <div
                   key={idx}
-                  className="flex gap-3 items-start bg-white/70 p-3.5 rounded-xl border border-[#3E2C26]/10"
+                  className="flex gap-3.5 items-start bg-white/70 hover:bg-white/90 p-4 rounded-2xl border border-[#3E2C26]/10 transition-colors shadow-2xs"
                 >
-                  <div className="w-5 h-5 rounded-full bg-[#3E2C26] text-white flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">
-                    <Check className="w-3 h-3 stroke-3" />
+                  <div className="w-6 h-6 rounded-full bg-[#3E2C26] text-white flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">
+                    <Check className="w-3.5 h-3.5 stroke-[2.5]" />
                   </div>
-                  <div>
+
+                  <div className="min-w-0 flex-1">
                     <div className="flex items-center justify-between gap-2">
                       <h4 className="font-semibold text-xs text-[#261815]">
                         {item.label}
                       </h4>
-                      <span className="text-[10px] text-[#3E2C26]/50 font-mono">
+
+                      <span className="text-[10px] text-[#3E2C26]/50 font-mono shrink-0">
                         {formatDateTime(item.timestamp)}
                       </span>
                     </div>
-                    <p className="text-xs text-[#3E2C26]/70 mt-1">
+
+                    <p className="text-xs text-[#3E2C26]/70 mt-1 leading-relaxed">
                       {item.note}
                     </p>
                   </div>
@@ -1001,11 +1032,12 @@ export default function MyOrders({
               ))}
             </div>
 
-            <div className="mt-6 pt-4 border-t border-[#3E2C26]/15 flex justify-end">
+            {/* Footer */}
+            <div className="px-6 sm:px-8 py-4 border-t border-[#3E2C26]/15 flex justify-end shrink-0 bg-[#EDE4DC]">
               <button
                 type="button"
                 onClick={() => setIsTrackDrawerOpen(false)}
-                className="rounded-xl bg-[#3E2C26] px-6 py-2.5 text-xs font-semibold uppercase tracking-wider text-white hover:bg-[#261815] transition-colors cursor-pointer"
+                className="rounded-xl bg-[#3E2C26] px-6 py-2.5 text-xs font-semibold uppercase tracking-wider text-white hover:bg-[#261815] transition-colors cursor-pointer shadow-xs active:scale-98"
               >
                 Close Tracking
               </button>

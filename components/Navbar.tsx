@@ -1,5 +1,6 @@
 "use client";
 
+import { useLockBodyScroll } from "@/hooks/useLockBodyScroll";
 import { Heart, Menu, ShoppingBag, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -37,6 +38,7 @@ export default function Navbar({
   const pathname = usePathname();
 
   const [activePanel, setActivePanel] = useState<ActivePanel>(null);
+  useLockBodyScroll(activePanel !== null);
 
   const navContainerRef = useRef<HTMLDivElement>(null);
 
