@@ -81,14 +81,8 @@ export default function CartDrawer({
   function removeItem(id: string) {
     setCartItems((prev) => prev.filter((item) => item.id !== id));
 
-    const savedCarts = localStorage.getItem("cart");
-    if (savedCarts) {
-      const ids: string[] = JSON.parse(savedCarts);
-      localStorage.setItem(
-        "cart",
-        JSON.stringify(ids.filter((wid) => wid !== id)),
-      );
-    }
+    const cartEntries = readCart();
+    writeCart(cartEntries.filter((entry) => entry.id !== id));
   }
 
   const subtotal = cartItem.reduce((sum, i) => sum + i.price * i.quantity, 0);
@@ -108,7 +102,7 @@ export default function CartDrawer({
             <Link
               href="/checkout"
               onClick={onClose}
-              className="block w-full rounded-full bg-forest-700 py-3 text-center text-sm font-semibold text-[#FFF] bg-[#3E2C26] transition-colors hover:bg-forest-800"
+              className="block w-full rounded-full bg-forest-700 py-3 text-center text-sm font-semibold text-white bg-[#3E2C26] transition-colors hover:bg-forest-800"
             >
               Checkout
             </Link>

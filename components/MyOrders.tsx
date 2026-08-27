@@ -27,9 +27,6 @@ import {
 import Image from "next/image";
 import { useMemo, useState } from "react";
 
-// Types matching your exact schema
-
-// Your mock dataset
 export const USER_MOCK_ORDERS: OrderData[] = [
   {
     uuid: "order-1001",
@@ -271,8 +268,6 @@ export const USER_MOCK_ORDERS: OrderData[] = [
     ],
   },
 ];
-//  const allProducts = useMemo(() => getProducts(), []);
-// console.log("ORDER", order);
 
 const STATUS_TABS = [
   { id: "all", label: "All Orders" },
@@ -358,16 +353,9 @@ export default function MyOrders({
 
   return (
     <div className="w-full min-h-screen bg-[#EDE4DC] text-[#261815] font-sans antialiased selection:bg-[#3E2C26] selection:text-white">
-      {/* Header Bar */}
-
-      {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         {activeOrder ? (
-          /* =========================================================
-              VIEW 1: ORDER DETAILS
-             ========================================================= */
           <div className="animate-fadeIn">
-            {/* Navigation Breadcrumb */}
             <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
               <nav className="flex items-center gap-2 text-xs text-[#3E2C26]/60">
                 <button
@@ -554,7 +542,6 @@ export default function MyOrders({
                   </div>
                 </section>
 
-                {/* 2. Shipping Address Section */}
                 <section className="rounded-3xl bg-white/85 border border-[#3E2C26]/15 p-6 sm:p-8 shadow-xs">
                   <div className="flex items-center justify-between pb-5 border-b border-[#3E2C26]/10">
                     <div className="flex items-center gap-2.5">
@@ -710,9 +697,6 @@ export default function MyOrders({
             </div>
           </div>
         ) : (
-          /* =========================================================
-              VIEW 2: MY ORDERS LISTING
-             ========================================================= */
           <div>
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-8 border-b border-[#3E2C26]/15 mb-8">
               <div>

@@ -19,7 +19,6 @@ export default function Drawer({
   children,
   footer,
 }: DrawerProps) {
-  // Lock body scroll while drawer is open
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -51,7 +50,6 @@ export default function Drawer({
         role="dialog"
         aria-modal="true"
       >
-        {/* Header */}
         <div className="flex items-center justify-between border-b border-ink/10 px-4 sm:px-5 py-4">
           <h2 className="font-display text-base sm:text-lg text-[#3E2C26]">
             {title}
@@ -65,12 +63,10 @@ export default function Drawer({
           </button>
         </div>
 
-        {/* Scrollable content */}
         <div className="flex-1 overflow-y-auto px-4 sm:px-5 py-4 text-[#3E2C26]">
           {children}
         </div>
 
-        {/* Footer (optional, e.g. subtotal + checkout) */}
         {footer && (
           <div className="border-t border-ink/10 px-4 sm:px-5 py-4 text-[#3E2C26]">
             {footer}

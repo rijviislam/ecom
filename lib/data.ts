@@ -28,6 +28,7 @@ const CATEGORY_NAMES: Record<string, string> = {
 };
 
 export interface Product {
+  thumbnail: string;
   uuid: string;
   isFeatured: unknown;
   isBestSeller: unknown;
@@ -114,6 +115,7 @@ function normalizeProduct(raw: (typeof productsData)[number]): Product {
     description: raw.description,
     longDescription: raw.content.replace(/<[^>]+>/g, ""),
     image: primaryImage,
+    thumbnail: primaryImage,
     gallery: images.length > 0 ? images : [primaryImage],
     aspectClass: pickAspectClass(raw.uuid),
     colors: colors && colors.length > 0 ? colors : undefined,

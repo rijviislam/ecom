@@ -107,7 +107,7 @@ export default function Navbar({
             <Link
               href="/"
               onClick={() => setActivePanel(null)}
-              className="text-lg sm:text-xl md:text-2xl font-medium tracking-tight text-[#3E2C26] transition-opacity hover:opacity-85 select-none"
+              className="text-lg sm:text-xl md:text-2xl font-extrabold tracking-tight text-[#3E2C26] transition-opacity hover:opacity-85 select-none font-display"
             >
               {brandName}
             </Link>

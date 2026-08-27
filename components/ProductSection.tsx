@@ -22,7 +22,6 @@ export function MasonryProductCard({
       href={`/products/${product.id}`}
       className="group w-full break-inside-avoid block"
     >
-      {/* IMAGE */}
       <div
         className={`relative w-full ${aspect} overflow-hidden rounded-2xl bg-zinc-100/60`}
       >
@@ -35,7 +34,6 @@ export function MasonryProductCard({
         />
       </div>
 
-      {/* PRODUCT INFO */}
       <div className="flex items-start justify-between gap-3 px-0.5 pt-3">
         <div className="min-w-0 pr-2">
           <h3 className="font-sans text-lg font-medium tracking-tight text-[#3E2C26] ">
@@ -142,10 +140,6 @@ function MasonryGrid({
     [visibleProducts, columnCount],
   );
 
-  // gap-y controls vertical spacing between cards inside a column —
-  // this is now the ONLY source of vertical spacing (card no longer
-  // carries its own mb-8), so top/bottom whitespace stays consistent
-  // instead of stacking up.
   const gapClass =
     columnCount === 1
       ? "gap-x-3 gap-y-5"

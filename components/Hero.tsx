@@ -54,7 +54,7 @@ function SlideCard({
   return (
     <Link
       href={`#`}
-      className={`group relative shrink-0 snap-start overflow-hidden shadow-2xl rounded-sm transition-all duration-500 hover:scale-105 hover:z-50 select-none  ${config.size} ${config.tilt} ${config.offset} ${config.overlap} ${config.zIndex} ${config.scale}`}
+      className={`group relative shrink-0 snap-start overflow-hidden shadow-2xl rounded-sm transition-all duration-500 hover:scale-105 hover:z-50 select-none z-0 ${config.size} ${config.tilt} ${config.offset} ${config.overlap} ${config.zIndex} ${config.scale}`}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
@@ -181,7 +181,6 @@ export default function HeroSection() {
     d.lastActionTime = performance.now();
 
     startLoop();
-    e.preventDefault();
   }
 
   function onPointerUp(e: React.PointerEvent<HTMLDivElement>) {
@@ -283,7 +282,7 @@ export default function HeroSection() {
         onPointerUp={onPointerUp}
         onPointerCancel={onPointerUp}
         onPointerMove={onPointerMove}
-        className={`no-scrollbar flex overflow-x-auto overflow-y-visible px-10 pb-20 pt-10 md:px-20 touch-none gap-6 md:gap-14 ${
+        className={`no-scrollbar flex overflow-x-auto overflow-y-visible px-10 pb-20 pt-10 md:px-20 touch-pan-y gap-6 md:gap-14 ${
           isDown ? "cursor-grabbing" : "cursor-grab"
         }`}
       >

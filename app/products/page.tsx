@@ -11,7 +11,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useProductActions } from "../hooks/useProductActions";
 
-// একটা product card = একটা hook instance, তাই আলাদা component হিসেবে বের করা হলো
 function DesktopProductCard({ product }: { product: Product }) {
   const { isWishlisted, isCart, handleWishlistToggle, handleCartToggle } =
     useProductActions(product.id);
