@@ -1,4 +1,4 @@
-import { Product } from "@/components/ProductSection";
+import { getProducts } from "@/lib/data";
 import {
   ChevronDown,
   Heart,
@@ -8,65 +8,15 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-const PRODUCTS_DATA: Product[] = [
-  {
-    id: "1",
-    name: "Balm Amour",
-    price: "$ 40",
-    image:
-      "https://images.unsplash.com/photo-1596462502278-27bfdc403348?q=80&w=800&auto=format&fit=crop",
-    aspectClass: "aspect-[3/4]",
-  },
-  {
-    id: "2",
-    name: "Reusable Eye Mask",
-    price: "$ 29",
-    image:
-      "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?q=80&w=800&auto=format&fit=crop",
-    aspectClass: "aspect-square",
-  },
-  {
-    id: "3",
-    name: "C'est La Cream",
-    price: "$ 78",
-    image:
-      "https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?q=80&w=1000&auto=format&fit=crop",
-    aspectClass: "aspect-[2/3]",
-  },
-  {
-    id: "4",
-    name: "Invisible Bandage",
-    price: "$ 33",
-    image:
-      "https://images.unsplash.com/photo-1556228720-195a672e8a03?q=80&w=800&auto=format&fit=crop",
-    aspectClass: "aspect-[4/5]",
-  },
-  {
-    id: "5",
-    name: "Hydrating Botanic Serum",
-    price: "$ 64",
-    image:
-      "https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19?q=80&w=800&auto=format&fit=crop",
-    aspectClass: "aspect-[3/4]",
-  },
-  {
-    id: "6",
-    name: "Skin Amour Duo",
-    price: "$ 72",
-    image:
-      "https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?q=80&w=800&auto=format&fit=crop",
-    aspectClass: "aspect-[4/3]",
-  },
-];
 
 export default function ProductsPage() {
-  // Distribute products across columns for pure CSS-like waterfall masonry
-  const col1 = PRODUCTS_DATA.filter((_, i) => i % 3 === 0);
-  const col2 = PRODUCTS_DATA.filter((_, i) => i % 3 === 1);
-  const col3 = PRODUCTS_DATA.filter((_, i) => i % 3 === 2);
+  const pro = getProducts();
 
-  const mobileCol1 = PRODUCTS_DATA.filter((_, i) => i % 2 === 0);
-  const mobileCol2 = PRODUCTS_DATA.filter((_, i) => i % 2 === 1);
+  const col1 = pro.filter((_, i) => i % 3 === 0);
+  const col2 = pro.filter((_, i) => i % 3 === 1);
+  const col3 = pro.filter((_, i) => i % 3 === 2);
+  const mobileCol1 = pro.filter((_, i) => i % 2 === 0);
+  const mobileCol2 = pro.filter((_, i) => i % 2 === 1);
 
   return (
     <div
@@ -264,7 +214,7 @@ export default function ProductsPage() {
                           </h3>
                           <div className="flex items-baseline gap-1.5 mt-1.5">
                             <span className="text-xs sm:text-sm font-semibold text-[#261815]">
-                              ৳ {product.price.toLocaleString()}
+                              {/* ৳ {product.price.toLocaleString()} */}
                             </span>
                           </div>
                         </div>
@@ -307,14 +257,14 @@ export default function ProductsPage() {
                         </div>
 
                         <div className="flex flex-col pt-2 px-0.5">
-                          <span className="text-[10px] font-semibold uppercase tracking-wider text-[#261815]/55">
-                            {/* {product.brand} */}
+                          <span className="text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-[#261815]/55">
+                            {product.brand}
                           </span>
-                          <h3 className="text-xs font-medium tracking-tight text-[#261815] line-clamp-1 mt-0.5">
+                          <h3 className="text-xs sm:text-sm font-medium tracking-tight text-[#261815] line-clamp-1 mt-0.5">
                             {product.name}
                           </h3>
-                          <div className="flex items-baseline gap-1 mt-1">
-                            <span className="text-xs font-semibold text-[#261815]">
+                          <div className="flex items-baseline gap-1.5 mt-1.5">
+                            <span className="text-xs sm:text-sm font-semibold text-[#261815]">
                               ৳ {product.price.toLocaleString()}
                             </span>
                           </div>

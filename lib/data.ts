@@ -4,17 +4,142 @@ import customersData from "@/database/customers.json";
 import ordersData from "@/database/orders.json";
 import productsData from "@/database/products.json";
 
-// These helpers stand in for what would otherwise be `GET /products`,
-// `GET /categories`, etc. against the real API described in
-// API-GUIDELINE.md. Filtering/sorting logic mirrors the query params
-// documented there (status, categoryUuid, brandUuid, search, sortBy...).
+// Maps raw ids in the data to display names — replace with a real
+// lookup (DB join, CMS relation, etc.) once you have one.
+const BRAND_NAMES: Record<string, string> = {
+  "brand-zenith": "Zenith",
+  "brand-nimbus": "Nimbus",
+  "brand-urbancraft": "UrbanCraft",
+  "brand-coral": "Coral",
+  "brand-generic": "Generic",
+};
 
-export function getProducts() {
-  return productsData.filter((p) => p.status === "published");
+const CATEGORY_NAMES: Record<string, string> = {
+  "cat-electronics": "Electronics",
+  "cat-fashion": "Fashion",
+  "cat-home": "Home",
+  "cat-beauty": "Beauty",
+};
+
+export interface Product {
+  uuid: string;
+  isFeatured: unknown;
+  isBestSeller: unknown;
+  id: string;
+  slug: string;
+  name: string;
+  brand: string;
+  category: string;
+  price: number;
+  originalPrice?: number;
+  discount?: string;
+  isSale: boolean;
+  description: string;
+  longDescription: string;
+  image: string;
+  gallery: string[];
+  aspectClass: string;
+  colors?: { name: string; hex: string }[];
+  sizes?: string[];
+  specifications: {
+    brand: string;
+    category: string;
+    sku: string;
+  };
 }
 
-export function getProductBySlug(slug: string) {
-  return productsData.find((p) => p.slug === slug) || null;
+// Deterministic pseudo-aspect-ratio so masonry has variety without
+// hydration mismatches from Math.random().
+const ASPECT_CLASSES = [
+  "aspect-[3/4]",
+  "aspect-square",
+  "aspect-[2/3]",
+  "aspect-[4/5]",
+  "aspect-[4/3]",
+];
+
+function pickAspectClass(id: string): string {
+  const hash = id.split("").reduce((sum, char) => sum + char.charCodeAt(0), 0);
+  return ASPECT_CLASSES[hash % ASPECT_CLASSES.length];
+}
+
+function normalizeProduct(raw: (typeof productsData)[number]): Product {
+  const images = (raw.images ?? [])
+    .slice()
+    .sort((a, b) => a.sortOrder - b.sortOrder)
+    .map((img) => img.url);
+
+  const primaryImage =
+    raw.images?.find((img) => img.isPrimary)?.url ??
+    images[0] ??
+    "/placeholder-product.jpg";
+
+  const hasSale =
+    typeof raw.salePrice === "number" && raw.salePrice < raw.retailPrice;
+
+  const discountPercent = hasSale
+    ? Math.round((1 - (raw.salePrice as number) / raw.retailPrice) * 100)
+    : undefined;
+
+  const sizes = Array.from(
+    new Set(
+      raw.variants?.filter((v) => v.attribute === "Size").map((v) => v.value) ??
+        [],
+    ),
+  );
+
+  const colors = raw.variants
+    ?.filter((v) => v.attribute === "Color")
+    .map((v) => ({ name: v.value, hex: colorNameToHex(v.value) }));
+
+  return {
+    id: raw.uuid,
+    slug: raw.slug,
+    uuid: raw.uuid,
+    name: raw.name,
+    brand: BRAND_NAMES[raw.brandUuid] ?? raw.brandUuid,
+    category: CATEGORY_NAMES[raw.categoryUuid] ?? raw.categoryUuid,
+    price: hasSale ? (raw.salePrice as number) : raw.retailPrice,
+    originalPrice: hasSale ? raw.retailPrice : undefined,
+    discount: discountPercent ? `${discountPercent}% OFF` : undefined,
+    isSale: hasSale,
+    isFeatured: raw.isFeatured,
+    isBestSeller: false,
+    description: raw.description,
+    longDescription: raw.content.replace(/<[^>]+>/g, ""), // strip HTML tags
+    image: primaryImage,
+    gallery: images.length > 0 ? images : [primaryImage],
+    aspectClass: pickAspectClass(raw.uuid),
+    colors: colors && colors.length > 0 ? colors : undefined,
+    sizes: sizes.length > 0 ? sizes : undefined,
+    specifications: {
+      brand: BRAND_NAMES[raw.brandUuid] ?? raw.brandUuid,
+      category: CATEGORY_NAMES[raw.categoryUuid] ?? raw.categoryUuid,
+      sku: raw.sku,
+    },
+  };
+}
+
+// Very rough color-name → hex mapping for swatches. Extend as needed,
+// or better: add a `hex` field to your variant data upstream.
+function colorNameToHex(name: string): string {
+  const map: Record<string, string> = {
+    Black: "#1a1a1a",
+    White: "#f5f5f5",
+    Blue: "#3b6ea5",
+    Clay: "#b5651d",
+  };
+  return map[name] ?? "#cccccc";
+}
+
+export function getProducts(): Product[] {
+  return productsData
+    .filter((p) => p.status === "published")
+    .map(normalizeProduct);
+}
+
+export function getProductBySlug(slug: string): Product | undefined {
+  return getProducts().find((p) => p.slug === slug);
 }
 
 export function getProductByUuid(uuid: string) {
@@ -29,10 +154,10 @@ export function getRelatedProducts(
   product: { uuid: string; categoryUuid: string },
   limit = 4,
 ) {
+  const categoryName =
+    CATEGORY_NAMES[product.categoryUuid] ?? product.categoryUuid;
   return getProducts()
-    .filter(
-      (p) => p.uuid !== product.uuid && p.categoryUuid === product.categoryUuid,
-    )
+    .filter((p) => p.id !== product.uuid && p.category === categoryName)
     .slice(0, limit);
 }
 

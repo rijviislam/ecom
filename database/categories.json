@@ -24,7 +24,7 @@
     "name": "Home & Living",
     "slug": "home-living",
     "description": "Furniture, decor and kitchen essentials.",
-    "imageUrl": "https://picsum.photos/seed/covet-home/600/600",
+    "imageUrl": "https://picsum.photos/seed/covet-beauty/600/600",
     "parentUuid": null,
     "sortOrder": 2,
     "isActive": true
