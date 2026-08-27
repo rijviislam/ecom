@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className=" bg-[#5D4039] ">
+    <footer className=" bg-[#3E2C26] ">
       <div className="container-page grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4 px-10">
         <div>
           <div className="font-display text-2xl text-ink">ECOM</div>

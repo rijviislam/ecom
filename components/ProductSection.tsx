@@ -342,7 +342,7 @@ export default function ProductSection({
           </h2>
 
           <Link
-            href={seeAllLink}
+            href={`/products`}
             className="group relative inline-flex pb-0.5 font-sans text-[11px] font-bold text-[#3E2C26] uppercase tracking-[0.16em]  transition-colors duration-300 hover:text-zinc-950 md:text-xs"
           >
             <span>{seeAllText}</span>
