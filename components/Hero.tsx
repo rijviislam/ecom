@@ -1,34 +1,8 @@
 "use client";
 
+import { getProducts, type Product } from "@/lib/data";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
-
-const SLIDER_PRODUCTS = [
-  {
-    id: "1",
-    name: "Signature Wooden Chair",
-    price: 4500,
-    image: "https://i.ibb.co.com/ZzNSh1zc/p1.jpg",
-  },
-  {
-    id: "2",
-    name: "Ceramic Vase Set",
-    price: 1800,
-    image: "https://i.ibb.co.com/rKjfMZP0/p3.jpg",
-  },
-  {
-    id: "3",
-    name: "Linen Throw Pillow",
-    price: 950,
-    image: "https://i.ibb.co.com/KxwP0Y2g/p5.jpg",
-  },
-  {
-    id: "4",
-    name: "Rattan Table Lamp",
-    price: 2600,
-    image: "https://i.ibb.co.com/JRPzG7CN/per.png",
-  },
-];
+import { useEffect, useMemo, useRef, useState } from "react";
 
 const CARD_STYLES = [
   {
@@ -68,12 +42,14 @@ const CARD_STYLES = [
 function SlideCard({
   product,
   index,
+  totalProducts,
 }: {
-  product: (typeof SLIDER_PRODUCTS)[0];
+  product: Product;
   index: number;
+  totalProducts: number;
 }) {
-  const styleIndex = index % SLIDER_PRODUCTS.length;
-  const config = CARD_STYLES[styleIndex];
+  const styleIndex = index % totalProducts;
+  const config = CARD_STYLES[styleIndex % CARD_STYLES.length];
 
   return (
     <Link
@@ -96,6 +72,8 @@ export default function HeroSection() {
   const animId = useRef<number | null>(null);
   const [isDown, setIsDown] = useState(false);
 
+  const sliderProducts = useMemo(() => getProducts().slice(0, 4), []);
+
   const drag = useRef({
     isDragging: false,
     startX: 0,
@@ -109,7 +87,7 @@ export default function HeroSection() {
   });
 
   const extendedProducts = Array.from({ length: 5 }, (_, copyIndex) =>
-    SLIDER_PRODUCTS.map((product) => ({
+    sliderProducts.map((product) => ({
       ...product,
       uniqueId: `${copyIndex}-${product.id}`,
     })),
@@ -128,7 +106,7 @@ export default function HeroSection() {
       const d = drag.current;
       const now = performance.now();
       const children = el.children;
-      const numProducts = SLIDER_PRODUCTS.length;
+      const numProducts = sliderProducts.length;
 
       let cycleWidth = 0;
       if (children.length >= numProducts * 2) {
@@ -242,7 +220,7 @@ export default function HeroSection() {
 
     const initializeScroll = () => {
       const children = el.children;
-      const numProducts = SLIDER_PRODUCTS.length;
+      const numProducts = sliderProducts.length;
       if (children.length >= numProducts * 2) {
         const firstItem = children[0] as HTMLElement;
         const middleItem = children[numProducts] as HTMLElement;
@@ -267,7 +245,7 @@ export default function HeroSection() {
         cancelAnimationFrame(animId.current);
       }
     };
-  }, []);
+  }, [sliderProducts]);
 
   return (
     <section className="relative overflow-hidden py-5 select-none">
@@ -310,7 +288,12 @@ export default function HeroSection() {
         }`}
       >
         {extendedProducts.map((product, idx) => (
-          <SlideCard key={product.uniqueId} product={product} index={idx} />
+          <SlideCard
+            key={product.uniqueId}
+            product={product}
+            index={idx}
+            totalProducts={sliderProducts.length}
+          />
         ))}
       </div>
     </section>

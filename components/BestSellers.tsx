@@ -1,240 +1,222 @@
 "use client";
 
+import { getCategories, getProducts, type Product } from "@/lib/data";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { ProductActions } from "./ProductSection";
 
-export interface BestSellerProduct {
-  id: string;
-  name: string;
-  category: string;
-  price: number;
-  originalPrice?: number;
-  discount?: string;
-  isBestSeller?: boolean;
-  rating: number;
-  reviewsCount: number;
-  image: string;
-  colors?: { name: string; hex: string }[];
-}
-
-const BEST_SELLERS_DATA: BestSellerProduct[] = [
-  {
-    id: "bs-1",
-    name: "Everyday Hoodie",
-    category: "Hoodie",
-    price: 95.0,
-    originalPrice: 120.0,
-    discount: "-21%",
-    isBestSeller: true,
-    rating: 4.9,
-    reviewsCount: 142,
-    image:
-      "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=800&auto=format&fit=crop",
-    colors: [
-      { name: "Dusty Rose", hex: "#D8A4A8" },
-      { name: "Lavender", hex: "#D6C6E1" },
-      { name: "Oatmeal", hex: "#E9DFD2" },
-    ],
-  },
-  {
-    id: "bs-2",
-    name: "Lightweight Jacket",
-    category: "Jacket",
-    price: 189.0,
-    originalPrice: 219.0,
-    discount: "-14%",
-    isBestSeller: true,
-    rating: 4.8,
-    reviewsCount: 98,
-    image:
-      "https://images.unsplash.com/photo-1544441893-675973e31985?q=80&w=800&auto=format&fit=crop",
-    colors: [
-      { name: "Stone", hex: "#D9D2C7" },
-      { name: "Charcoal", hex: "#5C6064" },
-    ],
-  },
-  {
-    id: "bs-3",
-    name: "Zipper Jacket",
-    category: "Jacket",
-    price: 99.0,
-    originalPrice: 129.0,
-    discount: "-23%",
-    isBestSeller: false,
-    rating: 4.7,
-    reviewsCount: 76,
-    image:
-      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=800&auto=format&fit=crop",
-    colors: [{ name: "Washed Black", hex: "#4A4D50" }],
-  },
-  {
-    id: "bs-4",
-    name: "Relaxed Fit Cardigan",
-    category: "Cardigan",
-    price: 119.0,
-    originalPrice: 149.0,
-    discount: "-20%",
-    isBestSeller: true,
-    rating: 5.0,
-    reviewsCount: 115,
-    image:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=800&auto=format&fit=crop",
-    colors: [
-      { name: "Vanilla", hex: "#EBE3D3" },
-      { name: "Sage", hex: "#A8C4B3" },
-    ],
-  },
-];
-
-const FILTER_CATEGORIES = [
-  "All",
-  "Jacket",
-  "Sweater",
-  "Hoodie",
-  "Pants",
-  "T-Shirt",
-  "Cardigan",
-];
+const ALL_CATEGORY = "All";
 
 export default function BestSellers({
   title = "Best Sellers",
   subtitle = "Loved by our customers, these are the products everyone is talking about.",
-  products = BEST_SELLERS_DATA,
+  products,
   onAddToCart,
 }: {
   title?: string;
   subtitle?: string;
-  products?: BestSellerProduct[];
+  products?: Product[];
   onAddToCart?: (productId: string) => void;
 }) {
-  const [activeCategory, setActiveCategory] = useState("All");
-  const [wishlist, setWishlist] = useState<Record<string, boolean>>({});
-  const [selectedColors, setSelectedColors] = useState<Record<string, number>>(
-    {},
-  );
-  const [addedItems, setAddedItems] = useState<Record<string, boolean>>({});
+  const [activeCategory, setActiveCategory] = useState(ALL_CATEGORY);
+  const sliderRef = useRef<HTMLDivElement>(null);
+
+  // getProducts()/getCategories() are computed here, inside the component,
+  // so they only ever run on render (never stale, and safe if they later
+  // become async or depend on props/state).
+  const allProducts = useMemo(() => getProducts(), []);
+  const categories = useMemo(() => getCategories(), []);
+
+  // Default to items tagged/flagged as best sellers when no explicit
+  // `products` prop is passed in; fall back to all products if none exist.
+  const sourceProducts = useMemo(() => {
+    if (products) return products;
+    const bestSellers = allProducts.filter((p) => p.isBestSeller);
+    return bestSellers.length > 0 ? bestSellers : allProducts;
+  }, [products, allProducts]);
 
   const filteredProducts =
-    activeCategory === "All"
-      ? products
-      : products.filter((p) => p.category === activeCategory);
+    activeCategory === ALL_CATEGORY
+      ? sourceProducts
+      : sourceProducts.filter((p) => p.category === activeCategory);
 
-  const toggleWishlist = (id: string) => {
-    setWishlist((prev) => ({ ...prev, [id]: !prev[id] }));
+  const hasSlider = filteredProducts.length > 4;
+
+  const scrollLeft = () => {
+    if (sliderRef.current) {
+      const scrollAmount = sliderRef.current.offsetWidth * 0.75;
+      sliderRef.current.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+    }
   };
 
-  const handleAdd = (id: string) => {
-    setAddedItems((prev) => ({ ...prev, [id]: true }));
-    setTimeout(() => {
-      setAddedItems((prev) => ({ ...prev, [id]: false }));
-    }, 900);
-    if (onAddToCart) onAddToCart(id);
+  const scrollRight = () => {
+    if (sliderRef.current) {
+      const scrollAmount = sliderRef.current.offsetWidth * 0.75;
+      sliderRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
+    }
   };
 
   return (
     <section
       aria-labelledby="best-sellers-heading"
-      className="w-full text-[#261815] select-none  bg-[#ece0de]/50"
+      className="w-full text-[#261815] select-none bg-[#ece0de]/50 py-12 md:py-16"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
+        {/* SECTION HEADER */}
         <div className="mb-6">
           <h2 className="font-display text-3xl font-bold text-[#3E2C26] md:text-4xl">
             {title}
           </h2>
+          {subtitle && (
+            <p className="text-xs sm:text-sm text-[#3E2C26]/60 mt-1 font-sans">
+              {subtitle}
+            </p>
+          )}
         </div>
 
+        {/* CONTROLS: CATEGORIES & SLIDER ARROWS */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
+          {/* Category Filter Pills */}
           <div className="flex items-center gap-2 overflow-x-auto pb-2 sm:pb-0 w-full sm:w-auto no-scrollbar">
-            {FILTER_CATEGORIES.map((cat) => {
-              const isActive = activeCategory === cat;
-              return (
-                <button
-                  key={cat}
-                  type="button"
-                  onClick={() => setActiveCategory(cat)}
-                  className={`px-4 py-1.5 rounded-full text-sm font-medium tracking-wide transition-all cursor-pointer outline-none shrink-0 ${
-                    isActive
-                      ? "bg-[#5D4039] text-white shadow-xs"
-                      : "bg-[#5D4039]/5 text-[#261815]/80 hover:bg-[#261815]/10"
-                  }`}
-                >
-                  {cat}
-                </button>
-              );
-            })}
-          </div>
-
-          <div className="hidden sm:flex items-center gap-3">
-            <Link
-              href={`/products`}
-              className="group relative inline-flex pb-0.5 font-sans text-[11px] font-bold text-[#3E2C26] uppercase tracking-[0.16em]  transition-colors duration-300 hover:text-zinc-950 md:text-xs"
-            >
-              <span>View More</span>
-
-              <span className="absolute bottom-0 left-0 h-px w-full bg-zinc-800 transition-all duration-300 group-hover:h-[1.5px] group-hover:bg-zinc-950" />
-            </Link>
-            <div className="flex items-center gap-1.5">
+            <div className="flex items-center gap-2 sm:gap-3 flex-nowrap">
+              {/* "All" pill isn't part of getCategories(), so it's added explicitly */}
               <button
                 type="button"
-                aria-label="Previous"
-                className="flex h-8 w-8 items-center justify-center rounded-full border border-[#261815]/20 text-[#261815]/70 hover:border-[#261815] hover:text-[#261815] transition-colors cursor-pointer"
+                onClick={() => setActiveCategory(ALL_CATEGORY)}
+                className={`px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium tracking-wide transition-all cursor-pointer outline-none shrink-0 ${
+                  activeCategory === ALL_CATEGORY
+                    ? "bg-[#5D4039] text-white shadow-xs"
+                    : "bg-[#5D4039]/5 text-[#261815]/80 hover:bg-[#261815]/10"
+                }`}
               >
-                <ChevronLeft className="h-4 w-4" />
+                {ALL_CATEGORY}
               </button>
-              <button
-                type="button"
-                aria-label="Next"
-                className="flex h-8 w-8 items-center justify-center rounded-full border border-[#261815]/20 text-[#261815]/70 hover:border-[#261815] hover:text-[#261815] transition-colors cursor-pointer"
-              >
-                <ChevronRight className="h-4 w-4" />
-              </button>
+
+              {categories.map((cat) => {
+                const isActive = activeCategory === cat.name;
+                return (
+                  <button
+                    key={cat.uuid}
+                    type="button"
+                    onClick={() => setActiveCategory(cat.name)}
+                    className={`px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium tracking-wide transition-all cursor-pointer outline-none shrink-0 ${
+                      isActive
+                        ? "bg-[#5D4039] text-white shadow-xs"
+                        : "bg-[#5D4039]/5 text-[#261815]/80 hover:bg-[#261815]/10"
+                    }`}
+                  >
+                    {cat.name}
+                  </button>
+                );
+              })}
             </div>
           </div>
+
+          {/* Right: View More & Conditional Slider Navigation Arrows */}
+          <div className="flex items-center gap-4">
+            <Link
+              href="/products"
+              className="group relative inline-flex pb-0.5 font-sans text-[11px] font-bold text-[#3E2C26] uppercase tracking-[0.16em] transition-colors duration-300 hover:text-zinc-950 md:text-xs"
+            >
+              <span>View More</span>
+              <span className="absolute bottom-0 left-0 h-px w-full bg-zinc-800 transition-all duration-300 group-hover:h-[1.5px] group-hover:bg-zinc-950" />
+            </Link>
+
+            {/* Slider buttons appear ONLY when products > 4 */}
+            {hasSlider && (
+              <div className="flex items-center gap-1.5">
+                <button
+                  type="button"
+                  onClick={scrollLeft}
+                  aria-label="Previous products"
+                  className="flex h-8 w-8 items-center justify-center rounded-full border border-[#261815]/20 text-[#261815]/70 hover:border-[#261815] hover:text-[#261815] hover:bg-white/40 active:scale-95 transition-all cursor-pointer"
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </button>
+                <button
+                  type="button"
+                  onClick={scrollRight}
+                  aria-label="Next products"
+                  className="flex h-8 w-8 items-center justify-center rounded-full border border-[#261815]/20 text-[#261815]/70 hover:border-[#261815] hover:text-[#261815] hover:bg-white/40 active:scale-95 transition-all cursor-pointer"
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </button>
+              </div>
+            )}
+          </div>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-          {filteredProducts.map((product) => {
-            const isWish = !!wishlist[product.id];
-            const isAdded = !!addedItems[product.id];
-            const selectedColorIdx = selectedColors[product.id] || 0;
+        {/* PRODUCTS LIST / SLIDER CONTAINER */}
+        <div
+          ref={sliderRef}
+          className={`w-full ${
+            hasSlider
+              ? "flex gap-4 sm:gap-6 overflow-x-auto scroll-smooth no-scrollbar snap-x snap-mandatory pb-4"
+              : "grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6"
+          }`}
+        >
+          {filteredProducts.length === 0 && (
+            <p className="col-span-full font-semibold text-center text-lg text-[#261815]/60 py-8">
+              No products found in this category.
+            </p>
+          )}
 
+          {filteredProducts.map((product) => {
             return (
-              <Link
+              <div
                 key={product.id}
-                href={`#`}
-                className="group mb-8 w-full break-inside-avoid"
+                className={`group mb-2 select-none ${
+                  hasSlider
+                    ? "w-[calc(50%-8px)] sm:w-[calc(50%-12px)] lg:w-[calc(25%-18px)] shrink-0 snap-start"
+                    : "w-full"
+                }`}
               >
-                <div className="relative w-full aspect-5/6 overflow-hidden rounded-2xl bg-zinc-100/60">
-                  <Image
-                    src={product.image}
-                    alt={product.name}
-                    fill
-                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 25vw"
-                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-105 select-none"
-                  />
-                </div>
+                <Link href={`/products/${product.id}`} className="block">
+                  <div className="relative w-full aspect-5/6 overflow-hidden rounded-2xl bg-zinc-100/60">
+                    <Image
+                      src={product.image}
+                      alt={product.name}
+                      fill
+                      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 25vw"
+                      className="object-cover transition-transform duration-700 ease-out group-hover:scale-105 select-none"
+                    />
+
+                    {product.discount && (
+                      <span className="absolute top-2.5 left-2.5 bg-[#261815] text-[#EDE4DC] text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full shadow-xs">
+                        {product.discount}
+                      </span>
+                    )}
+                  </div>
+                </Link>
 
                 <div className="flex items-start justify-between gap-3 px-0.5 pt-3.5">
                   <div className="min-w-0 pr-2">
-                    <h3 className="font-sans text-lg font-medium tracking-tight text-[#3E2C26]">
-                      {product.name}
-                    </h3>
+                    <Link href={`/products/${product.id}`}>
+                      <h3 className="font-sans text-sm sm:text-base font-medium tracking-tight text-[#3E2C26] hover:underline line-clamp-1">
+                        {product.name}
+                      </h3>
+                    </Link>
 
-                    <p className="mt-0.5 font-sans text-md tracking-normal text-[#3E2C26]">
-                      {product.price}
-                    </p>
+                    <div className="flex items-baseline gap-1.5 mt-0.5">
+                      <span className="font-sans text-xs sm:text-sm font-semibold tracking-normal text-[#3E2C26]">
+                        ৳ {product.price.toLocaleString()}
+                      </span>
+                      {product.originalPrice && (
+                        <span className="font-sans text-[11px] text-[#3E2C26]/40 line-through">
+                          ৳ {product.originalPrice.toLocaleString()}
+                        </span>
+                      )}
+                    </div>
                   </div>
 
                   <ProductActions
                     productId={product.id}
                     onAddToCart={onAddToCart}
-                    // onToggleWishlist={product.id}
                   />
                 </div>
-              </Link>
+              </div>
             );
           })}
         </div>

@@ -1,3 +1,5 @@
+import MyOrders from "@/components/MyOrders";
+
 export default function page() {
-  return <div>page</div>;
+  return <MyOrders brandName="Covet" currencySymbol="৳" />;
 }

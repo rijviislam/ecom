@@ -26,21 +26,21 @@
     "images": [
       {
         "uuid": "img-001-1",
-        "url": "https://picsum.photos/seed/aria-1/900/900",
+        "url": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=900&q=80",
         "altText": "Aria headphones front",
         "sortOrder": 0,
         "isPrimary": true
       },
       {
         "uuid": "img-001-2",
-        "url": "https://picsum.photos/seed/aria-2/900/900",
+        "url": "https://images.unsplash.com/photo-1484704849700-f032a568e944?auto=format&fit=crop&w=900&q=80",
         "altText": "Aria headphones side",
         "sortOrder": 1,
         "isPrimary": false
       },
       {
         "uuid": "img-001-3",
-        "url": "https://picsum.photos/seed/aria-3/900/900",
+        "url": "https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=900&q=80",
         "altText": "Aria headphones case",
         "sortOrder": 2,
         "isPrimary": false
@@ -100,14 +100,14 @@
     "images": [
       {
         "uuid": "img-002-1",
-        "url": "https://picsum.photos/seed/pulse-1/900/900",
+        "url": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=900&q=80",
         "altText": "Pulse watch",
         "sortOrder": 0,
         "isPrimary": true
       },
       {
         "uuid": "img-002-2",
-        "url": "https://picsum.photos/seed/pulse-2/900/900",
+        "url": "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?auto=format&fit=crop&w=900&q=80",
         "altText": "Pulse watch on wrist",
         "sortOrder": 1,
         "isPrimary": false

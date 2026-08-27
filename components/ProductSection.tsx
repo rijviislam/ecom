@@ -1,67 +1,9 @@
 "use client";
 
+import { getProducts, type Product } from "@/lib/data";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-
-export interface Product {
-  id: string;
-  name: string;
-  price: string;
-  image: string;
-  aspectClass?: string;
-}
-
-const MASONRY_PRODUCTS: Product[] = [
-  {
-    id: "1",
-    name: "Balm Amour",
-    price: "$ 40",
-    image:
-      "https://images.unsplash.com/photo-1596462502278-27bfdc403348?q=80&w=800&auto=format&fit=crop",
-    aspectClass: "aspect-[3/4]",
-  },
-  {
-    id: "2",
-    name: "Reusable Eye Mask",
-    price: "$ 29",
-    image:
-      "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?q=80&w=800&auto=format&fit=crop",
-    aspectClass: "aspect-square",
-  },
-  {
-    id: "3",
-    name: "C'est La Cream",
-    price: "$ 78",
-    image:
-      "https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?q=80&w=1000&auto=format&fit=crop",
-    aspectClass: "aspect-[2/3]",
-  },
-  {
-    id: "4",
-    name: "Invisible Bandage",
-    price: "$ 33",
-    image:
-      "https://images.unsplash.com/photo-1556228720-195a672e8a03?q=80&w=800&auto=format&fit=crop",
-    aspectClass: "aspect-[4/5]",
-  },
-  {
-    id: "5",
-    name: "Hydrating Botanic Serum",
-    price: "$ 64",
-    image:
-      "https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19?q=80&w=800&auto=format&fit=crop",
-    aspectClass: "aspect-[3/4]",
-  },
-  {
-    id: "6",
-    name: "Skin Amour Duo",
-    price: "$ 72",
-    image:
-      "https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?q=80&w=800&auto=format&fit=crop",
-    aspectClass: "aspect-[4/3]",
-  },
-];
 
 export function ProductActions({
   productId,
@@ -74,25 +16,45 @@ export function ProductActions({
 }) {
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
-
   const handleWishlistClick = (e: React.MouseEvent) => {
+    e.preventDefault();
     e.stopPropagation();
 
     const nextState = !isWishlisted;
-
     setIsWishlisted(nextState);
+
+    const savedWishlist = localStorage.getItem("wishlist");
+    const wishlist: string[] = savedWishlist ? JSON.parse(savedWishlist) : [];
+
+    let updatedWishlist: string[];
+
+    if (nextState) {
+      updatedWishlist = wishlist.includes(productId)
+        ? wishlist
+        : [...wishlist, productId];
+    } else {
+      updatedWishlist = wishlist.filter((id) => id !== productId);
+    }
+
+    localStorage.setItem("wishlist", JSON.stringify(updatedWishlist));
+
     onToggleWishlist?.(productId, nextState);
   };
+  useEffect(() => {
+    const savedWishlist = localStorage.getItem("wishlist");
+    if (savedWishlist) {
+      const wishlist: string[] = JSON.parse(savedWishlist);
+
+      setIsWishlisted(wishlist.includes(productId));
+    }
+  }, [productId]);
 
   const handleAddToCartClick = (e: React.MouseEvent) => {
+    e.preventDefault();
     e.stopPropagation();
-
     setIsAdded(true);
-
-    setTimeout(() => {
-      setIsAdded(false);
-    }, 900);
-
+    console.log("CART ADD:", productId);
+    setTimeout(() => setIsAdded(false), 900);
     onAddToCart?.(productId);
   };
 
@@ -104,8 +66,8 @@ export function ProductActions({
         aria-label="Add to cart"
         className={`flex h-9 w-9 cursor-pointer items-center justify-center rounded-full  transition-all duration-300 ${
           isAdded
-            ? "scale-105 bg-[#5D4039] text-white"
-            : " bg-[#5D4039] text-white hover:scale-105  hover:bg-[#5D4039] active:scale-95"
+            ? "scale-105 bg-[#3E2C26] text-white"
+            : "bg-[#5D4039] text-white hover:scale-105  hover:bg-[#5D4039] active:scale-95"
         }`}
       >
         <svg
@@ -163,7 +125,10 @@ export function MasonryProductCard({
   const aspect = product.aspectClass || "aspect-[3/4]";
 
   return (
-    <Link href={`#`} className="group mb-8 w-full break-inside-avoid ">
+    <Link
+      href={`/products/${product.id}`}
+      className="group w-full break-inside-avoid block"
+    >
       {/* IMAGE */}
       <div
         className={`relative w-full ${aspect} overflow-hidden rounded-2xl bg-zinc-100/60`}
@@ -178,14 +143,14 @@ export function MasonryProductCard({
       </div>
 
       {/* PRODUCT INFO */}
-      <div className="flex items-start justify-between gap-3 px-0.5 pt-3.5">
+      <div className="flex items-start justify-between gap-3 px-0.5 pt-3">
         <div className="min-w-0 pr-2">
           <h3 className="font-sans text-lg font-medium tracking-tight text-[#3E2C26] ">
             {product.name}
           </h3>
 
           <p className="mt-0.5 font-sans text-md tracking-normal text-[#3E2C26]">
-            {product.price}
+            ৳ {product.price.toLocaleString()}
           </p>
         </div>
 
@@ -199,19 +164,6 @@ export function MasonryProductCard({
   );
 }
 
-/* ============================================================
-   PINTEREST-STYLE MASONRY ENGINE
-   Real Pinterest doesn't fill columns top-to-bottom (which is
-   what CSS `columns-*` does). It drops each new card into
-   whichever column is currently shortest, so columns stay
-   balanced and cards read left-to-right in roughly the order
-   they were added. We replicate that with a small greedy
-   bin-packing pass based on each card's aspect ratio.
-   ============================================================ */
-
-// Parses "aspect-[3/4]" / "aspect-square" / "aspect-[4/3]" into a
-// height-per-unit-width multiplier, so we can estimate relative
-// card height without ever touching the DOM.
 function getHeightRatio(aspectClass?: string): number {
   if (!aspectClass || aspectClass === "aspect-square") return 1;
 
@@ -225,8 +177,6 @@ function getHeightRatio(aspectClass?: string): number {
   return height / width;
 }
 
-// Constant to approximate the title/price/actions row height so
-// short-image cards don't get unfairly stacked on top of each other.
 const CARD_META_HEIGHT = 0.16;
 
 function distributeIntoColumns(
@@ -240,8 +190,6 @@ function distributeIntoColumns(
     const estimatedHeight =
       getHeightRatio(product.aspectClass) + CARD_META_HEIGHT;
 
-    // Find the shortest column so far — this is the core of the
-    // Pinterest algorithm.
     let shortestIndex = 0;
     for (let i = 1; i < columnCount; i++) {
       if (columnHeights[i] < columnHeights[shortestIndex]) {
@@ -256,8 +204,6 @@ function distributeIntoColumns(
   return columns;
 }
 
-// Tracks the current column count based on viewport width, matching
-// the sm (640px) and lg (1024px) Tailwind breakpoints.
 function useResponsiveColumnCount() {
   const [columnCount, setColumnCount] = useState(3);
 
@@ -283,20 +229,36 @@ function MasonryGrid({
   products,
   onAddToCart,
   onToggleWishlist,
+  maxProducts,
 }: {
   products: Product[];
   onAddToCart?: (id: string) => void;
   onToggleWishlist?: (id: string, state: boolean) => void;
+  maxProducts?: number;
 }) {
   const columnCount = useResponsiveColumnCount();
 
-  const columns = useMemo(
-    () => distributeIntoColumns(products, columnCount),
-    [products, columnCount],
+  const visibleProducts = useMemo(
+    () =>
+      maxProducts !== undefined ? products.slice(0, maxProducts) : products,
+    [products, maxProducts],
   );
 
+  const columns = useMemo(
+    () => distributeIntoColumns(visibleProducts, columnCount),
+    [visibleProducts, columnCount],
+  );
+
+  // gap-y controls vertical spacing between cards inside a column —
+  // this is now the ONLY source of vertical spacing (card no longer
+  // carries its own mb-8), so top/bottom whitespace stays consistent
+  // instead of stacking up.
   const gapClass =
-    columnCount === 1 ? "gap-3" : columnCount === 2 ? "gap-4" : "gap-6";
+    columnCount === 1
+      ? "gap-x-3 gap-y-5"
+      : columnCount === 2
+        ? "gap-x-4 gap-y-6"
+        : "gap-x-6 gap-y-8";
 
   return (
     <div className={`flex w-full items-start ${gapClass}`}>
@@ -321,6 +283,7 @@ export interface ProductSectionProps {
   seeAllLink?: string;
   seeAllText?: string;
   products?: Product[];
+  maxProducts?: number;
   onAddToCart?: (productId: string) => void;
   onToggleWishlist?: (productId: string, state: boolean) => void;
 }
@@ -329,10 +292,14 @@ export default function ProductSection({
   title = "Products",
   seeAllLink = "#",
   seeAllText = "SEE ALL PRODUCTS",
-  products = MASONRY_PRODUCTS,
+  products,
+  maxProducts = 8,
   onAddToCart,
   onToggleWishlist,
 }: ProductSectionProps) {
+  const allProducts = useMemo(() => getProducts(), []);
+  const resolvedProducts = products ?? allProducts;
+
   return (
     <section className={`w-full text-zinc-900  bg-[#EDE4DC]/50 `}>
       <div className="mx-auto max-w-7xl px-6 md:px-10 lg:px-12">
@@ -342,7 +309,7 @@ export default function ProductSection({
           </h2>
 
           <Link
-            href={`/products`}
+            href={seeAllLink}
             className="group relative inline-flex pb-0.5 font-sans text-[11px] font-bold text-[#3E2C26] uppercase tracking-[0.16em]  transition-colors duration-300 hover:text-zinc-950 md:text-xs"
           >
             <span>{seeAllText}</span>
@@ -351,11 +318,9 @@ export default function ProductSection({
           </Link>
         </div>
 
-        {/* TRUE PINTEREST-STYLE MASONRY — one responsive grid,
-            column count adapts at sm/lg breakpoints, cards are
-            distributed shortest-column-first like Pinterest. */}
         <MasonryGrid
-          products={products}
+          products={resolvedProducts}
+          maxProducts={maxProducts}
           onAddToCart={onAddToCart}
           onToggleWishlist={onToggleWishlist}
         />

@@ -1,5 +1,6 @@
 "use client";
 
+import { getProducts } from "@/lib/data";
 import {
   Check,
   ChevronRight,
@@ -18,177 +19,17 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useState } from "react";
-
-export interface Product {
-  id: string;
-  name: string;
-  price: string;
-  image: string;
-  aspectClass?: string;
-  brand?: string;
-  category?: string;
-  originalPrice?: string;
-  discount?: string;
-  isSale?: boolean;
-  rating?: number;
-  reviewsCount?: number;
-  description?: string;
-  longDescription?: string;
-  gallery?: string[];
-  colors?: { name: string; hex: string }[];
-  sizes?: string[];
-  specifications?: {
-    brand?: string;
-    category?: string;
-    material?: string;
-    color?: string;
-    weight?: string;
-    sku?: string;
-  };
-  reviews?: {
-    id: string;
-    name: string;
-    rating: number;
-    date: string;
-    text: string;
-  }[];
-}
-
-const PRODUCTS_DATA: Product[] = [
-  {
-    id: "1",
-    name: "Balm Amour",
-    brand: "Moss & Stone",
-    category: "Skincare",
-    price: "$ 40",
-    originalPrice: "$ 48",
-    discount: "16% OFF",
-    isSale: true,
-    rating: 4.8,
-    reviewsCount: 124,
-    description:
-      "Designed for everyday nourishment with a lightweight restorative texture and soothing botanical oils.",
-    longDescription:
-      "A luxurious melt-on-contact cleansing and conditioning balm. Infused with organic rosehip, cold-pressed camellia seed, and vitamin E to restore the natural moisture barrier.",
-    image:
-      "https://images.unsplash.com/photo-1596462502278-27bfdc403348?q=80&w=800&auto=format&fit=crop",
-    gallery: [
-      "https://images.unsplash.com/photo-1596462502278-27bfdc403348?q=80&w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?q=80&w=1000&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19?q=80&w=800&auto=format&fit=crop",
-    ],
-    aspectClass: "aspect-[3/4]",
-    colors: [
-      { name: "Rose Petal", hex: "#E8A598" },
-      { name: "Oat Milk", hex: "#F3EAD8" },
-    ],
-    specifications: {
-      brand: "Moss & Stone",
-      category: "Skincare",
-      material: "Organic Botanical Extracts & Recyclable Glass",
-      color: "Rose Petal",
-      weight: "100ml / 3.4 fl. oz",
-      sku: "MSS-BLM-01",
-    },
-  },
-  {
-    id: "2",
-    name: "Reusable Eye Mask",
-    brand: "Atelier Rose",
-    category: "Accessories",
-    price: "$ 29",
-    rating: 4.7,
-    reviewsCount: 88,
-    description:
-      "100% pure 22-momme Mulberry silk eye mask designed to protect delicate eye contours.",
-    image:
-      "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?q=80&w=800&auto=format&fit=crop",
-    gallery: [
-      "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?q=80&w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1512290900672-1f4864f1d43a?q=80&w=800&auto=format&fit=crop",
-    ],
-    aspectClass: "aspect-square",
-    colors: [
-      { name: "Champagne", hex: "#F5EBE1" },
-      { name: "Rose Quartz", hex: "#E8C8C8" },
-    ],
-  },
-  {
-    id: "3",
-    name: "C'est La Cream",
-    brand: "Maison Éthérée",
-    category: "Skincare",
-    price: "$ 78",
-    originalPrice: "$ 95",
-    discount: "18% OFF",
-    isSale: true,
-    rating: 4.9,
-    reviewsCount: 165,
-    description:
-      "Rich restorative barrier cream with multi-molecular hyaluronic acid and centella asiatica.",
-    image:
-      "https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?q=80&w=1000&auto=format&fit=crop",
-    gallery: [
-      "https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?q=80&w=1000&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1556228720-195a672e8a03?q=80&w=800&auto=format&fit=crop",
-    ],
-    aspectClass: "aspect-[2/3]",
-  },
-  {
-    id: "4",
-    name: "Invisible Bandage",
-    brand: "Le Botaniste",
-    category: "Skincare",
-    price: "$ 33",
-    rating: 4.6,
-    reviewsCount: 72,
-    description:
-      "Targeted soothing gel treatment that creates a breathable invisible film over irritated skin.",
-    image:
-      "https://images.unsplash.com/photo-1556228720-195a672e8a03?q=80&w=800&auto=format&fit=crop",
-    aspectClass: "aspect-[4/5]",
-  },
-  {
-    id: "5",
-    name: "Hydrating Botanic Serum",
-    brand: "Aura Paris",
-    category: "Skincare",
-    price: "$ 64",
-    rating: 4.8,
-    reviewsCount: 119,
-    description:
-      "Triple-weighted hyaluronic acid with snow mushroom extract for intense cellular hydration.",
-    image:
-      "https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19?q=80&w=800&auto=format&fit=crop",
-    aspectClass: "aspect-[3/4]",
-  },
-  {
-    id: "6",
-    name: "Skin Amour Duo",
-    brand: "Moss & Stone",
-    category: "Skincare",
-    price: "$ 72",
-    originalPrice: "$ 85",
-    discount: "15% OFF",
-    isSale: true,
-    rating: 4.9,
-    reviewsCount: 94,
-    description:
-      "Synergistic two-step restorative ritual featuring our best-selling balm and hydration mist.",
-    image:
-      "https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?q=80&w=800&auto=format&fit=crop",
-    aspectClass: "aspect-[4/3]",
-  },
-];
+import { useMemo, useState } from "react";
 
 export default function ProductDetailPage() {
   const params = useParams();
   const id = params?.id as string;
 
-  const product = PRODUCTS_DATA.find(
-    (p) => p.id === id || p.name.toLowerCase().replace(/\s+/g, "-") === id,
-  );
+  // getProducts() is cheap/in-memory here; useMemo avoids recomputing
+  // the normalized list on every render (e.g. when quantity changes).
+  const allProducts = useMemo(() => getProducts(), []);
+
+  const product = allProducts.find((p) => p.id === id || p.slug === id);
 
   // Gallery state
   const galleryImages =
@@ -201,10 +42,6 @@ export default function ProductDetailPage() {
   const [activeImageIdx, setActiveImageIdx] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
 
-  // Variant & Interaction State
-  //   const [selectedColor, setSelectedColor] = useState<string | undefined>(
-  //     product?.colors ? product.colors[0]?.name : undefined,
-  //   );
   const [selectedSize, setSelectedSize] = useState<string | undefined>(
     product?.sizes ? product.sizes[0] : undefined,
   );
@@ -218,7 +55,7 @@ export default function ProductDetailPage() {
   // 1. PRODUCT NOT FOUND STATE
   if (!product) {
     return (
-      <div className="w-full min-h-screen bg-[#EDE4DC] text-[#261815] flex flex-col justify-center items-center px-6 py-28 text-center select-none font-sans">
+      <div className="w-full min-h-screen  text-[#261815] flex flex-col justify-center items-center px-6 py-28 text-center select-none font-sans">
         <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#3E2C26]/50 mb-3">
           404
         </span>
@@ -241,10 +78,16 @@ export default function ProductDetailPage() {
 
   const currentImage = galleryImages[activeImageIdx] || product.image;
 
-  // Related products
-  const relatedProducts = PRODUCTS_DATA.filter(
-    (p) => p.id !== product.id,
-  ).slice(0, 4);
+  // Related products: prefer same category, fall back to any other product
+  const relatedProducts = (() => {
+    const sameCategory = allProducts.filter(
+      (p) => p.id !== product.id && p.category === product.category,
+    );
+    const rest = allProducts.filter(
+      (p) => p.id !== product.id && p.category !== product.category,
+    );
+    return [...sameCategory, ...rest].slice(0, 4);
+  })();
 
   const handleAddToCart = () => {
     setIsAdded(true);
@@ -252,7 +95,7 @@ export default function ProductDetailPage() {
   };
 
   return (
-    <div className="w-full min-h-screen bg-[#EDE4DC] text-[#261815]">
+    <div className="w-full min-h-screen  text-[#261815]">
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 py-8 md:py-12">
         {/* 1. BREADCRUMB */}
         <nav
@@ -288,7 +131,7 @@ export default function ProductDetailPage() {
           {/* LEFT COLUMN: LARGE IMAGE GALLERY (Col span 7) */}
           <div className="lg:col-span-7 flex flex-col gap-4 motion-safe:animate-fadeInUp">
             {/* Main Image Frame */}
-            <div className="group relative w-full aspect-4/3 sm:aspect-square max-h-115 rounded-2xl overflow-hidden bg-white/70 border border-[#3E2C26]/10 shadow-sm">
+            <div className="group relative w-full aspect-4/3 sm:aspect-square max-h-115 rounded-2xl overflow-hidden bg-white/70  shadow-sm">
               <Image
                 src={currentImage}
                 alt={product.name}
@@ -326,7 +169,7 @@ export default function ProductDetailPage() {
                       key={idx}
                       type="button"
                       onClick={() => setActiveImageIdx(idx)}
-                      className={`relative h-20 w-20 sm:h-22 sm:w-22 shrink-0 rounded-xl overflow-hidden bg-white/60 transition-all cursor-pointer ${
+                      className={`relative h-20 w-20 sm:h-22 sm:w-22 shrink-0 rounded-xl overflow-hidden bg-white/60 transition-all cursor-pointer m-2 ${
                         isActive
                           ? "ring-2 ring-[#261815] ring-offset-2 border-transparent shadow-sm"
                           : "border border-[#3E2C26]/15 opacity-70 hover:opacity-100"
@@ -337,7 +180,7 @@ export default function ProductDetailPage() {
                         alt={`${product.name} thumbnail ${idx + 1}`}
                         fill
                         sizes="90px"
-                        className="object-cover select-none"
+                        className="object-cover select-none "
                       />
                     </button>
                   );
@@ -360,36 +203,14 @@ export default function ProductDetailPage() {
               {product.name}
             </h1>
 
-            {/* Rating & Reviews Row */}
-            <div className="flex items-center gap-3 mb-5">
-              <div className="flex items-center gap-1 text-amber-500">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star
-                    key={i}
-                    className={`h-4 w-4 ${
-                      i < Math.floor(product.rating || 5)
-                        ? "fill-amber-500 text-amber-500"
-                        : "text-amber-300"
-                    }`}
-                  />
-                ))}
-              </div>
-              <span className="text-xs font-medium text-[#261815]">
-                {product.rating || 4.8}{" "}
-                <span className="text-[#261815]/50">
-                  ({product.reviewsCount || 124} Reviews)
-                </span>
-              </span>
-            </div>
-
             {/* Price Row */}
             <div className="flex items-baseline gap-3 pb-5 border-b border-[#3E2C26]/10 mb-6">
               <span className="text-2xl sm:text-3xl font-semibold text-[#261815]">
-                {product.price}
+                ৳ {product.price.toLocaleString()}
               </span>
               {product.originalPrice && (
                 <span className="text-base text-[#261815]/40 line-through">
-                  {product.originalPrice}
+                  ৳ {product.originalPrice.toLocaleString()}
                 </span>
               )}
               {product.discount && (
@@ -401,8 +222,7 @@ export default function ProductDetailPage() {
 
             {/* Short Description */}
             <p className="text-sm leading-relaxed text-[#261815]/75 mb-6">
-              {product.description ||
-                "Designed for everyday comfort with a lightweight construction and modern silhouette."}
+              {product.description}
             </p>
 
             {/* Size Variants */}
@@ -481,7 +301,10 @@ export default function ProductDetailPage() {
                 ) : (
                   <>
                     <ShoppingBag className="h-4 w-4" />
-                    <span>Add to Cart</span>
+                    <span>
+                      Add to Cart • ৳{" "}
+                      {(product.price * quantity).toLocaleString()}
+                    </span>
                   </>
                 )}
               </button>
@@ -500,9 +323,7 @@ export default function ProductDetailPage() {
               <Heart
                 className={`h-4 w-4 ${isWish ? "fill-rose-600 text-rose-600" : ""}`}
               />
-              <span>
-                {isWish ? "♥ Added to Wishlist" : "♡ Add to Wishlist"}
-              </span>
+              <span>{isWish ? "Added to Wishlist" : " Add to Wishlist"}</span>
             </button>
 
             {/* 3. PRODUCT BENEFITS ROW */}
@@ -514,7 +335,7 @@ export default function ProductDetailPage() {
                     Free Shipping
                   </span>
                   <span className="text-[11px] text-[#261815]/60">
-                    On orders over $50
+                    On orders over ৳5,000
                   </span>
                 </div>
               </div>
@@ -589,16 +410,7 @@ export default function ProductDetailPage() {
           {/* Tab 1: Description */}
           {activeTab === "description" && (
             <div className="max-w-3xl flex flex-col gap-4 text-sm leading-relaxed text-[#261815]/80 animate-fadeIn">
-              <p>
-                {product.longDescription ||
-                  product.description ||
-                  "Designed for everyday comfort with a lightweight construction and modern silhouette."}
-              </p>
-              <p>
-                Crafted with exceptional attention to detail and precision. Each
-                piece undergoes rigorous testing to ensure enduring performance,
-                unmatched aesthetic cohesion, and everyday reliability.
-              </p>
+              <p>{product.longDescription || product.description}</p>
             </div>
           )}
 
@@ -609,43 +421,15 @@ export default function ProductDetailPage() {
                 <div className="py-2.5 flex justify-between">
                   <span className="text-[#261815]/60">Brand</span>
                   <span className="font-semibold text-[#261815]">
-                    {product.specifications?.brand ||
-                      product.brand ||
-                      "Moss & Stone"}
+                    {product.specifications?.brand || product.brand}
                   </span>
                 </div>
                 <div className="py-2.5 flex justify-between">
                   <span className="text-[#261815]/60">Category</span>
                   <span className="font-semibold text-[#261815]">
-                    {product.specifications?.category ||
-                      product.category ||
-                      "Beauty & Lifestyle"}
+                    {product.specifications?.category || product.category}
                   </span>
                 </div>
-                {product.specifications?.material && (
-                  <div className="py-2.5 flex justify-between">
-                    <span className="text-[#261815]/60">Material</span>
-                    <span className="font-semibold text-[#261815]">
-                      {product.specifications.material}
-                    </span>
-                  </div>
-                )}
-                {product.specifications?.color && (
-                  <div className="py-2.5 flex justify-between">
-                    <span className="text-[#261815]/60">Color</span>
-                    <span className="font-semibold text-[#261815]">
-                      {product.specifications.color}
-                    </span>
-                  </div>
-                )}
-                {product.specifications?.weight && (
-                  <div className="py-2.5 flex justify-between">
-                    <span className="text-[#261815]/60">Weight</span>
-                    <span className="font-semibold text-[#261815]">
-                      {product.specifications.weight}
-                    </span>
-                  </div>
-                )}
                 {product.specifications?.sku && (
                   <div className="py-2.5 flex justify-between">
                     <span className="text-[#261815]/60">SKU</span>
@@ -697,10 +481,10 @@ export default function ProductDetailPage() {
                   ))}
                 </div>
                 <span className="text-sm font-semibold text-[#261815]">
-                  {product.rating || 4.8} / 5
+                  4.8 / 5
                 </span>
                 <span className="text-xs text-[#261815]/50">
-                  ({product.reviewsCount || 124} verified ratings)
+                  (124 verified ratings)
                 </span>
               </div>
             </div>
@@ -805,7 +589,7 @@ export default function ProductDetailPage() {
                       {rel.name}
                     </h3>
                     <span className="text-xs sm:text-sm font-semibold text-[#261815] mt-1">
-                      {rel.price}
+                      ৳ {rel.price.toLocaleString()}
                     </span>
                   </div>
                 </Link>
@@ -822,7 +606,7 @@ export default function ProductDetailPage() {
             {product.name}
           </span>
           <span className="text-sm font-bold text-[#261815]">
-            {product.price}
+            ৳ {product.price.toLocaleString()}
           </span>
         </div>
         <button
