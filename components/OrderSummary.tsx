@@ -45,7 +45,6 @@ export default function OrderSummary() {
     console.log("[OrderSummary] published products", allProducts);
 
     if (cartIds.length > 0) {
-      // Count occurrences of each id -> quantity
       const quantityMap = new Map<string, number>();
       cartIds.forEach((id) => {
         quantityMap.set(id, (quantityMap.get(id) || 0) + 1);
