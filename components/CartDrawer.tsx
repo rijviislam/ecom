@@ -46,7 +46,7 @@ export default function CartDrawer({
             <Link
               href="/checkout"
               onClick={onClose}
-              className="block w-full rounded-full bg-forest-700 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-forest-800"
+              className="block w-full rounded-full bg-forest-700 py-3 text-center text-sm font-semibold text-[#3E2C26] transition-colors hover:bg-forest-800"
             >
               Checkout
             </Link>

@@ -1,9 +1,11 @@
 "use client";
 
-import { Menu, Search, ShoppingBag, X } from "lucide-react";
+import { Heart, Menu, ShoppingBag, X } from "lucide-react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import CartDrawer from "./CartDrawer";
+import WishlistDrawer from "./WishlistDrawer";
 
 const SHOP_LINKS = [
   { href: "/products", label: "Shop All" },
@@ -21,50 +23,51 @@ const BRAND_LINKS = [
   { href: "/shipping-returns", label: "Returns & Shipping" },
 ];
 
+// Single source of truth for ALL nav overlays — menu, search, cart, wishlist
+// are mutually exclusive: opening one always closes whichever else was open.
+type ActivePanel = "menu" | "cart" | "wishlist" | null;
+
 export default function Navbar({
   brandName = "ECOM",
   cartCount = 0,
+  wishlistCount = 0,
 }: {
   brandName?: string;
   cartCount?: number;
+  wishlistCount?: number;
 }) {
   const pathname = usePathname();
-  const router = useRouter();
 
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
-  const [searchValue, setSearchValue] = useState("");
+  const [activePanel, setActivePanel] = useState<ActivePanel>(null);
 
   const navContainerRef = useRef<HTMLDivElement>(null);
 
-  // Close menu on outside click
+  const menuOpen = activePanel === "menu";
+  const cartOpen = activePanel === "cart";
+  const wishlistOpen = activePanel === "wishlist";
+
+  // Clicking the currently-open panel's button closes it; clicking any other switches to it
+  function togglePanel(panel: Exclude<ActivePanel, null>) {
+    setActivePanel((prev) => (prev === panel ? null : panel));
+  }
+
+  // Close menu/search dropdowns on outside click (drawers have their own backdrop)
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
         navContainerRef.current &&
         !navContainerRef.current.contains(event.target as Node)
       ) {
-        setMenuOpen(false);
-        setSearchOpen(false);
       }
     }
 
-    if (menuOpen || searchOpen) {
+    if (menuOpen) {
       document.addEventListener("mousedown", handleClickOutside);
     }
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [menuOpen, searchOpen]);
-
-  function handleSearchSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (searchValue.trim()) {
-      router.push(`/products?q=${encodeURIComponent(searchValue.trim())}`);
-      setSearchOpen(false);
-      setMenuOpen(false);
-    }
-  }
+  }, [menuOpen, activePanel]);
 
   return (
     <>
@@ -77,10 +80,7 @@ export default function Navbar({
           {/* 1. LEFT: MENU / CLOSE BUTTON */}
           <button
             type="button"
-            onClick={() => {
-              setMenuOpen((prev) => !prev);
-              if (searchOpen) setSearchOpen(false);
-            }}
+            onClick={() => togglePanel("menu")}
             aria-label={menuOpen ? "Close menu" : "Open menu"}
             aria-expanded={menuOpen}
             className={`flex items-center gap-2.5 px-5 sm:px-7 border-r border-[#3E2C26]/40 text-xs sm:text-sm font-medium tracking-wide uppercase transition-colors duration-200 cursor-pointer outline-none select-none ${
@@ -91,7 +91,7 @@ export default function Navbar({
           >
             {menuOpen ? (
               <>
-                <X className="h-4 w-4 stroke-[2]" />
+                <X className="h-4 w-4 stroke-2" />
                 <span className="font-sans">Close</span>
               </>
             ) : (
@@ -106,7 +106,7 @@ export default function Navbar({
           <div className="flex-1 flex items-center justify-center px-4">
             <Link
               href="/"
-              onClick={() => setMenuOpen(false)}
+              onClick={() => setActivePanel(null)}
               className="text-lg sm:text-xl md:text-2xl font-medium tracking-tight text-[#3E2C26] transition-opacity hover:opacity-85 select-none"
             >
               {brandName}
@@ -114,29 +114,36 @@ export default function Navbar({
           </div>
 
           {/* 3. RIGHT: SEARCH BUTTON */}
+
+          {/* 4. RIGHT: WISHLIST BUTTON */}
           <button
             type="button"
-            onClick={() => {
-              setSearchOpen((prev) => !prev);
-              if (menuOpen) setMenuOpen(false);
-            }}
-            aria-label="Search"
-            className={`flex items-center justify-center px-4 sm:px-5 border-l border-[#3E2C26]/40 text-[#3E2C26] transition-colors cursor-pointer outline-none select-none ${
-              searchOpen ? "bg-[#3E2C26] text-white" : "hover:bg-[#3E2C26]/5"
+            onClick={() => togglePanel("wishlist")}
+            aria-label="Wishlist"
+            className={`relative flex items-center justify-center px-4 sm:px-5 border-l border-[#3E2C26]/40 transition-colors cursor-pointer outline-none select-none ${
+              wishlistOpen
+                ? "bg-[#3E2C26] text-white"
+                : "text-[#3E2C26] hover:bg-[#3E2C26]/5"
             }`}
           >
-            {searchOpen ? (
-              <X className="h-4 w-4 stroke-[1.75]" />
-            ) : (
-              <Search className="h-4 w-4 stroke-[1.75]" />
+            <Heart className="h-4 w-4 stroke-[1.75]" />
+            {wishlistCount > 0 && (
+              <span className="absolute top-2 right-2 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-[#3E2C26] text-[9px] font-semibold text-white">
+                {wishlistCount}
+              </span>
             )}
           </button>
 
-          {/* 4. RIGHT: CART BUTTON */}
+          {/* 5. RIGHT: CART BUTTON */}
           <button
             type="button"
+            onClick={() => togglePanel("cart")}
             aria-label="Cart"
-            className="relative flex items-center justify-center px-4 sm:px-5 border-l border-[#3E2C26]/40 text-[#3E2C26] hover:bg-[#3E2C26]/5 transition-colors cursor-pointer outline-none select-none"
+            className={`relative flex items-center justify-center px-4 sm:px-5 border-l border-[#3E2C26]/40 transition-colors cursor-pointer outline-none select-none ${
+              cartOpen
+                ? "bg-[#3E2C26] text-white"
+                : "text-[#3E2C26] hover:bg-[#3E2C26]/5"
+            }`}
           >
             <ShoppingBag className="h-4 w-4 stroke-[1.75]" />
             {cartCount > 0 && (
@@ -151,7 +158,6 @@ export default function Navbar({
         {menuOpen && (
           <div className="absolute left-6 top-16 w-1/2 z-10 animate-fadeIn">
             <div className="flex flex-col sm:flex-row divide-y sm:divide-y-0 sm:divide-x divide-[#3E2C26]/40 border-x border-b border-[#3E2C26]/40 bg-[#EDE4DC] shadow-xl">
-              {/* COLUMN 1: SHOP — fixed column width; drawer's total width = number of columns × this width */}
               <div className="w-full sm:w-64 p-6 sm:p-8 flex flex-col">
                 <h3 className="text-xs font-semibold tracking-[0.16em] uppercase text-[#3E2C26] font-sans mb-5">
                   SHOP
@@ -161,7 +167,7 @@ export default function Navbar({
                     <li key={link.label}>
                       <Link
                         href={link.href}
-                        onClick={() => setMenuOpen(false)}
+                        onClick={() => setActivePanel(null)}
                         className={`text-sm text-[#3E2C26]/80 hover:text-[#3E2C26] hover:translate-x-0.5 transition-all font-sans ${
                           pathname === link.href
                             ? "font-semibold text-[#3E2C26]"
@@ -175,7 +181,6 @@ export default function Navbar({
                 </ul>
               </div>
 
-              {/* COLUMN 2: BRAND — same fixed width; add a 3rd column with this same width class to widen the drawer further */}
               <div className="w-full sm:w-64 p-6 sm:p-8 flex flex-col">
                 <h3 className="text-xs font-semibold tracking-[0.16em] uppercase text-[#3E2C26] font-sans mb-5">
                   BRAND
@@ -185,7 +190,7 @@ export default function Navbar({
                     <li key={link.label}>
                       <Link
                         href={link.href}
-                        onClick={() => setMenuOpen(false)}
+                        onClick={() => setActivePanel(null)}
                         className="text-sm text-[#3E2C26]/80 hover:text-[#3E2C26] hover:translate-x-0.5 transition-all font-sans"
                       >
                         {link.label}
@@ -197,41 +202,22 @@ export default function Navbar({
             </div>
           </div>
         )}
-
-        {/* EXPANDABLE INLINE SEARCH BAR */}
-        {searchOpen && (
-          <div className="max-w-7xl mx-auto border-x border-b border-[#3E2C26]/40 bg-[#EDE4DC] p-3 shadow-lg relative z-10 animate-fadeIn">
-            <form
-              onSubmit={handleSearchSubmit}
-              className="relative flex items-center"
-            >
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-[#3E2C26]/50" />
-              <input
-                autoFocus
-                type="text"
-                value={searchValue}
-                onChange={(e) => setSearchValue(e.target.value)}
-                placeholder="Search products, collections, stories..."
-                className="w-full bg-transparent pl-10 pr-24 py-1.5 text-sm text-[#3E2C26] placeholder:text-[#3E2C26]/40 outline-none font-sans"
-              />
-              <button
-                type="submit"
-                className="absolute right-2 text-xs font-semibold uppercase tracking-wider text-[#3E2C26] hover:text-[#3E2C26]/70 px-2 py-1 cursor-pointer"
-              >
-                Search
-              </button>
-            </form>
-          </div>
-        )}
       </header>
 
-      {/* CLICK-OUTSIDE BACKDROP OVERLAY */}
+      {/* CLICK-OUTSIDE BACKDROP OVERLAY (menu only) */}
       {menuOpen && (
         <div
-          className="fixed  inset-0 z-30 bg-black/15 backdrop-blur-[12px] transition-opacity"
-          onClick={() => setMenuOpen(false)}
+          className="fixed  inset-0 z-30 bg-black/15 backdrop-blur-md transition-opacity"
+          onClick={() => setActivePanel(null)}
         />
       )}
+
+      {/* CART & WISHLIST DRAWERS — part of the same activePanel state, so mutually exclusive with menu/search too */}
+      <CartDrawer isOpen={cartOpen} onClose={() => setActivePanel(null)} />
+      <WishlistDrawer
+        isOpen={wishlistOpen}
+        onClose={() => setActivePanel(null)}
+      />
     </>
   );
 }

@@ -408,7 +408,7 @@ export default function Checkout({
           </Link>
 
           <div className="flex items-center gap-4 text-xs text-[#3E2C26]/70">
-            <div className="hidden sm:flex items-center gap-1.5 bg-white/60 px-3 py-1.5 rounded-full border border-[#3E2C26]/10 shadow-2xs">
+            <div className="hidden sm:flex items-center gap-1.5 bg-[#F8F2F1]/60 px-3 py-1.5 rounded-full border border-[#3E2C26]/10 shadow-2xs">
               <ShieldCheck className="w-4 h-4 text-emerald-700" />
               <span className="font-medium text-[#261815]">
                 256-Bit Encrypted Checkout
@@ -458,14 +458,14 @@ export default function Checkout({
                             isActive
                               ? "bg-[#3E2C26] text-white shadow-xs font-semibold scale-102"
                               : isDone
-                                ? "bg-white/80 text-[#3E2C26] hover:bg-white border border-[#3E2C26]/20"
+                                ? "bg-[#EDE4DC] text-[#3E2C26] hover:bg-[#F8F2F1] border border-[#3E2C26]/20"
                                 : "bg-[#3E2C26]/5 text-[#3E2C26]/40 cursor-not-allowed"
                           }`}
                         >
                           <span
                             className={`flex items-center justify-center w-4 h-4 rounded-full text-[10px] ${
                               isActive
-                                ? "bg-white text-[#3E2C26]"
+                                ? "bg-[#F8F2F1] text-[#3E2C26]"
                                 : isDone
                                   ? "bg-[#3E2C26] text-white"
                                   : "bg-[#3E2C26]/10 text-[#3E2C26]/50"
@@ -501,7 +501,7 @@ export default function Checkout({
             {/* LEFT COLUMN: 60% Form */}
             <div className="lg:col-span-7 flex flex-col gap-6 order-2 lg:order-1">
               {/* Mobile Collapsible Order Summary */}
-              <div className="block lg:hidden rounded-2xl bg-white/70 border border-[#3E2C26]/15 p-4 shadow-xs">
+              <div className="block lg:hidden rounded-2xl bg-[#F8F2F1]/70 border border-[#3E2C26]/15 p-4 shadow-xs">
                 <button
                   type="button"
                   onClick={() => setIsMobileSummaryOpen((prev) => !prev)}
@@ -567,7 +567,7 @@ export default function Checkout({
               {currentStep === 1 && (
                 <section
                   aria-labelledby="step1-title"
-                  className="bg-white/80 rounded-2xl border border-[#3E2C26]/15 p-6 sm:p-8 shadow-xs transition-all"
+                  className="bg-[#EDE4DC] rounded-2xl border border-[#3E2C26]/15 p-6 sm:p-8 shadow-xs transition-all"
                 >
                   <div className="flex items-center justify-between pb-5 border-b border-[#3E2C26]/10">
                     <div className="flex items-center gap-3">
@@ -577,7 +577,7 @@ export default function Checkout({
                       <div>
                         <h2
                           id="step1-title"
-                          className="text-lg sm:text-xl font-serif font-semibold text-[#261815]"
+                          className="text-lg sm:text-xl font-display font-semibold text-[#261815]"
                         >
                           Customer Information
                         </h2>
@@ -593,7 +593,7 @@ export default function Checkout({
                     <div>
                       <label
                         htmlFor="firstName"
-                        className="block text-xs font-semibold uppercase tracking-wider text-[#3E2C26]/80 mb-1.5"
+                        className="block text-xs font-semibold uppercase tracking-wider text-[#3E2C26]/80 mb-1.5 "
                       >
                         First Name <span className="text-rose-600">*</span>
                       </label>
@@ -608,7 +608,7 @@ export default function Checkout({
                             firstName: e.target.value,
                           })
                         }
-                        className={`w-full rounded-xl bg-white border px-4 py-3 text-sm text-[#261815] placeholder:text-[#3E2C26]/30 transition-all outline-none focus:ring-2 focus:ring-[#3E2C26]/20 ${
+                        className={`w-full rounded-xl bg-[#F8F2F1] border px-4 py-3 text-sm text-[#261815] placeholder:text-[#3E2C26]/30 transition-all outline-none focus:ring-2 focus:ring-[#3E2C26]/20 ${
                           errors.firstName
                             ? "border-rose-500 focus:border-rose-600"
                             : "border-[#3E2C26]/20 focus:border-[#3E2C26]"
@@ -641,7 +641,7 @@ export default function Checkout({
                             lastName: e.target.value,
                           })
                         }
-                        className={`w-full rounded-xl bg-white border px-4 py-3 text-sm text-[#261815] placeholder:text-[#3E2C26]/30 transition-all outline-none focus:ring-2 focus:ring-[#3E2C26]/20 ${
+                        className={`w-full rounded-xl bg-[#F8F2F1] border px-4 py-3 text-sm text-[#261815] placeholder:text-[#3E2C26]/30 transition-all outline-none focus:ring-2 focus:ring-[#3E2C26]/20 ${
                           errors.lastName
                             ? "border-rose-500 focus:border-rose-600"
                             : "border-[#3E2C26]/20 focus:border-[#3E2C26]"
@@ -675,7 +675,7 @@ export default function Checkout({
                               email: e.target.value,
                             })
                           }
-                          className={`w-full rounded-xl bg-white border pl-10 pr-4 py-3 text-sm text-[#261815] placeholder:text-[#3E2C26]/30 transition-all outline-none focus:ring-2 focus:ring-[#3E2C26]/20 ${
+                          className={`w-full rounded-xl bg-[#F8F2F1] border pl-10 pr-4 py-3 text-sm text-[#261815] placeholder:text-[#3E2C26]/30 transition-all outline-none focus:ring-2 focus:ring-[#3E2C26]/20 ${
                             errors.email
                               ? "border-rose-500 focus:border-rose-600"
                               : "border-[#3E2C26]/20 focus:border-[#3E2C26]"
@@ -711,7 +711,7 @@ export default function Checkout({
                               phone: e.target.value,
                             })
                           }
-                          className={`w-full rounded-xl bg-white border pl-10 pr-4 py-3 text-sm text-[#261815] placeholder:text-[#3E2C26]/30 transition-all outline-none focus:ring-2 focus:ring-[#3E2C26]/20 ${
+                          className={`w-full rounded-xl bg-[#F8F2F1] border pl-10 pr-4 py-3 text-sm text-[#261815] placeholder:text-[#3E2C26]/30 transition-all outline-none focus:ring-2 focus:ring-[#3E2C26]/20 ${
                             errors.phone
                               ? "border-rose-500 focus:border-rose-600"
                               : "border-[#3E2C26]/20 focus:border-[#3E2C26]"
@@ -745,7 +745,7 @@ export default function Checkout({
               {currentStep === 2 && (
                 <section
                   aria-labelledby="step2-title"
-                  className="bg-white/80 rounded-2xl border border-[#3E2C26]/15 p-6 sm:p-8 shadow-xs transition-all"
+                  className="bg-[#EDE4DC] rounded-2xl border border-[#3E2C26]/15 p-6 sm:p-8 shadow-xs transition-all"
                 >
                   <div className="flex items-center justify-between pb-5 border-b border-[#3E2C26]/10">
                     <div className="flex items-center gap-3">
@@ -786,7 +786,7 @@ export default function Checkout({
                             address: e.target.value,
                           })
                         }
-                        className={`w-full rounded-xl bg-white border px-4 py-3 text-sm text-[#261815] placeholder:text-[#3E2C26]/30 transition-all outline-none focus:ring-2 focus:ring-[#3E2C26]/20 ${
+                        className={`w-full rounded-xl bg-[#F8F2F1] border px-4 py-3 text-sm text-[#261815] placeholder:text-[#3E2C26]/30 transition-all outline-none focus:ring-2 focus:ring-[#3E2C26]/20 ${
                           errors.address
                             ? "border-rose-500 focus:border-rose-600"
                             : "border-[#3E2C26]/20 focus:border-[#3E2C26]"
@@ -821,7 +821,7 @@ export default function Checkout({
                               city: e.target.value,
                             })
                           }
-                          className={`w-full rounded-xl bg-white border px-4 py-3 text-sm text-[#261815] placeholder:text-[#3E2C26]/30 transition-all outline-none focus:ring-2 focus:ring-[#3E2C26]/20 ${
+                          className={`w-full rounded-xl bg-[#F8F2F1] border px-4 py-3 text-sm text-[#261815] placeholder:text-[#3E2C26]/30 transition-all outline-none focus:ring-2 focus:ring-[#3E2C26]/20 ${
                             errors.city
                               ? "border-rose-500 focus:border-rose-600"
                               : "border-[#3E2C26]/20 focus:border-[#3E2C26]"
@@ -853,7 +853,7 @@ export default function Checkout({
                               area: e.target.value,
                             })
                           }
-                          className={`w-full rounded-xl bg-white border px-4 py-3 text-sm text-[#261815] placeholder:text-[#3E2C26]/30 transition-all outline-none focus:ring-2 focus:ring-[#3E2C26]/20 ${
+                          className={`w-full rounded-xl bg-[#F8F2F1] border px-4 py-3 text-sm text-[#261815] placeholder:text-[#3E2C26]/30 transition-all outline-none focus:ring-2 focus:ring-[#3E2C26]/20 ${
                             errors.area
                               ? "border-rose-500 focus:border-rose-600"
                               : "border-[#3E2C26]/20 focus:border-[#3E2C26]"
@@ -885,7 +885,7 @@ export default function Checkout({
                               postalCode: e.target.value,
                             })
                           }
-                          className={`w-full rounded-xl bg-white border px-4 py-3 text-sm text-[#261815] placeholder:text-[#3E2C26]/30 transition-all outline-none focus:ring-2 focus:ring-[#3E2C26]/20 ${
+                          className={`w-full rounded-xl bg-[#F8F2F1] border px-4 py-3 text-sm text-[#261815] placeholder:text-[#3E2C26]/30 transition-all outline-none focus:ring-2 focus:ring-[#3E2C26]/20 ${
                             errors.postalCode
                               ? "border-rose-500 focus:border-rose-600"
                               : "border-[#3E2C26]/20 focus:border-[#3E2C26]"
@@ -921,7 +921,7 @@ export default function Checkout({
                             deliveryNote: e.target.value,
                           })
                         }
-                        className="w-full rounded-xl bg-white border border-[#3E2C26]/20 px-4 py-3 text-sm text-[#261815] placeholder:text-[#3E2C26]/30 transition-all outline-none focus:ring-2 focus:ring-[#3E2C26]/20 focus:border-[#3E2C26] resize-none"
+                        className="w-full rounded-xl bg-[#F8F2F1] border border-[#3E2C26]/20 px-4 py-3 text-sm text-[#261815] placeholder:text-[#3E2C26]/30 transition-all outline-none focus:ring-2 focus:ring-[#3E2C26]/20 focus:border-[#3E2C26] resize-none"
                       />
                     </div>
 
@@ -940,8 +940,8 @@ export default function Checkout({
                               key={option.id}
                               className={`relative flex flex-col p-4 rounded-xl border transition-all cursor-pointer select-none ${
                                 isSelected
-                                  ? "border-[#3E2C26] bg-[#3E2C26]/5 shadow-xs ring-1 ring-[#3E2C26]"
-                                  : "border-[#3E2C26]/15 bg-white hover:border-[#3E2C26]/40"
+                                  ? "border-[#3E2C26]/15 bg-[#F8F2F1] hover:border-[#3E2C26]/40 ring-1 ring-[#3E2C26]"
+                                  : " bg-[#EDE4DC]/5 shadow-xs "
                               }`}
                             >
                               <input
@@ -963,11 +963,11 @@ export default function Checkout({
                                     className={`w-4 h-4 rounded-full border flex items-center justify-center ${
                                       isSelected
                                         ? "border-[#3E2C26] bg-[#3E2C26]"
-                                        : "border-[#3E2C26]/30 bg-white"
+                                        : "border-[#3E2C26]/30 bg-[#F8F2F1]"
                                     }`}
                                   >
                                     {isSelected && (
-                                      <div className="w-1.5 h-1.5 rounded-full bg-white" />
+                                      <div className="w-1.5 h-1.5 rounded-full bg-[#F8F2F1]" />
                                     )}
                                   </div>
                                   <span className="font-semibold text-sm text-[#261815]">
@@ -1021,7 +1021,7 @@ export default function Checkout({
               {currentStep === 3 && (
                 <section
                   aria-labelledby="step3-title"
-                  className="bg-white/80 rounded-2xl border border-[#3E2C26]/15 p-6 sm:p-8 shadow-xs transition-all"
+                  className="bg-[#EDE4DC] rounded-2xl border border-[#3E2C26]/15 p-6 sm:p-8 shadow-xs transition-all"
                 >
                   <div className="flex items-center justify-between pb-5 border-b border-[#3E2C26]/10">
                     <div className="flex items-center gap-3">
@@ -1050,8 +1050,8 @@ export default function Checkout({
                           key={method.id}
                           className={`relative flex flex-col p-4 rounded-xl border transition-all cursor-pointer select-none ${
                             isSelected
-                              ? "border-[#3E2C26] bg-[#3E2C26]/5 shadow-xs ring-1 ring-[#3E2C26]"
-                              : "border-[#3E2C26]/15 bg-white hover:border-[#3E2C26]/40"
+                              ? "border-[#3E2C26] bg-[#F8F2F1] shadow-xs ring-1 ring-[#3E2C26]"
+                              : "border-[#3E2C26]/15 bg-[#EDE4DC] hover:border-[#3E2C26]/40"
                           }`}
                         >
                           <div className="flex items-center justify-between">
@@ -1073,11 +1073,11 @@ export default function Checkout({
                                 className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 ${
                                   isSelected
                                     ? "border-[#3E2C26] bg-[#3E2C26]"
-                                    : "border-[#3E2C26]/30 bg-white"
+                                    : "border-[#3E2C26]/30 bg-[#F8F2F1]"
                                 }`}
                               >
                                 {isSelected && (
-                                  <div className="w-1.5 h-1.5 rounded-full bg-white" />
+                                  <div className="w-1.5 h-1.5 rounded-full bg-[#F8F2F1]" />
                                 )}
                               </div>
 
@@ -1175,7 +1175,7 @@ export default function Checkout({
               {currentStep === 4 && (
                 <section
                   aria-labelledby="step4-title"
-                  className="bg-white/80 rounded-2xl border border-[#3E2C26]/15 p-6 sm:p-8 shadow-xs transition-all"
+                  className="bg-[#EDE4DC] rounded-2xl border border-[#3E2C26]/15 p-6 sm:p-8 shadow-xs transition-all"
                 >
                   <div className="flex items-center justify-between pb-5 border-b border-[#3E2C26]/10">
                     <div className="flex items-center gap-3">
@@ -1198,7 +1198,7 @@ export default function Checkout({
 
                   <div className="mt-6 flex flex-col gap-4">
                     {/* Customer Information Card */}
-                    <div className="rounded-xl bg-[#FAF7F5] border border-[#3E2C26]/10 p-4.5">
+                    <div className="rounded-xl bg-[#F8F2F1] border border-[#3E2C26]/10 p-4.5">
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#3E2C26]">
                           <User className="w-3.5 h-3.5" />
@@ -1236,7 +1236,7 @@ export default function Checkout({
                     </div>
 
                     {/* Delivery Card */}
-                    <div className="rounded-xl bg-[#FAF7F5] border border-[#3E2C26]/10 p-4.5">
+                    <div className="rounded-xl bg-[#F8F2F1] border border-[#3E2C26]/10 p-4.5">
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#3E2C26]">
                           <MapPin className="w-3.5 h-3.5" />
@@ -1265,7 +1265,7 @@ export default function Checkout({
                           </span>
                         </div>
                         {deliveryInfo.deliveryNote && (
-                          <p className="text-[11px] text-[#3E2C26]/60 italic mt-1 bg-white/60 p-2 rounded-lg border border-[#3E2C26]/5">
+                          <p className="text-[11px] text-[#3E2C26]/60 italic mt-1 bg-[#F8F2F1]/60 p-2 rounded-lg border border-[#3E2C26]/5">
                             &ldquo;{deliveryInfo.deliveryNote}&rdquo;
                           </p>
                         )}
@@ -1273,7 +1273,7 @@ export default function Checkout({
                     </div>
 
                     {/* Payment Card */}
-                    <div className="rounded-xl bg-[#FAF7F5] border border-[#3E2C26]/10 p-4.5">
+                    <div className="rounded-xl bg-[#F8F2F1] border border-[#3E2C26]/10 p-4.5">
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#3E2C26]">
                           <CreditCard className="w-3.5 h-3.5" />
@@ -1307,7 +1307,7 @@ export default function Checkout({
                     </div>
 
                     {/* Order Items Review */}
-                    <div className="rounded-xl bg-[#FAF7F5] border border-[#3E2C26]/10 p-4.5">
+                    <div className="rounded-xl bg-[#F8F2F1] border border-[#3E2C26]/10 p-4.5">
                       <div className="flex items-center justify-between mb-3">
                         <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#3E2C26]">
                           <Package className="w-3.5 h-3.5" />
@@ -1321,7 +1321,7 @@ export default function Checkout({
                             className="py-2.5 flex items-center justify-between text-xs"
                           >
                             <div className="flex items-center gap-3">
-                              <div className="relative w-10 h-10 rounded-lg overflow-hidden border border-[#3E2C26]/10 bg-white shrink-0">
+                              <div className="relative w-10 h-10 rounded-lg overflow-hidden border border-[#3E2C26]/10 bg-[#F8F2F1] shrink-0">
                                 <Image
                                   src={item.image}
                                   alt={item.name}
@@ -1387,7 +1387,7 @@ export default function Checkout({
 
             {/* RIGHT COLUMN: 40% Order Summary Sidebar */}
             <div className="lg:col-span-5 flex flex-col gap-6 order-1 lg:order-2 lg:sticky lg:top-28">
-              <div className="bg-white/80 rounded-2xl border border-[#3E2C26]/15 p-6 sm:p-7 shadow-xs">
+              <div className="bg-[#EDE4DC] rounded-2xl border border-[#3E2C26]/15 p-6 sm:p-7 shadow-xs">
                 <div className="flex items-center justify-between pb-4 border-b border-[#3E2C26]/10">
                   <h3 className="text-base sm:text-lg font-display font-semibold text-[#261815]">
                     Order Summary
@@ -1459,7 +1459,7 @@ export default function Checkout({
                         setCouponCode(e.target.value);
                         setCouponError("");
                       }}
-                      className="flex-1 rounded-xl bg-white border border-[#3E2C26]/20 px-3.5 py-2.5 text-xs text-[#261815] placeholder:text-[#3E2C26]/30 uppercase tracking-wider outline-none focus:ring-2 focus:ring-[#3E2C26]/20 focus:border-[#3E2C26]"
+                      className="flex-1 rounded-xl bg-[#F8F2F1] border border-[#3E2C26]/20 px-3.5 py-2.5 text-xs text-[#261815] placeholder:text-[#3E2C26]/30 uppercase tracking-wider outline-none focus:ring-2 focus:ring-[#3E2C26]/20 focus:border-[#3E2C26]"
                     />
                     <button
                       type="submit"
@@ -1557,7 +1557,7 @@ export default function Checkout({
               COMPLETE STATE: Order Confirmed!
              ========================================================= */
           <div className="max-w-xl mx-auto py-2">
-            <div className="bg-white/90 rounded-2xl border border-[#3E2C26]/15 px-5 py-6 shadow-sm text-center">
+            <div className="bg-[#F8F2F1] rounded-2xl border border-[#3E2C26]/15 px-5 py-6 shadow-sm text-center">
               {/* Check Icon */}
               <div className="mx-auto w-12 h-12 rounded-full bg-[#3E2C26] text-white flex items-center justify-center mb-3">
                 <Check className="w-6 h-6 stroke-[2.5]" />
@@ -1592,7 +1592,7 @@ export default function Checkout({
                         )
                       }
                       aria-label="Copy order number"
-                      className="p-1 rounded hover:bg-white cursor-pointer"
+                      className="p-1 rounded hover:bg-[#F8F2F1] cursor-pointer"
                     >
                       {copiedOrderId ? (
                         <Check className="w-3.5 h-3.5 text-emerald-700" />
@@ -1636,7 +1636,7 @@ export default function Checkout({
               </div>
 
               {/* Shipping */}
-              <div className="mt-2.5 rounded-xl bg-white border border-[#3E2C26]/10 p-3 text-left flex items-start gap-2.5 text-xs text-[#3E2C26]/65">
+              <div className="mt-2.5 rounded-xl bg-[#F8F2F1] border border-[#3E2C26]/10 p-3 text-left flex items-start gap-2.5 text-xs text-[#3E2C26]/65">
                 <MapPin className="w-4 h-4 text-[#3E2C26] shrink-0 mt-0.5" />
 
                 <div className="min-w-0">
