@@ -5,7 +5,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useRef, useState } from "react";
-import { ProductActions } from "./ProductSection";
+import { ProductActions } from "./ProductActions";
 
 const ALL_CATEGORY = "All";
 
