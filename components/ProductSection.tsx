@@ -1,117 +1,10 @@
 "use client";
 
+import { ProductActions } from "@/components/ProductActions";
 import { getProducts, type Product } from "@/lib/data";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-
-export function ProductActions({
-  productId,
-  onAddToCart,
-  onToggleWishlist,
-}: {
-  productId: string;
-  onAddToCart?: (id: string) => void;
-  onToggleWishlist?: (id: string, state: boolean) => void;
-}) {
-  const [isWishlisted, setIsWishlisted] = useState(false);
-  const [isAdded, setIsAdded] = useState(false);
-  const handleWishlistClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    const nextState = !isWishlisted;
-    setIsWishlisted(nextState);
-
-    const savedWishlist = localStorage.getItem("wishlist");
-    const wishlist: string[] = savedWishlist ? JSON.parse(savedWishlist) : [];
-
-    let updatedWishlist: string[];
-
-    if (nextState) {
-      updatedWishlist = wishlist.includes(productId)
-        ? wishlist
-        : [...wishlist, productId];
-    } else {
-      updatedWishlist = wishlist.filter((id) => id !== productId);
-    }
-
-    localStorage.setItem("wishlist", JSON.stringify(updatedWishlist));
-
-    onToggleWishlist?.(productId, nextState);
-  };
-  useEffect(() => {
-    const savedWishlist = localStorage.getItem("wishlist");
-    if (savedWishlist) {
-      const wishlist: string[] = JSON.parse(savedWishlist);
-
-      setIsWishlisted(wishlist.includes(productId));
-    }
-  }, [productId]);
-
-  const handleAddToCartClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsAdded(true);
-    console.log("CART ADD:", productId);
-    setTimeout(() => setIsAdded(false), 900);
-    onAddToCart?.(productId);
-  };
-
-  return (
-    <div className="flex shrink-0 items-center gap-2 select-none ">
-      <button
-        type="button"
-        onClick={handleAddToCartClick}
-        aria-label="Add to cart"
-        className={`flex h-9 w-9 cursor-pointer items-center justify-center rounded-full  transition-all duration-300 ${
-          isAdded
-            ? "scale-105 bg-[#3E2C26] text-white"
-            : "bg-[#5D4039] text-white hover:scale-105  hover:bg-[#5D4039] active:scale-95"
-        }`}
-      >
-        <svg
-          className="h-3.5 w-3.5"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M12 4.5v15m7.5-7.5h-15"
-          />
-        </svg>
-      </button>
-
-      <button
-        type="button"
-        onClick={handleWishlistClick}
-        aria-label="Save to wishlist"
-        className={`flex h-9 w-9 cursor-pointer items-center justify-center rounded-full  transition-all duration-300 ${
-          isWishlisted
-            ? "scale-105 bg-[#3E2C26] text-white"
-            : "bg-[#5D4039] text-white hover:scale-105  hover:bg-[#5D4039] active:scale-95"
-        }`}
-      >
-        <svg
-          className="h-3.5 w-3.5"
-          fill={isWishlisted ? "currentColor" : "none"}
-          stroke="currentColor"
-          strokeWidth="1.5"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
-          />
-        </svg>
-      </button>
-    </div>
-  );
-}
 
 export function MasonryProductCard({
   product,
@@ -129,7 +22,6 @@ export function MasonryProductCard({
       href={`/products/${product.id}`}
       className="group w-full break-inside-avoid block"
     >
-      {/* IMAGE */}
       <div
         className={`relative w-full ${aspect} overflow-hidden rounded-2xl bg-zinc-100/60`}
       >
@@ -142,7 +34,6 @@ export function MasonryProductCard({
         />
       </div>
 
-      {/* PRODUCT INFO */}
       <div className="flex items-start justify-between gap-3 px-0.5 pt-3">
         <div className="min-w-0 pr-2">
           <h3 className="font-sans text-lg font-medium tracking-tight text-[#3E2C26] ">
@@ -249,10 +140,6 @@ function MasonryGrid({
     [visibleProducts, columnCount],
   );
 
-  // gap-y controls vertical spacing between cards inside a column —
-  // this is now the ONLY source of vertical spacing (card no longer
-  // carries its own mb-8), so top/bottom whitespace stays consistent
-  // instead of stacking up.
   const gapClass =
     columnCount === 1
       ? "gap-x-3 gap-y-5"

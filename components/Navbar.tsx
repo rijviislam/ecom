@@ -107,7 +107,7 @@ export default function Navbar({
             <Link
               href="/"
               onClick={() => setActivePanel(null)}
-              className="text-lg sm:text-xl md:text-2xl font-medium tracking-tight text-[#3E2C26] transition-opacity hover:opacity-85 select-none"
+              className="text-lg sm:text-xl md:text-2xl font-extrabold tracking-tight text-[#3E2C26] transition-opacity hover:opacity-85 select-none font-display"
             >
               {brandName}
             </Link>
@@ -156,7 +156,7 @@ export default function Navbar({
 
         {/* ATTACHED TOP MEGA-MENU DROPDOWN DRAWER */}
         {menuOpen && (
-          <div className="absolute left-4 right-4 sm:left-6 sm:right-auto top-15 md:top-16 z-10 animate-fadeIn">
+          <div className="absolute left-4 right-4 sm:left-6 sm:right-auto top-15 md:top-16 z-90 animate-fadeIn">
             <div className="flex flex-col sm:flex-row divide-y sm:divide-y-0 sm:divide-x divide-[#3E2C26]/40 border-x border-b border-[#3E2C26]/40 bg-[#EDE4DC] shadow-xl">
               <div className="w-full sm:w-64 p-6 sm:p-8 flex flex-col">
                 <h3 className="text-xs font-semibold tracking-[0.16em] uppercase text-[#3E2C26] font-sans mb-5">
@@ -207,7 +207,7 @@ export default function Navbar({
       {/* CLICK-OUTSIDE BACKDROP OVERLAY (menu only) */}
       {menuOpen && (
         <div
-          className="fixed  inset-0 z-30 bg-black/15 backdrop-blur-md transition-opacity"
+          className="fixed  inset-0 z-40 bg-black/15 backdrop-blur-md transition-opacity"
           onClick={() => setActivePanel(null)}
         />
       )}

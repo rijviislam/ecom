@@ -5,7 +5,9 @@ export default function Footer() {
     <footer className=" bg-[#3E2C26] ">
       <div className="container-page grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4 px-10">
         <div>
-          <div className="font-display text-2xl text-ink">ECOM</div>
+          <div className="font-display font-extrabold text-2xl text-ink">
+            ECOM
+          </div>
           <p className="mt-3 max-w-xs text-sm text-ink/60 font-sans">
             Thoughtfully sourced electronics, fashion, home and beauty — built
             as a frontend take-home exercise, running entirely on local mock

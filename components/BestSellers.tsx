@@ -5,7 +5,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useRef, useState } from "react";
-import { ProductActions } from "./ProductSection";
+import { ProductActions } from "./ProductActions";
 
 const ALL_CATEGORY = "All";
 
@@ -23,14 +23,9 @@ export default function BestSellers({
   const [activeCategory, setActiveCategory] = useState(ALL_CATEGORY);
   const sliderRef = useRef<HTMLDivElement>(null);
 
-  // getProducts()/getCategories() are computed here, inside the component,
-  // so they only ever run on render (never stale, and safe if they later
-  // become async or depend on props/state).
   const allProducts = useMemo(() => getProducts(), []);
   const categories = useMemo(() => getCategories(), []);
 
-  // Default to items tagged/flagged as best sellers when no explicit
-  // `products` prop is passed in; fall back to all products if none exist.
   const sourceProducts = useMemo(() => {
     if (products) return products;
     const bestSellers = allProducts.filter((p) => p.isBestSeller);
@@ -153,9 +148,10 @@ export default function BestSellers({
           ref={sliderRef}
           className={`w-full ${
             hasSlider
-              ? "flex gap-4 sm:gap-6 overflow-x-auto scroll-smooth no-scrollbar snap-x snap-mandatory pb-4"
+              ? "flex gap-4 sm:gap-6 overflow-x-auto overscroll-x-contain scroll-smooth no-scrollbar snap-x snap-proximity pb-4"
               : "grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6"
           }`}
+          style={{ touchAction: "pan-y" }}
         >
           {filteredProducts.length === 0 && (
             <p className="col-span-full font-semibold text-center text-lg text-[#261815]/60 py-8">

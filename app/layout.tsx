@@ -29,7 +29,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${mavenPro.variable} ${facultyGlyphic.variable} h-full antialiased`}
     >
-      <body>
+      <body className="min-h-screen flex flex-col  overflow-x-hidden">
         <Context>
           <Navbar />
 

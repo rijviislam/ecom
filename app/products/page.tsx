@@ -1,4 +1,5 @@
-import { getProducts } from "@/lib/data";
+"use client";
+import { getProducts, type Product } from "@/lib/data";
 import {
   ChevronDown,
   Heart,
@@ -8,6 +9,141 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useProductActions } from "../hooks/useProductActions";
+
+function DesktopProductCard({ product }: { product: Product }) {
+  const { isWishlisted, isCart, handleWishlistToggle, handleCartToggle } =
+    useProductActions(product.id);
+
+  return (
+    <Link
+      href={`/products/${product.id}`}
+      className="group flex flex-col w-full rounded-2xl p-2.5 sm:p-3 transition-all duration-300 select-none"
+    >
+      <div
+        className={`relative w-full ${product.aspectClass || "aspect-3/4"} overflow-hidden rounded-xl bg-zinc-100/90 block`}
+      >
+        <Image
+          src={product.image}
+          alt={product.name}
+          fill
+          sizes="(max-width: 1024px) 50vw, 33vw"
+          className="object-cover transition-transform duration-700 ease-out group-hover:scale-105 select-none"
+        />
+
+        {/* Wishlist Heart Button */}
+        <button
+          type="button"
+          onClick={handleWishlistToggle}
+          aria-label="Save to wishlist"
+          className={`absolute top-2 right-2 z-10 flex h-9 w-9 cursor-pointer items-center justify-center rounded-full transition-all duration-300 ${
+            isWishlisted
+              ? "scale-105 bg-[#3E2C26] text-white"
+              : "bg-[#5D4039] text-white hover:scale-105 hover:bg-[#5D4039] active:scale-95"
+          }`}
+        >
+          <Heart
+            className="h-3.5 w-3.5"
+            fill={isWishlisted ? "currentColor" : "none"}
+          />
+        </button>
+
+        {/* Quick Add To Cart Button */}
+        <button
+          type="button"
+          onClick={handleCartToggle}
+          aria-label="Add to cart"
+          className={`absolute bottom-2 right-2 z-10 flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full shadow-md hover:scale-105 active:scale-95 transition-all cursor-pointer ${
+            isCart
+              ? "bg-[#261815] text-white"
+              : "bg-white/95 text-[#261815] hover:bg-[#261815] hover:text-white"
+          }`}
+        >
+          <Plus className="h-3.5 w-3.5 stroke-2" />
+        </button>
+      </div>
+
+      {/* Product Information */}
+      <div className="flex flex-col pt-2.5 px-0.5">
+        <span className="text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-[#261815]/55">
+          {product.brand}
+        </span>
+        <h3 className="text-xs sm:text-sm font-medium tracking-tight text-[#261815] line-clamp-1 mt-0.5">
+          {product.name}
+        </h3>
+        <div className="flex items-baseline gap-1.5 mt-1.5">
+          <span className="text-xs sm:text-sm font-semibold text-[#261815]">
+            ৳ {product.price.toLocaleString()}
+          </span>
+        </div>
+      </div>
+    </Link>
+  );
+}
+
+function MobileProductCard({ product }: { product: Product }) {
+  const { isWishlisted, isCart, handleWishlistToggle, handleCartToggle } =
+    useProductActions(product.id);
+
+  return (
+    <div className="group flex flex-col w-full rounded-2xl p-2.5 transition-all duration-300 select-none">
+      <Link href={`/products/${product.id}`} className="block">
+        <div
+          className={`relative w-full ${product.aspectClass || "aspect-3/4"} overflow-hidden rounded-xl bg-zinc-100/90 block`}
+        >
+          <Image
+            src={product.image}
+            alt={product.name}
+            fill
+            sizes="(max-width: 640px) 50vw, 50vw"
+            className="object-cover transition-transform duration-700 ease-out group-hover:scale-105 select-none"
+          />
+
+          <button
+            type="button"
+            onClick={handleWishlistToggle}
+            aria-label="Save to wishlist"
+            className={`absolute top-2 right-2 z-10 flex h-7 w-7 items-center justify-center rounded-full shadow-xs transition-all ${
+              isWishlisted
+                ? "bg-[#3E2C26] text-white"
+                : "bg-white/95 text-[#261815]"
+            }`}
+          >
+            <Heart
+              className="h-3 w-3"
+              fill={isWishlisted ? "currentColor" : "none"}
+            />
+          </button>
+
+          <button
+            type="button"
+            onClick={handleCartToggle}
+            aria-label="Add to cart"
+            className={`absolute bottom-2 right-2 z-10 flex h-7 w-7 items-center justify-center rounded-full shadow-md transition-all ${
+              isCart ? "bg-[#261815] text-white" : "bg-white/95 text-[#261815]"
+            }`}
+          >
+            <Plus className="h-3.5 w-3.5 stroke-2" />
+          </button>
+        </div>
+      </Link>
+
+      <div className="flex flex-col pt-2 px-0.5">
+        <span className="text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-[#261815]/55">
+          {product.brand}
+        </span>
+        <h3 className="text-xs sm:text-sm font-medium tracking-tight text-[#261815] line-clamp-1 mt-0.5">
+          {product.name}
+        </h3>
+        <div className="flex items-baseline gap-1.5 mt-1.5">
+          <span className="text-xs sm:text-sm font-semibold text-[#261815]">
+            ৳ {product.price.toLocaleString()}
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function ProductsPage() {
   const pro = getProducts();
@@ -19,15 +155,13 @@ export default function ProductsPage() {
   const mobileCol2 = pro.filter((_, i) => i % 2 === 1);
 
   return (
-    <div
-      className={`w-full min-h-screen bg-[#EDE4DC] text-[#261815] flex flex-col justify-between `}
-    >
+    <div className="w-full min-h-screen bg-[#EDE4DC] text-[#261815] flex flex-col justify-between">
       <div>
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 pb-24">
           {/* 1. HERO TITLE & SEARCH BAR */}
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pt-10 pb-8 md:pt-16 md:pb-12 border-b border-[#3E2C26]/10 mb-8">
             <div className="flex flex-col items-start max-w-2xl">
-              <h2 className="font-display text-3xl  text-[#3E2C26] md:text-5xl font-bold">
+              <h2 className="font-display text-3xl text-[#3E2C26] md:text-5xl font-bold">
                 All Products
               </h2>
               <p className="text-sm sm:text-base md:text-lg text-[#3E2C26]/70 font-sans">
@@ -35,7 +169,6 @@ export default function ProductsPage() {
               </p>
             </div>
 
-            {/* Visual Search Bar */}
             <div className="w-full md:max-w-xs lg:max-w-sm">
               <div className="relative flex items-center border-b border-[#3E2C26]/30 pb-2">
                 <Search className="h-4 w-4 text-[#3E2C26]/60 shrink-0 mr-3" />
@@ -50,9 +183,8 @@ export default function ProductsPage() {
 
           {/* 2. MAIN LAYOUT: SIDEBAR (LEFT) + MASONRY GRID (RIGHT) */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-            {/* DESKTOP FILTER SIDEBAR (Col span 3) */}
-            <aside className="hidden lg:flex lg:col-span-3 mt-3 flex-col gap-8 font-sans select-none sticky top-24 ">
-              <div className="flex items-center justify-between  border-b border-[#3E2C26]/15 pb-4.5">
+            <aside className="hidden lg:flex lg:col-span-3 mt-3 flex-col gap-8 font-sans select-none sticky top-24">
+              <div className="flex items-center justify-between border-b border-[#3E2C26]/15 pb-4.5">
                 <h3 className="text-xs sm:text-sm font-semibold tracking-tight text-[#261815]">
                   Filters
                 </h3>
@@ -61,7 +193,6 @@ export default function ProductsPage() {
                 </span>
               </div>
 
-              {/* Category */}
               <div className="flex flex-col gap-3">
                 <h4 className="text-xs font-semibold uppercase tracking-wider text-[#3E2C26]/70">
                   Category
@@ -83,7 +214,6 @@ export default function ProductsPage() {
                 </div>
               </div>
 
-              {/* Brand */}
               <div className="flex flex-col gap-3 pt-4 border-t border-[#3E2C26]/10">
                 <h4 className="text-xs font-semibold uppercase tracking-wider text-[#3E2C26]/70">
                   Brand
@@ -105,7 +235,6 @@ export default function ProductsPage() {
                 </div>
               </div>
 
-              {/* Price Range */}
               <div className="flex flex-col gap-3 pt-4 border-t border-[#3E2C26]/10">
                 <div className="flex items-center justify-between">
                   <h4 className="text-xs font-semibold uppercase tracking-wider text-[#3E2C26]/70">
@@ -129,11 +258,8 @@ export default function ProductsPage() {
               </div>
             </aside>
 
-            {/* PRODUCT CATALOG & CONTROLS (Col span 9) */}
             <div className="lg:col-span-9 flex flex-col font-sans">
-              {/* Toolbar */}
               <div className="w-full flex items-center justify-between pb-4 border-b border-[#3E2C26]/10 mb-6 select-none">
-                {/* Mobile Filter Button */}
                 <button
                   type="button"
                   className="flex lg:hidden items-center gap-2 px-3 py-1.5 rounded-lg border border-[#3E2C26]/30 bg-white/70 text-xs font-semibold uppercase tracking-wider text-[#3E2C26]"
@@ -142,12 +268,10 @@ export default function ProductsPage() {
                   <span>Filters</span>
                 </button>
 
-                {/* Dynamic Product Count */}
                 <span className="text-xs sm:text-sm font-semibold tracking-tight text-[#261815]">
-                  24 Products
+                  {pro.length} Products
                 </span>
 
-                {/* Sort Dropdown */}
                 <div className="flex items-center gap-2 text-xs sm:text-sm">
                   <span className="text-[#261815]/60 font-medium hidden sm:inline">
                     Sort:
@@ -159,7 +283,6 @@ export default function ProductsPage() {
                 </div>
               </div>
 
-              {/* 3. PINTEREST-STYLE MASONRY GRID */}
               {/* DESKTOP (3 Columns) */}
               <div className="hidden lg:grid grid-cols-3 gap-5 xl:gap-6 items-start">
                 {[col1, col2, col3].map((column, colIdx) => (
@@ -168,57 +291,7 @@ export default function ProductsPage() {
                     className="flex flex-col gap-5 xl:gap-6 w-full min-w-0"
                   >
                     {column.map((product) => (
-                      <Link
-                        href={`/products/${product.id}`}
-                        key={product.id}
-                        className="group flex flex-col w-full  rounded-2xl p-2.5 sm:p-3 transition-all duration-300   select-none"
-                      >
-                        {/* Image Container with variable aspect ratio */}
-                        <div
-                          className={`relative w-full ${product.aspectClass || "aspect-3/4"} overflow-hidden rounded-xl bg-zinc-100/90 block`}
-                        >
-                          <Image
-                            src={product.image}
-                            alt={product.name}
-                            fill
-                            sizes="(max-width: 1024px) 50vw, 33vw"
-                            className="object-cover transition-transform duration-700 ease-out group-hover:scale-105 select-none"
-                          />
-
-                          {/* Wishlist Heart Button */}
-                          <button
-                            type="button"
-                            aria-label="Save to wishlist"
-                            className="absolute top-2 right-2 z-10 flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full bg-white/95 text-[#261815] shadow-xs hover:scale-110 active:scale-95 transition-all cursor-pointer"
-                          >
-                            <Heart className="h-3.5 w-3.5 text-[#261815]/80" />
-                          </button>
-
-                          {/* Quick Add To Cart Button */}
-                          <button
-                            type="button"
-                            aria-label="Add to cart"
-                            className="absolute bottom-2 right-2 z-10 flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full bg-white/95 text-[#261815] hover:bg-[#261815] hover:text-white shadow-md hover:scale-105 active:scale-95 transition-all cursor-pointer"
-                          >
-                            <Plus className="h-3.5 w-3.5 stroke-2" />
-                          </button>
-                        </div>
-
-                        {/* Product Information */}
-                        <div className="flex flex-col pt-2.5 px-0.5">
-                          <span className="text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-[#261815]/55">
-                            {/* {product?.brand} */}
-                          </span>
-                          <h3 className="text-xs sm:text-sm font-medium tracking-tight text-[#261815] line-clamp-1 mt-0.5">
-                            {product.name}
-                          </h3>
-                          <div className="flex items-baseline gap-1.5 mt-1.5">
-                            <span className="text-xs sm:text-sm font-semibold text-[#261815]">
-                              {/* ৳ {product.price.toLocaleString()} */}
-                            </span>
-                          </div>
-                        </div>
-                      </Link>
+                      <DesktopProductCard key={product.id} product={product} />
                     ))}
                   </div>
                 ))}
@@ -232,44 +305,7 @@ export default function ProductsPage() {
                     className="flex flex-col gap-3.5 sm:gap-5 w-full min-w-0"
                   >
                     {column.map((product) => (
-                      <div
-                        key={product.id}
-                        className="group flex flex-col w-full bg-white/50 hover:bg-white rounded-2xl p-2.5 transition-all duration-300 hover:shadow-xl border border-[#3E2C26]/5 select-none"
-                      >
-                        <div
-                          className={`relative w-full ${product.aspectClass || "aspect-3/4"} overflow-hidden rounded-xl bg-zinc-100/90 block`}
-                        >
-                          <Image
-                            src={product.image}
-                            alt={product.name}
-                            fill
-                            sizes="(max-width: 640px) 50vw, 50vw"
-                            className="object-cover transition-transform duration-700 ease-out group-hover:scale-105 select-none"
-                          />
-
-                          <button
-                            type="button"
-                            aria-label="Save to wishlist"
-                            className="absolute top-2 right-2 z-10 flex h-7 w-7 items-center justify-center rounded-full bg-white/95 text-[#261815] shadow-xs"
-                          >
-                            <Heart className="h-3 w-3 text-[#261815]/80" />
-                          </button>
-                        </div>
-
-                        <div className="flex flex-col pt-2 px-0.5">
-                          <span className="text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-[#261815]/55">
-                            {product.brand}
-                          </span>
-                          <h3 className="text-xs sm:text-sm font-medium tracking-tight text-[#261815] line-clamp-1 mt-0.5">
-                            {product.name}
-                          </h3>
-                          <div className="flex items-baseline gap-1.5 mt-1.5">
-                            <span className="text-xs sm:text-sm font-semibold text-[#261815]">
-                              ৳ {product.price.toLocaleString()}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
+                      <MobileProductCard key={product.id} product={product} />
                     ))}
                   </div>
                 ))}
