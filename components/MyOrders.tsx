@@ -739,7 +739,7 @@ export default function MyOrders({
 
             {/* Filter Tabs */}
             <div className="mb-8 flex items-center justify-between gap-4">
-              <div className="flex items-center gap-2 overflow-x-auto pb-2 sm:pb-0 w-full sm:w-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+              <div className="flex items-center gap-2 overflow-x-auto pb-2 sm:pb-0 w-full sm:w-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]  px-1">
                 {STATUS_TABS.map((tab) => {
                   const isActive = activeTab === tab.id;
                   const count = tabCounts[tab.id as keyof typeof tabCounts];
@@ -751,8 +751,8 @@ export default function MyOrders({
                       onClick={() => setActiveTab(tab.id)}
                       className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider transition-all duration-200 shrink-0 cursor-pointer ${
                         isActive
-                          ? "bg-[#3E2C26] text-white shadow-xs scale-102 font-bold"
-                          : "bg-white/70 text-[#3E2C26]/75 hover:bg-white hover:text-[#261815] border border-[#3E2C26]/10"
+                          ? "bg-[#5D4039] text-white shadow-xs"
+                          : "bg-[#5D4039]/5 text-[#261815]/80 hover:bg-[#261815]/10"
                       }`}
                     >
                       <span>{tab.label}</span>
