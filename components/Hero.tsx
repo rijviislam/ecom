@@ -65,7 +65,7 @@ function SlideCard({
       href={`/products`}
       onClick={handleClick}
       draggable={false}
-      className={`group relative shrink-0 snap-start overflow-hidden shadow-2xl rounded-sm transition-all duration-500 hover:scale-105 hover:z-50 select-none ${config.size} ${config.tilt} ${config.offset} ${config.overlap} ${config.zIndex} ${config.scale}`}
+      className={`group relative shrink-0 snap-start overflow-hidden shadow-2xl rounded-sm transition-all duration-500 hover:scale-105 hover:z-40 select-none ${config.size} ${config.tilt} ${config.offset} ${config.overlap} ${config.zIndex} ${config.scale}`}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img

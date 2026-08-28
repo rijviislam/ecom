@@ -28,7 +28,7 @@ type SortId = (typeof SORT_OPTIONS)[number]["id"];
 
 function DesktopProductCard({ product }: { product: Product }) {
   const { isWishlisted, isCart, handleWishlistToggle, handleCartToggle } =
-    useProductActions(product.id);
+    useProductActions(product);
 
   return (
     <Link
@@ -95,7 +95,7 @@ function DesktopProductCard({ product }: { product: Product }) {
 
 function MobileProductCard({ product }: { product: Product }) {
   const { isWishlisted, isCart, handleWishlistToggle, handleCartToggle } =
-    useProductActions(product.id);
+    useProductActions(product);
 
   return (
     <div className="group flex flex-col w-full rounded-2xl p-2.5 transition-all duration-300 select-none break-inside-avoid mb-3.5 sm:mb-5">
@@ -251,7 +251,6 @@ export default function ProductsPage() {
     <div className="w-full min-h-screen bg-[#EDE4DC] text-[#261815] flex flex-col justify-between ">
       <div>
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 pb-24 ">
-          {/* 1. HERO TITLE & SEARCH BAR */}
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pt-10 pb-8 md:pt-16 md:pb-12 border-b border-[#3E2C26]/10 mb-8">
             <div className="flex flex-col items-start max-w-2xl">
               <h2 className="font-display text-3xl text-[#3E2C26] md:text-5xl font-bold">
@@ -276,7 +275,6 @@ export default function ProductsPage() {
             </div>
           </div>
 
-          {/* 2. MAIN LAYOUT: SIDEBAR (LEFT) + MASONRY GRID (RIGHT) */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
             <aside
               className={`${
@@ -420,17 +418,14 @@ export default function ProductsPage() {
                 </p>
               )}
 
-              {/* PINTEREST-STYLE MASONRY (CSS columns, true masonry flow) */}
               {pro.length > 0 && (
                 <>
-                  {/* Desktop: 3 columns */}
                   <div className="hidden lg:block columns-3 gap-5 xl:gap-6">
                     {pro.map((product) => (
                       <DesktopProductCard key={product.id} product={product} />
                     ))}
                   </div>
 
-                  {/* Tablet & Mobile: 2 columns */}
                   <div className="grid lg:hidden columns-2 gap-3.5 sm:gap-5">
                     {pro.map((product) => (
                       <MobileProductCard key={product.id} product={product} />

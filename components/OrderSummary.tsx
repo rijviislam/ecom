@@ -1,36 +1,13 @@
 "use client";
-import { getProducts } from "@/lib/data";
-import { CheckoutItem, DeliveryInfo, DeliveryOption } from "@/types/checkout";
+import { useShop } from "@/context/ShopContext";
+import { CheckoutItem } from "@/types/checkout";
 import { AlertCircle, Check, ShieldCheck, Tag, Truck } from "lucide-react";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
-
-function readCartIds(): string[] {
-  if (typeof window === "undefined") return [];
-
-  const raw = localStorage.getItem("cart");
-  if (!raw) {
-    console.warn("[OrderSummary] localStorage 'cart' is empty");
-    return [];
-  }
-
-  try {
-    const parsed = JSON.parse(raw);
-    if (Array.isArray(parsed)) {
-      console.log("[OrderSummary] raw cart ids", parsed);
-      return parsed.map(String);
-    }
-    console.warn("[OrderSummary] 'cart' is not an array", parsed);
-    return [];
-  } catch (err) {
-    console.warn("[OrderSummary] failed to parse 'cart'", err);
-    return [];
-  }
-}
+import React, { useState } from "react";
 
 export default function OrderSummary() {
-  const [items, setItems] = useState<CheckoutItem[]>([]);
-  const [isLoaded, setIsLoaded] = useState(false);
+  const { cart, subtotal: cartSubtotal } = useShop();
+
   const [couponCode, setCouponCode] = useState<string>("");
   const [appliedCoupon, setAppliedCoupon] = useState<{
     code: string;
@@ -39,48 +16,15 @@ export default function OrderSummary() {
   } | null>(null);
   const [couponError, setCouponError] = useState<string>("");
 
-  useEffect(() => {
-    const cartIds = readCartIds();
-    const allProducts = getProducts();
-    console.log("[OrderSummary] published products", allProducts);
-
-    if (cartIds.length > 0) {
-      const quantityMap = new Map<string, number>();
-      cartIds.forEach((id) => {
-        quantityMap.set(id, (quantityMap.get(id) || 0) + 1);
-      });
-
-      const resolved: CheckoutItem[] = Array.from(quantityMap.entries())
-        .map(([id, quantity]) => {
-          const product = allProducts.find(
-            (p: any) =>
-              String(p.id) === String(id) || String(p.uuid) === String(id),
-          );
-
-          if (!product) {
-            console.warn(`[OrderSummary] no product found for cart id "${id}"`);
-            return null;
-          }
-
-          return {
-            id: product.id,
-            name: product.name,
-            category: product.category || product.brand || "General",
-            quantity,
-            price: Number(product.price) || 0,
-            image:
-              product.image || product.image?.[0] || product.thumbnail || "",
-            variant: undefined,
-          } as CheckoutItem;
-        })
-        .filter((item): item is CheckoutItem => item !== null);
-
-      console.log("[OrderSummary] resolved checkout items", resolved);
-      setItems(resolved);
-    }
-
-    setIsLoaded(true);
-  }, []);
+  const items: CheckoutItem[] = cart.map((item) => ({
+    id: item.id,
+    name: item.name,
+    category: (item as any).category || (item as any).brand || "General",
+    quantity: item.quantity,
+    price: Number(item.price) || 0,
+    image: item.image || "",
+    variant: undefined,
+  }));
 
   // Coupon Logic
   const handleApplyCoupon = (e?: React.FormEvent) => {
@@ -118,12 +62,9 @@ export default function OrderSummary() {
     setCouponError("");
   };
 
-  const itemsSubtotal = items.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0,
-  );
+  const itemsSubtotal = cartSubtotal;
 
-  const DELIVERY_OPTIONS: DeliveryOption[] = [
+  const DELIVERY_OPTIONS = [
     {
       id: "standard",
       title: "Standard Delivery",
@@ -140,18 +81,7 @@ export default function OrderSummary() {
     },
   ];
 
-  const [deliveryInfo] = useState<DeliveryInfo>({
-    address: "",
-    city: "Dhaka",
-    area: "",
-    postalCode: "",
-    deliveryNote: "",
-    deliveryMethod: "standard",
-  });
-
-  const selectedDelivery =
-    DELIVERY_OPTIONS.find((d) => d.id === deliveryInfo.deliveryMethod) ||
-    DELIVERY_OPTIONS[0];
+  const selectedDelivery = DELIVERY_OPTIONS[0];
   const shippingCost = items.length > 0 ? selectedDelivery.cost : 0;
   const discountAmount = appliedCoupon ? appliedCoupon.discountAmount : 0;
   const grandTotal = Math.max(0, itemsSubtotal + shippingCost - discountAmount);
@@ -169,11 +99,7 @@ export default function OrderSummary() {
         </div>
 
         <div className="py-4 divide-y divide-[#3E2C26]/10">
-          {!isLoaded && (
-            <p className="text-xs text-[#3E2C26]/60 py-4">Loading cart…</p>
-          )}
-
-          {isLoaded && items.length === 0 && (
+          {items.length === 0 && (
             <p className="text-xs text-[#3E2C26]/60 py-4">
               Your cart is empty. Add items and they&apos;ll appear here.
             </p>
@@ -188,9 +114,6 @@ export default function OrderSummary() {
                   fill
                   sizes="64px"
                   className="object-cover"
-                  onError={(e) => {
-                    e.currentTarget.src;
-                  }}
                 />
 
                 <span className="absolute top-1 right-1 bg-[#3E2C26] text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center shadow-xs">

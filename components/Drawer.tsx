@@ -34,7 +34,7 @@ export default function Drawer({
     <>
       <div
         onClick={onClose}
-        className={`fixed left-0 right-0 top-18 md:top-20 bottom-0 z-40 bg-ink/40 backdrop-blur-md bg-[#ece0de]/10 transition-opacity duration-300 ease-in-out ${
+        className={`fixed inset-0 z-40 bg-ink/40 backdrop-blur-md bg-[#ece0de]/10 transition-opacity duration-300 ease-in-out ${
           isOpen
             ? "opacity-100 pointer-events-auto"
             : "opacity-0 pointer-events-none"
@@ -42,7 +42,7 @@ export default function Drawer({
       />
 
       <aside
-        className={`fixed left-4 right-4 sm:left-auto sm:right-6 top-15 md:top-17 bottom-4 z-50 flex w-auto sm:w-full sm:max-w-105 flex-col overflow-hidden border border-[#3E2C26]/40 bg-[#ece0de]/90 shadow-2xl transition-transform duration-300 ease-in-out text-[#3E2C26] ${
+        className={`fixed left-4 right-4 sm:left-auto sm:right-6 top-17 md:top-17 bottom-4 z-50 flex w-auto sm:w-full sm:max-w-105 flex-col overflow-hidden border border-[#3E2C26]/40 bg-[#ece0de]/90 shadow-2xl transition-transform duration-300 ease-in-out text-[#3E2C26] ${
           isOpen
             ? "translate-x-0 opacity-100"
             : "translate-x-6 opacity-0 pointer-events-none"

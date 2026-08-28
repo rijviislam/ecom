@@ -46,7 +46,7 @@ export function MasonryProductCard({
         </div>
 
         <ProductActions
-          productId={product.id}
+          product={product}
           onAddToCart={onAddToCart}
           onToggleWishlist={onToggleWishlist}
         />

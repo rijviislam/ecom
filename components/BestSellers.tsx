@@ -207,10 +207,7 @@ export default function BestSellers({
                     </div>
                   </div>
 
-                  <ProductActions
-                    productId={product.id}
-                    onAddToCart={onAddToCart}
-                  />
+                  <ProductActions product={product} onAddToCart={onAddToCart} />
                 </div>
               </div>
             );
