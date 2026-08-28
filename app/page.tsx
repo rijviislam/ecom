@@ -7,7 +7,7 @@ import ProductSection from "@/components/ProductSection";
 
 export default function Home() {
   return (
-    <div className="   ">
+    <div>
       <Hero />
       <BestSellers />
       <FeaturedCategories />

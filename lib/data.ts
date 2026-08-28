@@ -9,9 +9,8 @@ import {
   OrderStatus,
   PaymentStatus,
 } from "@/types/order";
+import { Product } from "@/types/product";
 
-// Maps raw ids in the data to display names — replace with a real
-// lookup (DB join, CMS relation, etc.) once you have one.
 const BRAND_NAMES: Record<string, string> = {
   "brand-zenith": "Zenith",
   "brand-nimbus": "Nimbus",
@@ -27,36 +26,6 @@ const CATEGORY_NAMES: Record<string, string> = {
   "cat-beauty": "Beauty",
 };
 
-export interface Product {
-  thumbnail: string;
-  uuid: string;
-  isFeatured: unknown;
-  isBestSeller: unknown;
-  id: string;
-  slug: string;
-  name: string;
-  brand: string;
-  category: string;
-  price: number;
-  originalPrice?: number;
-  discount?: string;
-  isSale: boolean;
-  description: string;
-  longDescription: string;
-  image: string;
-  gallery: string[];
-  aspectClass: string;
-  colors?: { name: string; hex: string }[];
-  sizes?: string[];
-  specifications: {
-    brand: string;
-    category: string;
-    sku: string;
-  };
-}
-
-// Deterministic pseudo-aspect-ratio so masonry has variety without
-// hydration mismatches from Math.random().
 const ASPECT_CLASSES = [
   "aspect-[3/4]",
   "aspect-square",
@@ -128,8 +97,6 @@ function normalizeProduct(raw: (typeof productsData)[number]): Product {
   };
 }
 
-// Very rough color-name → hex mapping for swatches. Extend as needed,
-// or better: add a `hex` field to your variant data upstream.
 function colorNameToHex(name: string): string {
   const map: Record<string, string> = {
     Black: "#1a1a1a",
@@ -301,77 +268,3 @@ export function effectivePrice(
 ) {
   return product.salePrice != null ? product.salePrice : product.retailPrice;
 }
-
-// export function formatCurrency(amount: any) {
-//   return `\u09F3${Number(amount).toLocaleString("en-BD", { maximumFractionDigits: 0 })}`;
-// }
-
-/**
- * Filters + sorts the product catalog according to the same kind of
- * query params the real /products endpoint accepts.
- */
-// export function queryProducts({
-//   search,
-//   categorySlug,
-//   brandUuid,
-//   minPrice,
-//   maxPrice,
-//   sortBy,
-// }: {
-//   search?: string;
-//   categorySlug?: string;
-//   brandUuid?: string;
-//   minPrice?: number;
-//   maxPrice?: number;
-//   sortBy?: "price_asc" | "price_desc" | "newest";
-// } = {}) {
-//   let items = getProducts();
-
-//   if (categorySlug) {
-//     const category = getCategoryBySlug(categorySlug);
-//     if (category) items = items.filter((p) => p.categoryUuid === category.uuid);
-//   }
-
-//   if (brandUuid) {
-//     items = items.filter((p) => p.brandUuid === brandUuid);
-//   }
-
-//   if (search && search.trim()) {
-//     const q = search.trim().toLowerCase();
-//     items = items.filter(
-//       (p) =>
-//         p.name.toLowerCase().includes(q) ||
-//         p.description?.toLowerCase().includes(q) ||
-//         p.sku?.toLowerCase().includes(q),
-//     );
-//   }
-
-//   if (minPrice != null) {
-//     items = items.filter((p) => effectivePrice(p) >= Number(minPrice));
-//   }
-//   if (maxPrice != null) {
-//     items = items.filter((p) => effectivePrice(p) <= Number(maxPrice));
-//   }
-
-//   switch (sortBy) {
-//     case "price_asc":
-//       items = [...items].sort((a, b) => effectivePrice(a) - effectivePrice(b));
-//       break;
-//     case "price_desc":
-//       items = [...items].sort((a, b) => effectivePrice(b) - effectivePrice(a));
-//       break;
-//     case "newest":
-//       items = [...items].sort(
-//         (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
-//       );
-//       break;
-//     default:
-//       // featured first, then newest
-//       items = [...items].sort((a, b) => {
-//         if (a.isFeatured !== b.isFeatured) return a.isFeatured ? -1 : 1;
-//         return new Date(b.createdAt) - new Date(a.createdAt);
-//       });
-//   }
-
-//   return items;
-// }

@@ -1,6 +1,7 @@
 "use client";
 import { useProductActions } from "@/hooks/useProductActions";
-import { getProducts, type Product } from "@/lib/data";
+import { getProducts } from "@/lib/data";
+import { Product } from "@/types/product";
 import {
   ChevronDown,
   Heart,

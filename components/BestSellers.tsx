@@ -1,6 +1,7 @@
 "use client";
 
-import { getCategories, getProducts, type Product } from "@/lib/data";
+import { getCategories, getProducts } from "@/lib/data";
+import { Product } from "@/types/product";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -59,7 +60,6 @@ export default function BestSellers({
       className="w-full text-[#261815] select-none bg-[#ece0de]/50 py-12 md:py-16"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
-        {/* SECTION HEADER */}
         <div className="mb-6">
           <h2 className="font-display text-3xl font-bold text-[#3E2C26] md:text-4xl">
             {title}
@@ -71,12 +71,9 @@ export default function BestSellers({
           )}
         </div>
 
-        {/* CONTROLS: CATEGORIES & SLIDER ARROWS */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
-          {/* Category Filter Pills */}
           <div className="flex items-center gap-2 overflow-x-auto pb-2 sm:pb-0 w-full sm:w-auto no-scrollbar">
             <div className="flex items-center gap-2 sm:gap-3 flex-nowrap">
-              {/* "All" pill isn't part of getCategories(), so it's added explicitly */}
               <button
                 type="button"
                 onClick={() => setActiveCategory(ALL_CATEGORY)}
@@ -109,7 +106,6 @@ export default function BestSellers({
             </div>
           </div>
 
-          {/* Right: View More & Conditional Slider Navigation Arrows */}
           <div className="flex items-center gap-4">
             <Link
               href="/products"
@@ -119,7 +115,6 @@ export default function BestSellers({
               <span className="absolute bottom-0 left-0 h-px w-full bg-zinc-800 transition-all duration-300 group-hover:h-[1.5px] group-hover:bg-zinc-950" />
             </Link>
 
-            {/* Slider buttons appear ONLY when products > 4 */}
             {hasSlider && (
               <div className="flex items-center gap-1.5">
                 <button
@@ -143,7 +138,6 @@ export default function BestSellers({
           </div>
         </div>
 
-        {/* PRODUCTS LIST / SLIDER CONTAINER */}
         <div
           ref={sliderRef}
           className={`w-full ${

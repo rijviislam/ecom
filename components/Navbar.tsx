@@ -11,10 +11,6 @@ import WishlistDrawer from "./WishlistDrawer";
 const SHOP_LINKS = [
   { href: "/products", label: "Shop All" },
   { href: "/orders", label: "My Orders" },
-  { href: "/products?category=skincare", label: "Skincare" },
-  { href: "/products?category=makeup", label: "Makeup" },
-  { href: "/products?category=fragrance", label: "Fragrance" },
-  { href: "/products?category=body", label: "Body & Bath" },
 ];
 
 const BRAND_LINKS = [
@@ -73,9 +69,7 @@ export default function Navbar({
         ref={navContainerRef}
         className={`sticky top-0 z-50 w-full pt-3 pb-3 px-4 sm:px-6 relative transition-all `}
       >
-        {/* TOP SEGMENTED BOXED BAR */}
         <div className="max-w-10xl mx-auto flex h-12 md:h-14 items-stretch border border-[#3E2C26]/50 bg-[#ece0de]/90 shadow-xs relative z-90">
-          {/* 1. LEFT: MENU / CLOSE BUTTON */}
           <button
             type="button"
             onClick={() => togglePanel("menu")}
@@ -100,7 +94,6 @@ export default function Navbar({
             )}
           </button>
 
-          {/* 2. CENTER: EDITORIAL BRAND LOGO */}
           <div className="flex-1 flex items-center justify-center px-4">
             <Link
               href="/"
@@ -111,9 +104,6 @@ export default function Navbar({
             </Link>
           </div>
 
-          {/* 3. RIGHT: SEARCH BUTTON */}
-
-          {/* 4. RIGHT: WISHLIST BUTTON */}
           <button
             type="button"
             onClick={() => togglePanel("wishlist")}
@@ -132,7 +122,6 @@ export default function Navbar({
             )}
           </button>
 
-          {/* 5. RIGHT: CART BUTTON */}
           <button
             type="button"
             onClick={() => togglePanel("cart")}
@@ -152,7 +141,6 @@ export default function Navbar({
           </button>
         </div>
 
-        {/* ATTACHED TOP MEGA-MENU DROPDOWN DRAWER */}
         {menuOpen && (
           <div className="absolute left-4 right-4 sm:left-6 sm:right-auto top-15 md:top-17 z-50 animate-fadeIn">
             <div className="flex flex-col sm:flex-row divide-y sm:divide-y-0 sm:divide-x divide-[#3E2C26]/40 border-x border-b border-[#3E2C26]/40 bg-[#ece0de]/90 shadow-xl">
@@ -202,7 +190,6 @@ export default function Navbar({
         )}
       </header>
 
-      {/* CLICK-OUTSIDE BACKDROP OVERLAY (menu only) */}
       {menuOpen && (
         <div
           className="fixed  inset-0 z-40 bg-[#ece0de]/10 backdrop-blur-md transition-opacity"
@@ -210,7 +197,6 @@ export default function Navbar({
         />
       )}
 
-      {/* CART & WISHLIST DRAWERS — part of the same activePanel state, so mutually exclusive with menu/search too */}
       <CartDrawer isOpen={cartOpen} onClose={() => setActivePanel(null)} />
       <WishlistDrawer
         isOpen={wishlistOpen}
