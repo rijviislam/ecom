@@ -222,8 +222,6 @@ export function ShopProvider({ children }: { children: React.ReactNode }) {
     return state.cart.reduce((total, item) => total + item.quantity, 0);
   }, [state.cart]);
 
-  // SUBTOTAL
-
   const subtotal = useMemo(() => {
     return state.cart.reduce(
       (total, item) => total + item.price * item.quantity,

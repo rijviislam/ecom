@@ -1,7 +1,8 @@
 "use client";
 
 import { ProductActions } from "@/components/ProductActions";
-import { getProducts, type Product } from "@/lib/data";
+import { getProducts } from "@/lib/data";
+import { Product } from "@/types/product";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";

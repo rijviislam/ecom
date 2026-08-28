@@ -1,6 +1,7 @@
 "use client";
 
-import { getProducts, type Product } from "@/lib/data";
+import { getProducts } from "@/lib/data";
+import { Product } from "@/types/product";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 
@@ -61,8 +62,7 @@ function SlideCard({
   };
 
   return (
-    <Link
-      href={`/products`}
+    <div
       onClick={handleClick}
       draggable={false}
       className={`group relative shrink-0 snap-start overflow-hidden shadow-2xl rounded-sm transition-all duration-500 hover:scale-105 hover:z-40 select-none ${config.size} ${config.tilt} ${config.offset} ${config.overlap} ${config.zIndex} ${config.scale}`}
@@ -74,7 +74,7 @@ function SlideCard({
         draggable={false}
         className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110 select-none pointer-events-none"
       />
-    </Link>
+    </div>
   );
 }
 
@@ -194,7 +194,6 @@ export default function HeroSection() {
       isMovedRef.current = true;
     }
 
-    // Direct 1:1 follow
     el.scrollLeft = d.scrollStart - walk;
     checkInfiniteWrap();
 

@@ -26,7 +26,6 @@ export default function OrderSummary() {
     variant: undefined,
   }));
 
-  // Coupon Logic
   const handleApplyCoupon = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     const clean = couponCode.trim().toUpperCase();

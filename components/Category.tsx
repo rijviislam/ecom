@@ -1,17 +1,10 @@
 "use client";
 
-import { getCategories, getProducts, type Product } from "@/lib/data";
+import { getCategories, getProducts } from "@/lib/data";
+import FeaturedCategoryEntry from "@/types/category";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-
-interface FeaturedCategoryEntry {
-  key: string;
-  name: string;
-  count: number;
-  leftProduct: Product | null;
-  rightProduct: Product | null;
-}
 
 const ALL_KEY = "all";
 
@@ -89,24 +82,7 @@ export default function FeaturedCategories() {
                     />
                   </div>
 
-                  <div className="flex justify-between items-start mt-6 px-1 w-full">
-                    <div>
-                      <h3 className="text-lg font-medium text-[#3E2C26] tracking-wide font-display">
-                        {activeCategory.leftProduct.name}
-                      </h3>
-                      <p className="text-md text-[#3E2C26] font-sans mt-1">
-                        ৳ {activeCategory.leftProduct.price.toLocaleString()}
-                      </p>
-                    </div>
-                    <button
-                      aria-label="Add to cart"
-                      className="flex h-8 w-8 items-center justify-center rounded-full border border-zinc-200 hover:border-zinc-950 hover:text-zinc-950 transition-colors duration-300 cursor-pointer outline-none"
-                    >
-                      <span className="text-lg font-light leading-none select-none">
-                        +
-                      </span>
-                    </button>
-                  </div>
+                  <div className="flex justify-between items-start mt-6 px-1 w-full"></div>
                 </>
               ) : (
                 <div className="w-full aspect-4/5 rounded-full bg-zinc-100 flex items-center justify-center text-xs text-zinc-400">
@@ -172,24 +148,7 @@ export default function FeaturedCategories() {
                     />
                   </div>
 
-                  <div className="flex justify-between items-start mt-6 px-1 w-full">
-                    <div>
-                      <h3 className="text-lg font-medium text-[#3E2C26] tracking-wide font-sans">
-                        {activeCategory.rightProduct.name}
-                      </h3>
-                      <p className="text-md text-zinc-500 font-sans mt-1">
-                        ৳ {activeCategory.rightProduct.price.toLocaleString()}
-                      </p>
-                    </div>
-                    <button
-                      aria-label="Add to cart"
-                      className="flex h-8 w-8 items-center justify-center rounded-full border border-zinc-200  hover:border-zinc-950 hover:text-zinc-950 transition-colors duration-300 cursor-pointer text-zinc-600 outline-none"
-                    >
-                      <span className="text-lg font-light leading-none select-none">
-                        +
-                      </span>
-                    </button>
-                  </div>
+                  <div className="flex justify-between items-start mt-6 px-1 w-full"></div>
                 </>
               ) : (
                 <div className="w-full aspect-3/4 bg-zinc-100 flex items-center justify-center text-xs text-zinc-400">

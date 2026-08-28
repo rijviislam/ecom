@@ -1,5 +1,6 @@
 "use client";
 
+import { useShop } from "@/context/ShopContext";
 import { getProducts } from "@/lib/data";
 import {
   Check,
@@ -25,13 +26,13 @@ export default function ProductDetailPage() {
   const params = useParams();
   const id = params?.id as string;
 
-  // getProducts() is cheap/in-memory here; useMemo avoids recomputing
-  // the normalized list on every render (e.g. when quantity changes).
+  const { addToCart, addToWishlist, removeFromWishlist, isInWishlist } =
+    useShop();
+
   const allProducts = useMemo(() => getProducts(), []);
 
   const product = allProducts.find((p) => p.id === id || p.slug === id);
 
-  // Gallery state
   const galleryImages =
     product?.gallery && product.gallery.length > 0
       ? product.gallery
@@ -46,13 +47,11 @@ export default function ProductDetailPage() {
     product?.sizes ? product.sizes[0] : undefined,
   );
   const [quantity, setQuantity] = useState(1);
-  const [isWish, setIsWish] = useState(false);
   const [activeTab, setActiveTab] = useState<
     "description" | "specifications" | "shipping"
   >("description");
   const [isAdded, setIsAdded] = useState(false);
 
-  // 1. PRODUCT NOT FOUND STATE
   if (!product) {
     return (
       <div className="w-full min-h-screen  text-[#261815] flex flex-col justify-center items-center px-6 py-28 text-center select-none font-sans">
@@ -77,8 +76,8 @@ export default function ProductDetailPage() {
   }
 
   const currentImage = galleryImages[activeImageIdx] || product.image;
+  const isWish = isInWishlist(product.id);
 
-  // Related products: prefer same category, fall back to any other product
   const relatedProducts = (() => {
     const sameCategory = allProducts.filter(
       (p) => p.id !== product.id && p.category === product.category,
@@ -90,14 +89,22 @@ export default function ProductDetailPage() {
   })();
 
   const handleAddToCart = () => {
+    addToCart(product, quantity);
     setIsAdded(true);
     setTimeout(() => setIsAdded(false), 1200);
+  };
+
+  const handleToggleWishlist = () => {
+    if (isWish) {
+      removeFromWishlist(product.id);
+    } else {
+      addToWishlist(product);
+    }
   };
 
   return (
     <div className="w-full min-h-screen  text-[#261815]">
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 py-8 md:py-12">
-        {/* 1. BREADCRUMB */}
         <nav
           aria-label="Breadcrumb"
           className="flex items-center gap-2 text-xs text-[#261815]/60 mb-8 sm:mb-10 font-sans motion-safe:animate-fadeInUp"
@@ -126,11 +133,8 @@ export default function ProductDetailPage() {
           </span>
         </nav>
 
-        {/* 2. MAIN 2-COLUMN PRODUCT DETAILS LAYOUT */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start pb-16 lg:pb-24 border-b border-[#3E2C26]/10">
-          {/* LEFT COLUMN: LARGE IMAGE GALLERY (Col span 7) */}
           <div className="lg:col-span-7 flex flex-col gap-4 motion-safe:animate-fadeInUp">
-            {/* Main Image Frame */}
             <div className="group relative w-full aspect-4/3 sm:aspect-square max-h-115 rounded-2xl overflow-hidden bg-white/70  shadow-sm">
               <Image
                 src={currentImage}
@@ -141,25 +145,22 @@ export default function ProductDetailPage() {
                 priority
               />
 
-              {/* Discount Badge */}
               {product.isSale && (
                 <span className="absolute top-4 left-4 bg-[#261815] text-[#EDE4DC] text-xs font-semibold tracking-wider uppercase px-3 py-1 rounded-full shadow-xs font-sans">
                   {product.discount || "SALE"}
                 </span>
               )}
 
-              {/* Fullscreen Lightbox Trigger */}
               <button
                 type="button"
                 onClick={() => setLightboxOpen(true)}
                 aria-label="Open fullscreen image"
-                className="absolute top-4 right-4 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-[#261815] shadow-xs opacity-0 group-hover:opacity-100 hover:scale-110 transition-all cursor-pointer"
+                className="absolute top-4 right-4 flex h-9 w-9 items-center justify-center rounded-full  text-[#261815] shadow-xs opacity-0 group-hover:opacity-100 hover:scale-110 transition-all cursor-pointer"
               >
                 <Maximize2 className="h-4 w-4" />
               </button>
             </div>
 
-            {/* Thumbnails Row */}
             {galleryImages.length > 1 && (
               <div className="flex items-center gap-3 overflow-x-auto pb-1 no-scrollbar">
                 {galleryImages.map((imgUrl: string, idx: number) => {
@@ -171,7 +172,7 @@ export default function ProductDetailPage() {
                       onClick={() => setActiveImageIdx(idx)}
                       className={`relative h-20 w-20 sm:h-22 sm:w-22 shrink-0 rounded-xl overflow-hidden bg-white/60 transition-all cursor-pointer m-2 ${
                         isActive
-                          ? "ring-2 ring-[#261815] ring-offset-2 border-transparent shadow-sm"
+                          ? "ring-2 ring-[#261815]/20 ring-offset-2 border-transparent shadow-sm"
                           : "border border-[#3E2C26]/15 opacity-70 hover:opacity-100"
                       }`}
                     >
@@ -189,21 +190,17 @@ export default function ProductDetailPage() {
             )}
           </div>
 
-          {/* RIGHT COLUMN: PRODUCT INFORMATION & PURCHASING (Col span 5) */}
           <div className="lg:col-span-5 flex flex-col font-sans select-none motion-safe:animate-fadeInUp delay-100">
-            {/* Brand Label */}
             {product.brand && (
               <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#3E2C26]/60 mb-2">
                 {product.brand}
               </span>
             )}
 
-            {/* Product Name */}
             <h1 className="text-3xl sm:text-4xl md:text-[42px] font-normal tracking-tight font-display text-[#261815] leading-[1.15] mb-3.5">
               {product.name}
             </h1>
 
-            {/* Price Row */}
             <div className="flex items-baseline gap-3 pb-5 border-b border-[#3E2C26]/10 mb-6">
               <span className="text-2xl sm:text-3xl font-semibold text-[#261815]">
                 ৳ {product.price.toLocaleString()}
@@ -220,12 +217,10 @@ export default function ProductDetailPage() {
               )}
             </div>
 
-            {/* Short Description */}
             <p className="text-sm leading-relaxed text-[#261815]/75 mb-6">
               {product.description}
             </p>
 
-            {/* Size Variants */}
             {product.sizes && product.sizes.length > 0 && (
               <div className="mb-6 flex flex-col gap-2.5">
                 <div className="flex items-center justify-between">
@@ -258,9 +253,7 @@ export default function ProductDetailPage() {
               </div>
             )}
 
-            {/* Quantity Selector & Add to Cart Area */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mb-4">
-              {/* Quantity Stepper */}
               <div className="flex items-center justify-between border border-[#261815]/30 rounded-xl bg-white/70 p-1 shrink-0">
                 <button
                   type="button"
@@ -283,7 +276,6 @@ export default function ProductDetailPage() {
                 </button>
               </div>
 
-              {/* Primary Add to Cart CTA */}
               <button
                 type="button"
                 onClick={handleAddToCart}
@@ -310,23 +302,21 @@ export default function ProductDetailPage() {
               </button>
             </div>
 
-            {/* Wishlist CTA Button */}
             <button
               type="button"
-              onClick={() => setIsWish((prev) => !prev)}
+              onClick={handleToggleWishlist}
               className={`w-full flex items-center justify-center gap-2 py-3 rounded-xl border text-xs font-semibold uppercase tracking-wider transition-all cursor-pointer mb-8 ${
                 isWish
-                  ? "border-rose-600 bg-rose-50 text-rose-600"
+                  ? "border-[#261815] bg-rose-50 text-[#261815]"
                   : "border-[#261815]/20 bg-white/50 text-[#261815] hover:border-[#261815]"
               }`}
             >
               <Heart
-                className={`h-4 w-4 ${isWish ? "fill-rose-600 text-rose-600" : ""}`}
+                className={`h-4 w-4 ${isWish ? "fill-[#261815] text-[#261815]" : ""}`}
               />
               <span>{isWish ? "Added to Wishlist" : " Add to Wishlist"}</span>
             </button>
 
-            {/* 3. PRODUCT BENEFITS ROW */}
             <div className="grid grid-cols-2 gap-3.5 py-5 border-t border-[#3E2C26]/10 text-xs text-[#261815]/75">
               <div className="flex items-start gap-2.5">
                 <Truck className="h-4 w-4 text-[#261815] shrink-0 mt-0.5" />
@@ -377,7 +367,6 @@ export default function ProductDetailPage() {
         </div>
 
         <div className="py-14 border-b border-[#3E2C26]/10 font-sans">
-          {/* Tab Headers */}
           <div className="flex items-center gap-8 border-b border-[#3E2C26]/15 pb-4 mb-8 overflow-x-auto no-scrollbar">
             {(["description", "specifications", "shipping"] as const).map(
               (tabKey) => {
@@ -407,14 +396,12 @@ export default function ProductDetailPage() {
             )}
           </div>
 
-          {/* Tab 1: Description */}
           {activeTab === "description" && (
             <div className="max-w-3xl flex flex-col gap-4 text-sm leading-relaxed text-[#261815]/80 animate-fadeIn">
               <p>{product.longDescription || product.description}</p>
             </div>
           )}
 
-          {/* Tab 2: Specifications */}
           {activeTab === "specifications" && (
             <div className="max-w-2xl animate-fadeIn">
               <div className="divide-y divide-[#3E2C26]/10 text-xs sm:text-sm">
@@ -543,7 +530,6 @@ export default function ProductDetailPage() {
           </div>
         </section>
 
-        {/* 6. YOU MAY ALSO LIKE (Related Products) */}
         {relatedProducts.length > 0 && (
           <section className="pt-14 pb-8 font-sans">
             <div className="flex items-baseline justify-between mb-8">
@@ -599,7 +585,6 @@ export default function ProductDetailPage() {
         )}
       </main>
 
-      {/* 7. STICKY MOBILE BOTTOM ADD-TO-CART BAR */}
       <div className="fixed bottom-0 inset-x-0 z-40 bg-[#EDE4DC]/95 backdrop-blur-md border-t border-[#3E2C26]/15 p-3.5 sm:hidden flex items-center justify-between gap-3 shadow-lg font-sans">
         <div>
           <span className="text-[11px] text-[#261815]/60 block line-clamp-1">
@@ -618,7 +603,6 @@ export default function ProductDetailPage() {
         </button>
       </div>
 
-      {/* 8. LIGHTBOX MODAL */}
       {lightboxOpen && (
         <div
           className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4 animate-fadeIn"

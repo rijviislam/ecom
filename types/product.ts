@@ -1,4 +1,5 @@
 export interface Product {
+  thumbnail: string;
   uuid: string;
   isFeatured: unknown;
   isBestSeller: unknown;

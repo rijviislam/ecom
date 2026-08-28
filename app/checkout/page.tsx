@@ -3,6 +3,15 @@
 import OrderSummary from "@/components/OrderSummary";
 import ReviewOrder from "@/components/ReviewOrder";
 import {
+  CheckoutItem,
+  CheckoutProps,
+  CustomerInfo,
+  DeliveryInfo,
+  DeliveryOption,
+  PaymentInfo,
+  PaymentOption,
+} from "@/types/checkout";
+import {
   AlertCircle,
   ArrowRight,
   Banknote,
@@ -22,71 +31,6 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-
-// Types
-export interface CheckoutItem {
-  id: string;
-  name: string;
-  category: string;
-  quantity: number;
-  price: number;
-  image: string;
-  variant?: string;
-}
-
-export type DeliveryMethodId = "standard" | "express";
-export type PaymentMethodId =
-  | "cod"
-  | "bkash"
-  | "nagad"
-  | "sslcommerz"
-  | "bank_transfer";
-
-export interface DeliveryOption {
-  id: DeliveryMethodId;
-  title: string;
-  cost: number;
-  duration: string;
-  description: string;
-}
-
-export interface PaymentOption {
-  id: PaymentMethodId;
-  name: string;
-  description: string;
-  badge?: string;
-  isOnline: boolean;
-}
-
-export interface CustomerInfo {
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-}
-
-export interface DeliveryInfo {
-  address: string;
-  city: string;
-  area: string;
-  postalCode: string;
-  deliveryNote: string;
-  deliveryMethod: DeliveryMethodId;
-}
-
-export interface PaymentInfo {
-  method: PaymentMethodId;
-  accountNumber?: string;
-  transactionNote?: string;
-}
-
-export interface CheckoutProps {
-  brandName?: string;
-  currencySymbol?: string;
-  localStorageKey?: string;
-  onOrderComplete?: (orderData: Record<string, unknown>) => void;
-  onContinueShopping?: () => void;
-}
 
 const DELIVERY_OPTIONS: DeliveryOption[] = [
   {
@@ -392,7 +336,6 @@ export default function Checkout({
   return (
     <div className="w-full min-h-screen text-[#261815] font-sans antialiased selection:text-white">
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-        {/* Step Indicator Header */}
         {currentStep < 5 && (
           <div className="mb-8 sm:mb-10">
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-6 border-b border-[#3E2C26]/15">
@@ -462,7 +405,6 @@ export default function Checkout({
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
             {/* 60% Form */}
             <div className="lg:col-span-7 flex flex-col gap-6 order-2 lg:order-1">
-              {/* Mobile Summary Accordion */}
               <div className="block lg:hidden rounded-2xl bg-[#F8F2F1]/70 border border-[#3E2C26]/15 p-4 shadow-xs">
                 <button
                   type="button"
@@ -1131,7 +1073,6 @@ export default function Checkout({
               )}
             </div>
 
-            {/* 40% Order Summary Sidebar */}
             <OrderSummary />
           </div>
         ) : (
