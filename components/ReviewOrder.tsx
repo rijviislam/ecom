@@ -1,7 +1,6 @@
 "use client";
-import { getProducts } from "@/lib/data";
+import { useShop } from "@/context/ShopContext";
 import {
-  CheckoutItem,
   CustomerInfo,
   DeliveryInfo,
   DeliveryOption,
@@ -18,7 +17,7 @@ import {
   User,
 } from "lucide-react";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const DELIVERY_OPTIONS: DeliveryOption[] = [
   {
@@ -75,52 +74,6 @@ const PAYMENT_OPTIONS: PaymentOption[] = [
   },
 ];
 
-function readCartIds(localStorageKey: string): string[] {
-  if (typeof window === "undefined") return [];
-  const raw = localStorage.getItem(localStorageKey);
-  if (!raw) return [];
-  try {
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed.map(String) : [];
-  } catch (err) {
-    console.warn("[ReviewOrder] failed to parse cart from localStorage", err);
-    return [];
-  }
-}
-
-function resolveCartItems(localStorageKey: string): CheckoutItem[] {
-  const cartIds = readCartIds(localStorageKey);
-  if (cartIds.length === 0) return [];
-
-  const allProducts = getProducts();
-
-  const quantityMap = new Map<string, number>();
-  cartIds.forEach((id) => {
-    quantityMap.set(id, (quantityMap.get(id) || 0) + 1);
-  });
-
-  return Array.from(quantityMap.entries())
-    .map(([id, quantity]) => {
-      const product = allProducts.find(
-        (p: any) => String(p.id) === id || String(p.uuid) === id,
-      );
-      if (!product) {
-        console.warn(`[ReviewOrder] no product found for cart id "${id}"`);
-        return null;
-      }
-      return {
-        id: product.id,
-        name: product.name,
-        category: product.category || product.brand || "General",
-        quantity,
-        price: Number(product.price) || 0,
-        image: product.image || product.image?.[0],
-        variant: undefined,
-      } as CheckoutItem;
-    })
-    .filter((item): item is CheckoutItem => item !== null);
-}
-
 interface ReviewOrderProps {
   customerInfo?: CustomerInfo;
   deliveryInfo?: DeliveryInfo;
@@ -133,7 +86,6 @@ interface ReviewOrderProps {
   onBack: () => void;
   onEditStep: (step: number) => void;
   onOrderComplete?: (orderData: Record<string, unknown>) => void;
-  localStorageKey?: string;
 }
 
 export default function ReviewOrder({
@@ -151,18 +103,11 @@ export default function ReviewOrder({
   onBack,
   onEditStep,
   onOrderComplete,
-  localStorageKey = "cart",
 }: ReviewOrderProps) {
-  const [items, setItems] = useState<CheckoutItem[]>([]);
-  const [isLoaded, setIsLoaded] = useState(false);
+  const { cart, clearCart } = useShop();
   const [isProcessingOrder, setIsProcessingOrder] = useState<boolean>(false);
 
-  useEffect(() => {
-    const resolved = resolveCartItems(localStorageKey);
-    console.log("[ReviewOrder] resolved cart items", resolved);
-    setItems(resolved);
-    setIsLoaded(true);
-  }, [localStorageKey]);
+  const items = cart; // ShopContext already gives fully-resolved items
 
   const selectedDelivery =
     DELIVERY_OPTIONS.find((d) => d.id === deliveryInfo.deliveryMethod) ||
@@ -200,11 +145,7 @@ export default function ReviewOrder({
 
       setIsProcessingOrder(false);
 
-      try {
-        if (typeof window !== "undefined") {
-          localStorage.removeItem(localStorageKey);
-        }
-      } catch {}
+      clearCart();
 
       onOrderComplete?.({
         ...confirmation,
@@ -348,13 +289,7 @@ export default function ReviewOrder({
             </div>
           </div>
 
-          {!isLoaded && (
-            <p className="text-xs text-[#3E2C26]/60 py-3">
-              Loading order items…
-            </p>
-          )}
-
-          {isLoaded && items.length === 0 && (
+          {items.length === 0 && (
             <p className="text-xs text-[#3E2C26]/60 py-3">
               No items found in your cart.
             </p>
@@ -374,9 +309,6 @@ export default function ReviewOrder({
                       fill
                       sizes="40px"
                       className="object-cover"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src;
-                      }}
                     />
                   </div>
                   <div>

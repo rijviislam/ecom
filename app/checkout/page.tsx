@@ -21,7 +21,7 @@ import {
   Smartphone,
 } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 // Types
 export interface CheckoutItem {
@@ -254,7 +254,9 @@ export default function Checkout({
     DELIVERY_OPTIONS[0];
   const shippingCost = items.length > 0 ? selectedDelivery.cost : 0;
   const discountAmount = appliedCoupon ? appliedCoupon.discountAmount : 0;
-  const grandTotal = Math.max(0, itemsSubtotal + shippingCost - discountAmount);
+  const grandTotal = useMemo(() => {
+    return Math.max(0, itemsSubtotal + shippingCost - discountAmount);
+  }, []);
 
   const validateStep = (step: number): boolean => {
     const newErrors: Record<string, string> = {};
@@ -310,7 +312,6 @@ export default function Checkout({
   };
 
   const handleOrderComplete = (orderData: Record<string, unknown>) => {
-    console.log("[CheckoutPage] order complete", orderData);
     setCurrentStep(5);
     setTimeout(() => {
       const generatedOrderNumber = `ORD-${new Date().toISOString().slice(0, 10).replace(/-/g, "")}-${Math.floor(1000 + Math.random() * 9000)}`;
@@ -1126,7 +1127,6 @@ export default function Checkout({
                   onBack={() => setCurrentStep(3)}
                   onEditStep={(step) => setCurrentStep(step)}
                   onOrderComplete={handleOrderComplete}
-                  localStorageKey="cart"
                 />
               )}
             </div>

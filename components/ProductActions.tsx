@@ -1,18 +1,19 @@
 "use client";
 
 import { useProductActions } from "@/hooks/useProductActions";
+import { Product } from "@/types/product";
 
 export function ProductActions({
-  productId,
+  product,
   onAddToCart,
   onToggleWishlist,
 }: {
-  productId: string;
+  product: Product;
   onAddToCart?: (id: string) => void;
   onToggleWishlist?: (id: string, state: boolean) => void;
 }) {
   const { isWishlisted, isCart, handleWishlistToggle, handleCartToggle } =
-    useProductActions(productId);
+    useProductActions(product);
 
   return (
     <div className="flex shrink-0 items-center gap-2 select-none">
@@ -20,7 +21,7 @@ export function ProductActions({
         type="button"
         onClick={(e) => {
           handleCartToggle(e);
-          onAddToCart?.(productId);
+          onAddToCart?.(product.id);
         }}
         aria-label="Add to cart"
         className={`flex h-9 w-9 cursor-pointer items-center justify-center rounded-full transition-all duration-300 ${
@@ -48,7 +49,7 @@ export function ProductActions({
         type="button"
         onClick={(e) => {
           handleWishlistToggle(e);
-          onToggleWishlist?.(productId, !isWishlisted);
+          onToggleWishlist?.(product.id, !isWishlisted);
         }}
         aria-label="Save to wishlist"
         className={`flex h-9 w-9 cursor-pointer items-center justify-center rounded-full transition-all duration-300 ${
