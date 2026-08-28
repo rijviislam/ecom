@@ -305,7 +305,7 @@ export default function ProductsPage() {
                       className="flex items-center gap-2.5 cursor-pointer"
                     >
                       <input
-                        type="radio"
+                        type="checkbox"
                         name="category"
                         checked={selectedCategory === cat}
                         onChange={() => setSelectedCategory(cat)}
